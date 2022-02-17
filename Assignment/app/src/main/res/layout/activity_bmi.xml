@@ -20,10 +20,8 @@
         app:layout_constraintVertical_bias="0.032" />
 
     <!--Metric Switch-->
-
-    <!--Height Text-->
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/bmiMetricToggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Metric"
@@ -32,12 +30,10 @@
         app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.032" />
+        app:layout_constraintVertical_bias="0.032"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-    <!--Height Text Field-->
-
-    <!--Weight Text-->
-
+    <!--Height Text-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,13 +45,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.104" />
 
+    <!--Height Text Field Metric-->
     <EditText
         android:id="@+id/bmiHeightTextField"
         android:layout_width="290dp"
         android:layout_height="44dp"
         android:ems="10"
-        android:gravity="end"
         android:hint="cm"
+        android:gravity="right"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,10 +61,39 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.108" />
 
-    <!--Weight Text Field-->
+    <!--Height Text Field Imperial-->
+    <!--Foot-->
+    <EditText
+        android:id="@+id/bmiFootTextField"
+        android:layout_width="142dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:hint="foot"
+        android:gravity="right"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.346"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.107" />
+    <!--Inches-->
+    <EditText
+        android:id="@+id/bmiInchesTextField"
+        android:layout_width="142dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:hint="inch"
+        android:gravity="right"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.936"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.107" />
 
-    <!--Age Text-->
-
+    <!--Weight Text-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,11 +105,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.173" />
 
+    <!--Weight Text Field Metric-->
     <EditText
         android:id="@+id/bmiWeightTextField"
         android:layout_width="290dp"
         android:layout_height="44dp"
         android:ems="10"
+        android:hint="kg"
+        android:gravity="right"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,11 +120,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.179" />
+    <!--Weight Text Field Imperial-->
+    <!--Stone-->
+    <EditText
+        android:id="@+id/bmiStoneTextField"
+        android:layout_width="142dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:hint="stone"
+        android:gravity="right"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.346"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.178" />
+    <!--Lbs-->
+    <EditText
+        android:id="@+id/bmiLbsTextField"
+        android:layout_width="142dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:hint="lbs"
+        android:gravity="right"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.936"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.178" />
 
-    <!--Age Text Field-->
-
-    <!--Calculate BMI Button-->
-
+    <!--Age Text-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -107,8 +164,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.239" />
 
-    <!--BMI Text-->
-
+    <!--Age Text Field-->
     <EditText
         android:id="@+id/bmiAgeTextField"
         android:layout_width="290dp"
@@ -122,6 +178,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.246" />
 
+    <!--Calculate BMI Button-->
     <Button
         android:id="@+id/bmiCalculateBMIButton"
         android:layout_width="wrap_content"
@@ -134,8 +191,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.312" />
 
-    <!--BMI Text Field-->
-
+    <!--BMI Text-->
     <TextView
         android:id="@+id/bmiBMILabel"
         android:layout_width="wrap_content"
@@ -148,6 +204,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.367" />
 
+    <!--BMI Text Field-->
     <EditText
         android:id="@+id/bmiBMIResult"
         android:layout_width="290dp"
@@ -160,56 +217,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.379" />
-
-    <EditText
-        android:id="@+id/bmiStoneTextField"
-        android:layout_width="142dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.346"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.178" />
-
-    <EditText
-        android:id="@+id/bmiFootTextField"
-        android:layout_width="142dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.346"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.107" />
-
-    <EditText
-        android:id="@+id/bmiLbsTextField"
-        android:layout_width="142dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.936"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.178" />
-
-    <EditText
-        android:id="@+id/bmiInchesTextField"
-        android:layout_width="142dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.936"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.107" />
 </androidx.constraintlayout.widget.ConstraintLayout>

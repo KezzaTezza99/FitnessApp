@@ -29,34 +29,38 @@ public class BMIActivity extends AppCompatActivity {
         bmiWeightStone().setVisibility(View.GONE);
         bmiWeightLbs().setVisibility(View.GONE);
 
-        //Temp test
-        Switch toggle = findViewById(R.id.switch1);
-        toggle.setOnClickListener(view -> changeMetrics());
-
-
-        //Getting the Button
+        //Getting the Toggle and setting an onclick listener
+        bmiMeasurementToggle().setOnClickListener(view -> changeMetrics());
+        //Getting the Button and setting an onclick listener
         bmiCalculateButton().setOnClickListener(view -> checkFieldsNotEmpty());
     }
 
     //Checking the fields are not empty before calling calculateBMI() ensures that the app doesn't crash if a field is empty
     private void checkFieldsNotEmpty()
     {
-        //We need to know what measurement system the user is using
-        //Metric
-        if(currentMetricSelected() == 0) {
+        //Need to know what measurement system the user is using -> Metric = 0 and Imperial = 1
+        if(currentMetricSelected() == 0)
+        {
             //Only letting the user be able to calculate BMI if all fields filled in
-            if (!bmiUserHeight().getText().toString().isEmpty() && !bmiUserWeight().getText().toString().isEmpty() && !bmiUserAge().getText().toString().isEmpty()) {
+            if (!bmiUserHeight().getText().toString().isEmpty() && !bmiUserWeight().getText().toString().isEmpty() && !bmiUserAge().getText().toString().isEmpty())
+            {
                 calculateBMIPressed();
-            } else {
+            }
+            else
+            {
                 Toast.makeText(this, "Please ensure all fields are filled in", Toast.LENGTH_SHORT).show();
             }
         }
-        //Imperial
-        if(currentMetricSelected() == 1) {
+
+        if(currentMetricSelected() == 1)
+        {
             if(!bmiHeightFoot().getText().toString().isEmpty() && !bmiHeightInches().getText().toString().isEmpty() && !bmiWeightStone().getText().toString().isEmpty()
-            && !bmiWeightLbs().getText().toString().isEmpty()) {
+            && !bmiWeightLbs().getText().toString().isEmpty())
+            {
                 calculateBMIPressed();
-            } else {
+            }
+            else
+            {
                 Toast.makeText(this, "Please ensure all fields are filled in", Toast.LENGTH_SHORT).show();
             }
         }
@@ -95,7 +99,6 @@ public class BMIActivity extends AppCompatActivity {
 
         //Changing the button to say re-calculate BMI
         bmiCalculateButton().setText("Recalculate BMI");
-
     }
 
     //Swap between using Metric and Imperial measuring systems
@@ -133,7 +136,7 @@ public class BMIActivity extends AppCompatActivity {
 
     private double calculateBMI(int unit)
     {
-        //0 metric / 1 imperial / -1 error
+        //0 metric - 1 imperial
         if(unit == 0)
         {
             //Getting the user input - HEIGHT
@@ -147,7 +150,7 @@ public class BMIActivity extends AppCompatActivity {
             //Rounding the final answer to 1 decimal place
             return (double) Math.round(BMI * 10.0) / 10.0;
         }
-        else if(unit == 1)
+        else
         {
             //Getting user input - HEIGHT
             double heightFeet = Double.parseDouble(bmiHeightFoot().getText().toString());
@@ -156,8 +159,6 @@ public class BMIActivity extends AppCompatActivity {
             double inches = heightFeet * 12.0;
             //Adding converted feet with the original inches inputted by the user
             double height = inches + heightInches;
-            Toast.makeText(this, "Inches: " + height, Toast.LENGTH_LONG).show();
-
             //Getting user input - WEIGHT
             double weightStone = Double.parseDouble(bmiWeightStone().getText().toString());
             double weightLbs = Double.parseDouble(bmiWeightLbs().getText().toString());
@@ -165,67 +166,35 @@ public class BMIActivity extends AppCompatActivity {
             double lbs = weightStone * 14.0;
             //Adding converted lbs with the original lbs inputted by the user
             double weight = lbs + weightLbs;
-
             //BMI using Imperial -> (lbs x 703) / inches^2
-            double BMI = (weight * 703) / (height * height);
+            double BMI = ((weight * 703) / (height * height));
             //Rounding the final answer
             return (double)Math.round(BMI * 10.0) / 10.0;
-        }
-        else
-        {
-            //Adding this guard just in case
-            Toast.makeText(this, "An error occurred while calculating BMI. Please try again", Toast.LENGTH_LONG).show();
-            return -1;
         }
     }
 
     //Helper Methods
-    //Having methods to get the Text View to stop DRY - Kept repeating code
-    private TextView bmiText()
-    {
-        return findViewById(R.id.bmiBMILabel);
-    }
-    private EditText bmiField()
-    {
-        return findViewById(R.id.bmiBMIResult);
-    }
+    //Returning Switches / EditText etc this way allows me to stop repeating code
+    private Switch bmiMeasurementToggle() { return findViewById(R.id.bmiMetricToggle); }
     //These three methods allow me to call them in checkFieldsNotEmpty without taking any parameters
     //such as checkFieldsNotEmpty(EditText height...) makes the method more reusable as can be called from anywhere (no local EditTexts needed)
     //also means I don't need three variables in onCreate() to call the method as the method takes in no parameters using this
-    private EditText bmiUserHeight()
-    {
-        return findViewById(R.id.bmiHeightTextField);
-    }
-    private EditText bmiUserWeight()
-    {
-        return findViewById(R.id.bmiWeightTextField);
-    }
-    private EditText bmiUserAge()
-    {
-        return findViewById(R.id.bmiAgeTextField);
-    }
-    private Button bmiCalculateButton()
-    {
-        return findViewById(R.id.bmiCalculateBMIButton);
-    }
+    private EditText bmiUserHeight() { return findViewById(R.id.bmiHeightTextField); }
+    private EditText bmiUserWeight() { return findViewById(R.id.bmiWeightTextField); }
+    private EditText bmiUserAge() { return findViewById(R.id.bmiAgeTextField); }
+    private Button bmiCalculateButton() { return findViewById(R.id.bmiCalculateBMIButton); }
     private EditText bmiHeightFoot() { return findViewById(R.id.bmiFootTextField); }
     private EditText bmiHeightInches() {return findViewById(R.id.bmiInchesTextField); }
     private EditText bmiWeightStone() { return findViewById(R.id.bmiStoneTextField); }
     private EditText bmiWeightLbs() { return findViewById(R.id.bmiLbsTextField); }
-    private Switch bmiMeasurementToggle() { return findViewById(R.id.switch1); }
+    private TextView bmiText() { return findViewById(R.id.bmiBMILabel); }
+    private EditText bmiField() { return findViewById(R.id.bmiBMIResult); }
 
-    //Temp Solution
     private int currentMetricSelected()
     {
         //Returns 0 for Metric and 1 for Imperial
-        if(bmiUserHeight().getVisibility() == View.VISIBLE)
-        {
-            return 0;
-        }
-        else
-        {
-            return 1;
-        }
+        if(bmiUserHeight().getVisibility() == View.VISIBLE) { return 0; }
+        else { return 1; }
     }
 
     //Clearing the fields of user input
