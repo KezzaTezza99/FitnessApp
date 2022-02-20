@@ -3,6 +3,7 @@ package com.w18024358.fitnesscalculator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.icu.text.TimeZoneFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,9 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class BMIActivity extends AppCompatActivity {
+    //TODO
+    //Abstract away a lot of the helper functionality? Make a util class?
+    //Create a math class that can do the calculations needed for me? Make the Activities less cluttered
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +121,7 @@ public class BMIActivity extends AppCompatActivity {
             bmiWeightLbs().setVisibility(View.VISIBLE);
             //Changing the Switch Text
             bmiMeasurementToggle().setText("Imperial");
+            convertCurrentMeasurements(0);
         }
         //Change to Metric Measurement(s)
         else
@@ -131,6 +136,113 @@ public class BMIActivity extends AppCompatActivity {
             bmiUserWeight().setVisibility(View.VISIBLE);
             //Changing the Switch Text
             bmiMeasurementToggle().setText("Metric");
+            convertCurrentMeasurements(1);
+        }
+    }
+
+    //Current Task - FINISH
+    //So far changing from KGs crashes the app
+    //Very messy
+    private void convertCurrentMeasurements(int metric)
+    {
+        System.out.println("Test before null test: " + bmiUserHeight().getText().toString());
+
+        if(bmiUserHeight().getText().toString() == null) {
+            System.out.println("String is null");
+        }
+        if(bmiUserHeight().getText().toString() != null) {
+            System.out.println("String is not null!");
+            String str = bmiUserHeight().getText().toString();
+            System.out.println("String value: " + str);
+        }
+        if(bmiUserHeight().getText().toString() == "cm") {
+            System.out.println("Height is equal to cm");
+        }
+        if(bmiUserHeight().getText().toString() == "")
+        {
+            System.out.println("string is actually ewual to empty ''");
+        }
+        if(bmiUserHeight().getText().toString() != "cm") {
+            System.out.println("NOT EQUAL TO CM");
+        }
+
+        if(bmiUserHeight().getVisibility() == View.VISIBLE && metric == 0)
+        {
+            //Height
+            if(bmiUserHeight().getText().toString() != "cm" || bmiUserHeight().getText().toString() != null)
+            {
+                //Converting cm to ft
+                convertHeight(0);
+            }
+            if(bmiUserWeight().getText().toString() != "kg" || bmiUserWeight().getText().toString() != null)
+            {
+                convertWeight(0);
+            }
+        }
+        if(bmiHeightFoot().getVisibility() == View.VISIBLE && metric == 1)
+        {
+            //Height
+            if(bmiHeightFoot().getText().toString() != "foot" || bmiHeightFoot().getText().toString() != null &&
+               bmiHeightInches().getText().toString() != "inches" || bmiHeightInches().getText().toString() != null)
+            {
+                convertHeight(1);
+            }
+            //Weight
+            if(bmiWeightStone().getText().toString() != "stone" || bmiWeightStone().getText().toString() != null &&
+                    bmiWeightLbs().getText().toString() != "lbs" || bmiWeightLbs().getText().toString() != null)
+            {
+                convertWeight(2);
+            }
+        }
+    }
+
+    //These methods so far stop the crashes
+    private void convertHeight(int metric)
+    {
+        if(metric == 0)
+        {
+            //Metric to Imperial
+            //Getting the currently inputted info
+            double temp = Double.parseDouble(bmiUserHeight().getText().toString());
+            //Clearing the fields clear so the metric doesn't stay if user goes back
+            bmiUserHeight().setText("");
+            //Metric (cm) to Imperial(ft / inch) ->  cm / 30.48
+            double height = (temp / 30.48);
+            System.out.println("Height: " + height);
+            String ft = String.valueOf(height);
+            //Needs to be a char if using double it converts the double from string incorrectly resulting in the incorrect data
+            char foot = ft.charAt(0);
+            char inch = ft.charAt(2);
+            bmiHeightFoot().setText("" + foot);
+            bmiHeightInches().setText("" + inch);
+        }
+    }
+
+    //Defiantly needs a rework and refactoring
+    private void convertWeight(int metric)
+    {
+        if(metric == 0)
+        {
+            //TODO Need to write a method here that accurately splits up KG to Stone if the stone is one decimal value before point
+            double temp = Double.parseDouble(bmiUserWeight().getText().toString());
+            //Clearing the fields
+            bmiUserWeight().setText("");
+            //Metric(kg) to Imperial(st / lbs) -> kg / 6.35 approx
+            double weight = temp / 6.35;
+            System.out.println("Weight: " + weight);
+            String st = String.valueOf(weight);
+            char stone1 = st.charAt(0);
+            char stone2 = st.charAt(1);
+
+            //Maybe round this value??
+            char lbs1 = st.charAt(3);
+            char lbs2 = st.charAt(4);
+
+            String stone = String.valueOf(stone1) + String.valueOf(stone2);
+            String lbs = String.valueOf(lbs1) + String.valueOf(lbs2);
+
+            bmiWeightStone().setText("" + stone);
+            bmiWeightLbs().setText("" + lbs);
         }
     }
 
