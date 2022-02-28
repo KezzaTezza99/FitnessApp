@@ -2,22 +2,24 @@ package com.w18024358.fitnesscalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.icu.text.TimeZoneFormat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
+
+import java.text.DecimalFormat;
 
 public class BMIActivity extends AppCompatActivity {
-    //TODO
-    //Abstract away a lot of the helper functionality? Make a util class?
+    //TODO Abstract away a lot of the helper functionality? Make a util class?
     //Create a math class that can do the calculations needed for me? Make the Activities less cluttered
+    //TODO Fix the issue with swapping metrics decreases the user's inputted information each time
+    //I think its caused by the second measurement field
+    //TODO change the Imperial fields to actually use one value and then split that value to two
+    //Every value before the decimal place (to the left) will be the first edittext field and everything to the right will be the second
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,12 @@ public class BMIActivity extends AppCompatActivity {
         bmiMeasurementToggle().setOnClickListener(view -> changeMetrics());
         //Getting the Button and setting an onclick listener
         bmiCalculateButton().setOnClickListener(view -> checkFieldsNotEmpty());
+    }
+
+    //Is this bad?
+    private MathUtility Util()
+    {
+        return new MathUtility();
     }
 
     //Checking the fields are not empty before calling calculateBMI() ensures that the app doesn't crash if a field is empty
@@ -143,55 +151,43 @@ public class BMIActivity extends AppCompatActivity {
     //Current Task - FINISH
     //So far changing from KGs crashes the app
     //Very messy
+    //TODO make this actually use the Math Utility
     private void convertCurrentMeasurements(int metric)
     {
-        System.out.println("Test before null test: " + bmiUserHeight().getText().toString());
-
-        if(bmiUserHeight().getText().toString() == null) {
-            System.out.println("String is null");
-        }
-        if(bmiUserHeight().getText().toString() != null) {
-            System.out.println("String is not null!");
-            String str = bmiUserHeight().getText().toString();
-            System.out.println("String value: " + str);
-        }
-        if(bmiUserHeight().getText().toString() == "cm") {
-            System.out.println("Height is equal to cm");
-        }
-        if(bmiUserHeight().getText().toString() == "")
-        {
-            System.out.println("string is actually ewual to empty ''");
-        }
-        if(bmiUserHeight().getText().toString() != "cm") {
-            System.out.println("NOT EQUAL TO CM");
-        }
-
-        if(bmiUserHeight().getVisibility() == View.VISIBLE && metric == 0)
-        {
+        if(metric == 0) {
             //Height
-            if(bmiUserHeight().getText().toString() != "cm" || bmiUserHeight().getText().toString() != null)
-            {
+            if (!bmiUserHeight().getText().toString().isEmpty()) {
                 //Converting cm to ft
                 convertHeight(0);
-            }
-            if(bmiUserWeight().getText().toString() != "kg" || bmiUserWeight().getText().toString() != null)
-            {
-                convertWeight(0);
-            }
-        }
-        if(bmiHeightFoot().getVisibility() == View.VISIBLE && metric == 1)
-        {
-            //Height
-            if(bmiHeightFoot().getText().toString() != "foot" || bmiHeightFoot().getText().toString() != null &&
-               bmiHeightInches().getText().toString() != "inches" || bmiHeightInches().getText().toString() != null)
-            {
-                convertHeight(1);
+
+                //double inches = Util().CmToInch(Double.parseDouble(bmiUserHeight().getText().toString()));
+                //System.out.println("CM to Inches: " + inches);
+                //System.out.println("Inches to Feet: " + Util().InchToFoot(inches));
+
             }
             //Weight
-            if(bmiWeightStone().getText().toString() != "stone" || bmiWeightStone().getText().toString() != null &&
-                    bmiWeightLbs().getText().toString() != "lbs" || bmiWeightLbs().getText().toString() != null)
-            {
-                convertWeight(2);
+            if (!bmiUserWeight().getText().toString().isEmpty()) {
+                convertWeight(0);
+
+                //double lbs = Util().KgToLbs(Double.parseDouble(bmiUserWeight().getText().toString()));
+                //System.out.println("KG to Lbs: " + lbs);
+                //System.out.println("Lbs to Stone: " + Util().LbsToStone(lbs));
+                //double stone = Util().LbsToStone(lbs);
+                //bmiWeightStone().setText("" + stone);
+            }
+        }
+        if(metric == 1) {
+            //Height
+            if (!bmiHeightFoot().getText().toString().isEmpty() || !bmiHeightInches().getText().toString().isEmpty()) {
+                convertHeight(1);
+
+                //bmiUserHeight().setText("" + Util().FootToCm(Double.parseDouble(bmiHeightFoot().getText().toString())));
+            }
+            //Weight
+            if (!bmiWeightStone().getText().toString().isEmpty() || !bmiWeightLbs().getText().toString().isEmpty()) {
+                convertWeight(1);
+
+                //bmiUserWeight().setText("" + Util().StoneToKg(Double.parseDouble(bmiWeightStone().getText().toString())));
             }
         }
     }
@@ -201,20 +197,108 @@ public class BMIActivity extends AppCompatActivity {
     {
         if(metric == 0)
         {
-            //Metric to Imperial
-            //Getting the currently inputted info
-            double temp = Double.parseDouble(bmiUserHeight().getText().toString());
-            //Clearing the fields clear so the metric doesn't stay if user goes back
-            bmiUserHeight().setText("");
-            //Metric (cm) to Imperial(ft / inch) ->  cm / 30.48
-            double height = (temp / 30.48);
-            System.out.println("Height: " + height);
-            String ft = String.valueOf(height);
-            //Needs to be a char if using double it converts the double from string incorrectly resulting in the incorrect data
-            char foot = ft.charAt(0);
-            char inch = ft.charAt(2);
-            bmiHeightFoot().setText("" + foot);
-            bmiHeightInches().setText("" + inch);
+//            //Metric to Imperial
+//            //Getting the currently inputted info
+//            double temp = Double.parseDouble(bmiUserHeight().getText().toString());
+//            //Clearing the fields clear so the metric doesn't stay if user goes back
+//            bmiUserHeight().setText("");
+//            //Metric (cm) to Imperial(ft / inch) ->  cm / 30.48
+//            double height = temp / 30.48;
+//            System.out.println("Height: " + height);
+//            String ft = String.valueOf(height);
+//            //Needs to be a char if using double it converts the double from string incorrectly resulting in the incorrect data
+//            char foot = ft.charAt(0);
+//            char inch = ft.charAt(2);
+//            bmiHeightFoot().setText("" + foot);
+//            bmiHeightInches().setText("" + inch);
+
+            //Setting the field
+            //System.out.println("Testing the decimal split method: " + Util().BeforeAfterDecimalPoint(bmiHeightFoot().getText().toString()));
+            double inches = Util().CmToInch(Double.parseDouble(bmiUserHeight().getText().toString()));
+            //bmiHeightFoot().setText("" + Util().InchToFoot(inches));
+            double foot = Util().InchToFoot(inches);
+            //bmiHeightFoot().setText("" + Util().BeforeAfterDecimalPoint(String.valueOf(foot)));
+
+            String results[] = Util().BeforeAfterDecimalPoint(foot);
+            bmiHeightFoot().setText("" + results[0]);
+            bmiHeightInches().setText("" + results[1]);
+        }
+
+        //DO I REALLY NEED TO CLEAR THE FIELDS??
+        if(metric == 1)
+        {
+//            //Imperial to Metric
+//            //Getting the current inputted info
+//            double footTemp = Double.parseDouble(bmiHeightFoot().getText().toString());
+//            //As this value can potentially be empty i.e 5ft then setting to 0 else getting the inputted value i.e 5ft 2
+//            double inchesTemp;
+//            //Needed if inches is valid
+//            double heightInch;
+//            if(!bmiHeightInches().getText().toString().isEmpty())
+//            {
+//                inchesTemp = Double.parseDouble(bmiHeightInches().getText().toString());
+//                //I know that the field is used so clearing both here
+//                bmiHeightFoot().setText("");
+//                bmiHeightInches().setText("");
+//                //Imperial inches to cm -> inch * 2.54
+//                heightInch = inchesTemp * 2.54;
+//            }
+//            else
+//            {
+//                inchesTemp = 0;
+//                //Else just need to clear foot field
+//                bmiHeightFoot().setText("");
+//                //Inches not needed
+//                heightInch = 0;
+//            }
+//            //Imperial (ft / inches) to Metric (cm) -> ft * 30.48
+//            double height = (footTemp * 30.48) + heightInch;
+//            bmiUserHeight().setText("" + height);
+
+            double inches;
+            double ft;
+            //Need to check the foot and the inch fields before calculating the CM
+            if(bmiHeightInches().getText().toString().length() != 0)
+            {
+                //As inches here will not be accurate, i.e lets say this returns 10 inches it should be treat as 0.10 inches and not 10
+                //as the conversion back to cm will lead to a value to high so need to multiply this value by 0.01
+                inches = Double.parseDouble(bmiHeightInches().getText().toString()) * 0.01;
+                System.out.println("Inside inches != 0, Inches: " + inches);
+            }
+            else
+            {
+                inches = 0;
+                System.out.println("Inside else inches != 0, Inches: " + inches);
+            }
+            System.out.println("Outside inches != 0, Inches: " + inches);
+
+            double foot = Double.parseDouble(bmiHeightFoot().getText().toString());
+
+            //Need to add them differently
+            if(inches != 0) {
+                //Divide by mass 12
+                //double inchToFeet = inches / 12.0;
+                double inchToFeet = inches;
+                System.out.println("Inside inches != 0, InchToFeet: " + inchToFeet);
+                System.out.print("Test addition 1: " + (foot + inchToFeet));
+
+                DecimalFormat decimalFormat = new DecimalFormat("##.##");
+                ft = Double.parseDouble(decimalFormat.format(foot + inchToFeet));
+                System.out.println("Test 2: " + ft);
+
+                System.out.println("Inside inches != 0, ft: " + ft);
+            } else {
+                ft = foot;
+                System.out.println("Inside else inches != 0, ft: " + ft);
+            }
+
+            System.out.println("Foot: " + foot + " Inches: " + inches + "Adding the strings: " + ft);
+            System.out.println("Foot: " + ft + "Should be: " + Util().FootToCm(ft));
+            double answer = Util().FootToCm(ft);
+            System.out.println("ANSWER: " + answer);
+
+            bmiUserHeight().setText("" + answer);
+            //bmiUserHeight().setText("" + Util().FootToCm(Double.parseDouble(bmiHeightFoot().getText().toString())));
         }
     }
 
@@ -224,25 +308,50 @@ public class BMIActivity extends AppCompatActivity {
         if(metric == 0)
         {
             //TODO Need to write a method here that accurately splits up KG to Stone if the stone is one decimal value before point
-            double temp = Double.parseDouble(bmiUserWeight().getText().toString());
-            //Clearing the fields
-            bmiUserWeight().setText("");
-            //Metric(kg) to Imperial(st / lbs) -> kg / 6.35 approx
-            double weight = temp / 6.35;
-            System.out.println("Weight: " + weight);
-            String st = String.valueOf(weight);
-            char stone1 = st.charAt(0);
-            char stone2 = st.charAt(1);
+//            double temp = Double.parseDouble(bmiUserWeight().getText().toString());
+//            //Clearing the fields
+//            bmiUserWeight().setText("");
+//            //Metric(kg) to Imperial(st / lbs) -> kg / 6.35 approx
+//            double weight = temp / 6.35;
+//            System.out.println("Weight: " + weight);
+//            String st = String.valueOf(weight);
+//            char stone1 = st.charAt(0);
+//            char stone2 = st.charAt(1);
+//
+//            //NOW THESE BREAKS MORE?
+//            //Maybe round this va2lue??
+////            char lbs1, lbs2;
+////            //This causes crash
+////            if(st.length() == 4) {
+////                lbs1 = st.charAt(3);
+////            } else { lbs1 = 0; }
+////            if(st.length() == 5) {
+////                 lbs2 = st.charAt(4);
+////            } else {lbs2 = 0; }
+//            char lbs1 = st.charAt(3);
+//            char lbs2 = st.charAt(4);
+//
+//            String stone = String.valueOf(stone1) + String.valueOf(stone2);
+//            String lbs = String.valueOf(lbs1) + String.valueOf(lbs2);
+//
+//            bmiWeightStone().setText("" + stone);
+//            bmiWeightLbs().setText("" + lbs);
+//
+            double lbs = Util().KgToLbs(Double.parseDouble(bmiUserWeight().getText().toString()));
+            bmiWeightStone().setText("" + Util().LbsToStone(lbs));
+        }
 
-            //Maybe round this value??
-            char lbs1 = st.charAt(3);
-            char lbs2 = st.charAt(4);
+        if(metric == 1)
+        {
+//            double temp = Double.parseDouble(bmiWeightStone().getText().toString());
+//            //Clearing the fields
+//            bmiWeightStone().setText("");
+//            //Imperial (stone / lbs) to Metric (kg) -> Stone and lbs * 6.35
+//            double weight = temp * 6.35;
+//            System.out.println("Stone -> KG Weight: " + weight);
+//            bmiUserWeight().setText("" + weight);
 
-            String stone = String.valueOf(stone1) + String.valueOf(stone2);
-            String lbs = String.valueOf(lbs1) + String.valueOf(lbs2);
-
-            bmiWeightStone().setText("" + stone);
-            bmiWeightLbs().setText("" + lbs);
+            bmiUserWeight().setText("" + Util().StoneToKg(Double.parseDouble(bmiWeightStone().getText().toString())));
         }
     }
 

@@ -32,6 +32,13 @@ public class MainActivity extends AppCompatActivity {
     //Used to check if the details entered are valid
     private void checkUserDetails(EditText emailAddress, EditText password)
     {
+//        char specialCharacters[] = new char[6];
+//        specialCharacters[0] = '!';
+//        specialCharacters[1] = '?';
+//        specialCharacters[2] = '@';
+//        specialCharacters[3] = '#';
+//        specialCharacters[4] = '$';
+
         //Should only take them to the BMI Activity if the username and password are both valid
         if(emailAddress.getText().toString().length() == 0 && password.getText().toString().length() == 0)
         {
@@ -49,6 +56,19 @@ public class MainActivity extends AppCompatActivity {
         {
             Toast.makeText(this, "Please use a stronger password", Toast.LENGTH_LONG).show();
         }
+//        else
+//        {
+//            for(int i = 0; i < password.getText().toString().length(); i++) {
+//                for(int j = 0; j < specialCharacters.toString().length(); j++) {
+//                    if (password.getText().toString().indexOf(i) != specialCharacters[j]) {
+//                        Toast.makeText(this, "Password needs to contain a special character", Toast.LENGTH_LONG).show();
+//                    }
+//                    else{
+//                        openBMIActivity(emailAddress);
+//                    }
+//                }
+//            }
+//        }
         else
         {
             openBMIActivity(emailAddress);
