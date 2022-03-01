@@ -110,11 +110,18 @@ public class MathUtility
 
         return new String[] {ft, inch};
     }
-//
-//    String AfterDecimalPointHeightInches(String footNotSplit)
-//    {
-//
-//    }
 
-    //TODO Fix that going from ft to cm now only calculates based on ft edit text and not ft and inch edit text
+    String[] SplitStoneAndLbs(double weightToSplit)
+    {
+        String measurementToSplit = String.valueOf(weightToSplit);
+        System.out.println("Value of weight before split: " + measurementToSplit);
+
+        String splitString[] = measurementToSplit.split("\\.");
+        String stone = splitString[0];
+        String lbs = splitString[1];
+
+        System.out.println("Stone: " + stone + " Lbs: " + lbs);
+
+        return new String[] { stone, lbs };
+    }
 }
