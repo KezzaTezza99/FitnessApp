@@ -7,7 +7,7 @@ import android.renderscript.Sampler;
 import java.io.StringBufferInputStream;
 import java.text.DecimalFormat;
 
-//Creating a helper class that will convert all necessary measurement conversions for us
+//Creating a helper class that will convert all necessary measurement conversions
 public class MathUtility
 {
     //TODO Ensure to correctly round numbers up or down

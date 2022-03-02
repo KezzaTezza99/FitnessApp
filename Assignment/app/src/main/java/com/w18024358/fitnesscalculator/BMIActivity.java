@@ -20,7 +20,6 @@ public class BMIActivity extends AppCompatActivity {
     //and then clears the fields and changes back then the other metric actually still appears when it should now be blank
     //TODO the app crashes if you change metric and have no foot inputted and only have an inch
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,10 +197,18 @@ public class BMIActivity extends AppCompatActivity {
     {
         if(metric == 0)
         {
+
+            //Getting the currently inputted cm and transferring that into inches
             double inches = Util().CmToInch(Double.parseDouble(bmiUserHeight().getText().toString()));
+            //Now changing the inches into feet
             double foot = Util().InchToFoot(inches);
 
+            //Clearing the fields
+            clearFields();
+
+            //Storing the result in a string that will be split into feet and inches
             String results[] = Util().BeforeAfterDecimalPoint(foot);
+            //Displaying the relative information in the correct EditText(s)
             bmiHeightFoot().setText("" + results[0]);
             bmiHeightInches().setText("" + results[1]);
         }
@@ -231,6 +238,9 @@ public class BMIActivity extends AppCompatActivity {
             DecimalFormat decimalFormat = new DecimalFormat("##.##");
             ft = Double.parseDouble(decimalFormat.format(foot + inches));
 
+            //Clearing the fields
+            clearFields();
+
             bmiUserHeight().setText("" + Util().FootToCm(ft));
         }
     }
@@ -243,6 +253,8 @@ public class BMIActivity extends AppCompatActivity {
             //TODO Need to write a method here that accurately splits up KG to Stone if the stone is one decimal value before point
             double lbs = Util().KgToLbs(Double.parseDouble(bmiUserWeight().getText().toString()));
             double stone = Util().LbsToStone(lbs);
+
+            clearFields();
 
             String results[] = Util().SplitStoneAndLbs(stone);
             bmiWeightStone().setText("" + results[0]);
@@ -270,6 +282,8 @@ public class BMIActivity extends AppCompatActivity {
 
             DecimalFormat decimalFormat = new DecimalFormat("##.##");
             st = Double.parseDouble(decimalFormat.format(stone + lbs));
+
+            clearFields();
 
             bmiUserWeight().setText("" + Util().StoneToKg(st));
         }
