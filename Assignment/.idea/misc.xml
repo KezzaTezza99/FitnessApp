@@ -3,10 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/drawable/add_icon.xml" value="0.2985" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_add_calories.xml" value="0.20854700854700856" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_bmi.xml" value="0.33" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_calorie.xml" value="0.30085470085470084" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_home.xml" value="0.30085470085470084" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_login.xml" value="0.25" />
-        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/add_calorie_dialog.xml" value="0.30085470085470084" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/calorie_view_layout.xml" value="0.25" />
       </map>
     </option>
   </component>

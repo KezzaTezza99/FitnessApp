@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.util.Locale;
 
 public class BMIActivity extends AppCompatActivity {
     //TODO change the Imperial fields to actually use one value and then split that value to two
@@ -19,7 +20,7 @@ public class BMIActivity extends AppCompatActivity {
     //Not a necessary task but just tidies the application up, if the user changes the metric  and then goes back to the prev metric
     //and then clears the fields and changes back then the other metric actually still appears when it should now be blank
     //TODO the app crashes if you change metric and have no foot inputted and only have an inch
-
+    //TODO If I clear the fields I can no longer calculate both weight and height if switching metrics only one at a time
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,12 +132,6 @@ public class BMIActivity extends AppCompatActivity {
             bmiMeasurementToggle().setText("Imperial");
 
             convertCurrentMeasurements(0);
-
-//            //Could I not change it here so that it only converts the current measurements if the fields are not null to stop the crashes?
-//            if(!bmiUserWeight().getText().toString().isEmpty() || !bmiUserHeight().getText().toString().isEmpty())
-//            {
-//                convertCurrentMeasurements(0);
-//            }
         }
         //Change to Metric Measurement(s)
         else
@@ -153,12 +148,6 @@ public class BMIActivity extends AppCompatActivity {
             bmiMeasurementToggle().setText("Metric");
 
             convertCurrentMeasurements(1);
-
-//            if(!bmiHeightFoot().getText().toString().isEmpty() || !bmiHeightInches().getText().toString().isEmpty()
-//                || !bmiWeightStone().getText().toString().isEmpty() || !bmiWeightLbs().getText().toString().isEmpty())
-//            {
-//                convertCurrentMeasurements(1);
-//            }
         }
     }
 
@@ -197,14 +186,12 @@ public class BMIActivity extends AppCompatActivity {
     {
         if(metric == 0)
         {
-
             //Getting the currently inputted cm and transferring that into inches
             double inches = Util().CmToInch(Double.parseDouble(bmiUserHeight().getText().toString()));
             //Now changing the inches into feet
             double foot = Util().InchToFoot(inches);
 
-            //Clearing the fields
-            clearFields();
+            clearMetricHeightFields();
 
             //Storing the result in a string that will be split into feet and inches
             String results[] = Util().BeforeAfterDecimalPoint(foot);
@@ -235,11 +222,10 @@ public class BMIActivity extends AppCompatActivity {
                 foot = Double.parseDouble(bmiHeightFoot().getText().toString());
             } else { foot = 0; }
 
+            clearImperialHeightFields();
+
             DecimalFormat decimalFormat = new DecimalFormat("##.##");
             ft = Double.parseDouble(decimalFormat.format(foot + inches));
-
-            //Clearing the fields
-            clearFields();
 
             bmiUserHeight().setText("" + Util().FootToCm(ft));
         }
@@ -254,17 +240,15 @@ public class BMIActivity extends AppCompatActivity {
             double lbs = Util().KgToLbs(Double.parseDouble(bmiUserWeight().getText().toString()));
             double stone = Util().LbsToStone(lbs);
 
-            clearFields();
+            clearMetricWeightFields();
 
-            String results[] = Util().SplitStoneAndLbs(stone);
+            String results[] = Util().BeforeAfterDecimalPoint(stone);
             bmiWeightStone().setText("" + results[0]);
             bmiWeightLbs().setText("" + results[1]);
         }
 
         if(metric == 1)
         {
-            //TODO change this to now do calculations on the stone and lbs fields
-            //bmiUserWeight().setText("" + Util().StoneToKg(Double.parseDouble(bmiWeightStone().getText().toString())));
             double st;
             double lbs = 0;
 
@@ -280,15 +264,16 @@ public class BMIActivity extends AppCompatActivity {
                 stone = Double.parseDouble(bmiWeightStone().getText().toString());
             } else { stone = 0; }
 
+            clearImperialWeightFields();
+
             DecimalFormat decimalFormat = new DecimalFormat("##.##");
             st = Double.parseDouble(decimalFormat.format(stone + lbs));
-
-            clearFields();
 
             bmiUserWeight().setText("" + Util().StoneToKg(st));
         }
     }
 
+    //TODO Add the code to Math Utility????
     private double calculateBMI(int unit)
     {
         //0 metric - 1 imperial
@@ -352,9 +337,12 @@ public class BMIActivity extends AppCompatActivity {
         else { return 1; }
     }
 
+    //Looking to builder pattern so I can use one method to clear fields based on input??
+    //Add a param here and maybe have 0 clear all fields, 1 metric fields and then 2 imperial fields?
     //Clearing the fields of user input
     private void clearFields()
     {
+        //Clear all fields
         //Metric
         bmiUserHeight().setText("");
         bmiUserWeight().setText("");
@@ -365,5 +353,28 @@ public class BMIActivity extends AppCompatActivity {
         bmiWeightLbs().setText("");
         //Common
         bmiUserAge().setText("");
+    }
+
+    private void clearMetricHeightFields()
+    {
+        bmiUserHeight().setText("");
+    }
+
+    private void clearMetricWeightFields()
+    {
+        bmiUserWeight().setText("");
+
+    }
+
+    private void clearImperialHeightFields()
+    {
+        bmiHeightFoot().setText("");
+        bmiHeightInches().setText("");
+    }
+
+    private void clearImperialWeightFields()
+    {
+        bmiWeightStone().setText("");
+        bmiWeightLbs().setText("");
     }
 }

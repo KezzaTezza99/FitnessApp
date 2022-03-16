@@ -6,31 +6,28 @@ import android.renderscript.Sampler;
 
 import java.io.StringBufferInputStream;
 import java.text.DecimalFormat;
+import java.util.function.DoubleToLongFunction;
 
 //Creating a helper class that will convert all necessary measurement conversions
 public class MathUtility
 {
-    //TODO Ensure to correctly round numbers up or down
-    //TODO Ensure that edge cases are correct, i.e, inches over 12 should become a foot etc
-    //----------------------------------------------------------------------------------------------
-
     //Metric to Imperial (Height) -> Centimeters to inches
     double CmToInch(double cm)
     {
-        DecimalFormat df = new DecimalFormat("##");
-        return Double.parseDouble(df.format(cm / 2.54));
+        //Formatting the final value
+        DecimalFormat decimalFormat = new DecimalFormat("##");
+        return Double.parseDouble(decimalFormat.format(cm / 2.54));
     }
 
-    //Now need to convert the inches into feet
-    //Feet = inch / 12
+    //Converting Imperial Inches into Feet (was more accurate to do this than to go CM->FT, when testing)
     double InchToFoot(double inches)
     {
+        //Formatting the amount after a decimal point
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        return Double.parseDouble(decimalFormat.format(inches / 12.0));
+        return Double.parseDouble(decimalFormat.format( inches / 12.0));
     }
 
-    //Metric to Imperial (Weight) -> Kilograms to pounds
-    //Approx evaluation = kg * 2.205
+    //Metric to Imperial (Weight) -> Kilograms to pounds -- Approx evaluation = kg * 2.205
     double KgToLbs(double kg)
     {
         //Creating a formatter that will ensure the final value is rounded to 1 decimal place
@@ -40,52 +37,18 @@ public class MathUtility
     }
 
     //Now need to convert the lbs into stone
-    //Stone = mass / 14
     double LbsToStone(double lbs)
     {
+        //Formatting to 2 decimal places
         DecimalFormat decimalFormat = new DecimalFormat("##.##");
         return Double.parseDouble(decimalFormat.format(lbs / 14));
-    }
-
-    //Checks to ensure that the measurements are correct, i.e, anything above 12 inches becomes a foot etc
-    boolean StoneNeedsRoundingCheck(double stone)
-    {
-        String st = String.valueOf(stone);
-        System.out.println("String value of stone: " + st);
-        int index = st.compareToIgnoreCase(".");
-        String stAfterDecimalPoint = st.substring(index, st.length());
-        System.out.println("Value after decimal place: " + stAfterDecimalPoint);
-
-        if(Double.parseDouble(stAfterDecimalPoint) > 13)
-        {
-            System.out.println("Greater than 13");
-            return true;
-        }
-        System.out.println("Less than 13");
-        return false;
-    }
-
-    //Messier?? Than how I was actually doing it??
-    double NewStone(double stone)
-    {
-        String st = String.valueOf(stone);
-        int index = st.compareToIgnoreCase(".");
-        String stAfterDecimalPoint = st.substring(index + 1, st.length());
-
-        double newStone = 1.0;
-        double newLbs = stAfterDecimalPoint.charAt(1);
-
-        String str = String.valueOf(stone) + String.valueOf(newStone) + "." + String.valueOf(newLbs);
-
-        System.out.println("Stone + new Stone + lbs: " + ((stone + newStone) + newLbs));
-        System.out.println("NEW: " + str);
-        return Double.parseDouble(str);
     }
 
     //Imperial to Metric (Height) -> Foot to Cm
     double FootToCm(double foot)
     {
-        DecimalFormat decimalFormat = new DecimalFormat("###.#");
+        //Formatting the value to a whole number
+        DecimalFormat decimalFormat = new DecimalFormat("###");
         return Double.parseDouble(decimalFormat.format(foot * 30.48));
     }
 
@@ -96,32 +59,17 @@ public class MathUtility
         return Double.parseDouble(decimalFormat.format(stone * 6.35));
     }
 
-    //How can I do this hear so that I can return the value twice????
-    String[] BeforeAfterDecimalPoint(double footNotSplit)
+    String[] BeforeAfterDecimalPoint(double valueToSplit)
     {
-        String foot = String.valueOf(footNotSplit);
-        System.out.println("Value of foot before split: " + foot);
+        System.out.println("Value of unit before split: " + valueToSplit);
 
-        String splitString[] = foot.split("\\.");
-        String ft = splitString[0];
-        String inch = splitString[1];
+        String measurementString[] = String.valueOf(valueToSplit).split("\\.");
+        String valueBeforeDecimalPoint = measurementString[0];
+        String valueAfterDecimalPoint = measurementString[1];
 
-        System.out.println("Foot: " + ft + " Inch: " + inch);
+        System.out.println("Value before Point: " + valueBeforeDecimalPoint + "\n" +
+                            "Value after Point: " + valueAfterDecimalPoint);
 
-        return new String[] {ft, inch};
-    }
-
-    String[] SplitStoneAndLbs(double weightToSplit)
-    {
-        String measurementToSplit = String.valueOf(weightToSplit);
-        System.out.println("Value of weight before split: " + measurementToSplit);
-
-        String splitString[] = measurementToSplit.split("\\.");
-        String stone = splitString[0];
-        String lbs = splitString[1];
-
-        System.out.println("Stone: " + stone + " Lbs: " + lbs);
-
-        return new String[] { stone, lbs };
+        return new String[] {valueBeforeDecimalPoint, valueAfterDecimalPoint};
     }
 }
