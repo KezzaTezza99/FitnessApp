@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 public class AddCaloriesActivity extends AppCompatActivity {
@@ -20,7 +19,7 @@ public class AddCaloriesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_to_multi_list);
+        setContentView(R.layout.activity_add_to_calorie_list);
 
 
         nameOfItemField = findViewById(R.id.addToListViewItemName);
@@ -45,9 +44,9 @@ public class AddCaloriesActivity extends AppCompatActivity {
 
             //Need to sort this
             Intent intent = new Intent(this, CalorieActivity.class);
-            intent.putExtra("Name", itemQuantity);
-            intent.putExtra("Surname", itemName);
-            intent.putExtra("TestStr", itemCalories);
+            intent.putExtra("Item Quantity", itemQuantity);
+            intent.putExtra("Item Name", itemName);
+            intent.putExtra("Item Calories", itemCalories);
 
             setResult(Activity.RESULT_OK, intent);
             finish();

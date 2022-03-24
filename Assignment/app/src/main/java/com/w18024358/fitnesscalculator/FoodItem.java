@@ -2,44 +2,39 @@ package com.w18024358.fitnesscalculator;
 
 public class FoodItem
 {
-    private int quantity;
-    private String item;
-    private int calories;
+    private String itemQuantity;
+    private String itemName;
+    private String itemCalories;
 
-    public FoodItem(int quantity, String item, int calories) {
-        this.quantity = quantity;
-        this.item = item;
-        this.calories = calories;
+    public FoodItem(String quantity, String item, String calories)
+    {
+        this.itemQuantity = quantity;
+        this.itemName = item;
+        this.itemCalories = calories;
     }
 
-    //Getters / Setters
-    public int getQuantity()
-    {
-        return quantity;
+    //Getter and Setter Methods
+    public String getItemQuantity() {
+        return itemQuantity;
     }
 
-    public void setQuantity(int quantity)
-    {
-        this.quantity = quantity;
+    public void setItemQuantity(String itemQuantity) {
+        this.itemQuantity = itemQuantity;
     }
 
-    public String getItem()
-    {
-        return item;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setItem(String item)
-    {
-        this.item = item;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public int getCalories()
-    {
-        return calories;
+    public String getItemCalories() {
+        return itemCalories;
     }
 
-    public void setCalories(int calories)
-    {
-        this.calories = calories;
+    public void setItemCalories(String itemCalories) {
+        this.itemCalories = itemCalories;
     }
 }

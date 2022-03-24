@@ -23,9 +23,9 @@ public class CalorieActivity extends AppCompatActivity {
     //TODO Add a class that does toasts for me?? Maybe another UTIL class? Like Advanced Programming
 
     static final int RETURNED_VALUES = 1;
-    ArrayList<PairOfInfo> foodItems;
+    ArrayList<FoodItem> foodItems;
     ListView breakfastListView;
-    CustomAdapter adapter;
+    FoodItemListAdapter adapter;
     ImageView addButton;
 
     //Values from the other activity
@@ -39,11 +39,11 @@ public class CalorieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calorie);
 
         //Hardcoding a value for testing purposes
-        foodItems= new ArrayList<PairOfInfo>();
+        foodItems= new ArrayList<FoodItem>();
 
         breakfastListView = findViewById(R.id.calorieBreakfastListView);
 
-        adapter = new CustomAdapter(this, android.R.layout.simple_list_item_2, foodItems);
+        adapter = new FoodItemListAdapter(this, android.R.layout.simple_list_item_2, foodItems);
 
         breakfastListView.setAdapter(adapter);
 
@@ -62,14 +62,14 @@ public class CalorieActivity extends AppCompatActivity {
             itemName = data.getStringExtra("Item Name");
             itemCalories = data.getStringExtra("Item Calories");
 
-            foodItems.add(new PairOfInfo(itemQuantity, itemName, itemCalories));
+            foodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
             adapter.notifyDataSetChanged();
         }
     }
 
     private void openAddCaloriesActivity()
     {
-        Intent intent = new Intent(this, AddToMultiListActivity.class);
+        Intent intent = new Intent(this, AddCaloriesActivity.class);
         startActivityForResult(intent, RETURNED_VALUES);
     }
 }
