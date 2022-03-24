@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitnessCalculator">
         <activity
+            android:name=".AddToMultiListActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddCaloriesActivity"
             android:exported="false" />
         <activity

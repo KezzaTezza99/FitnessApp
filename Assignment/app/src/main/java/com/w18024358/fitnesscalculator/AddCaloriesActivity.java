@@ -2,10 +2,13 @@ package com.w18024358.fitnesscalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class AddCaloriesActivity extends AppCompatActivity {
     //TODO Refactor
@@ -39,16 +42,24 @@ public class AddCaloriesActivity extends AppCompatActivity {
 
     private void addItemToCalorieActivity()
     {
+//        if(typeOfItem.getText().toString().length() <= 0 || nameOfItem.getText().toString().length() <= 0
+//                || quantityOfItem.getText().toString().length() <= 0 || totalCalories.getText().toString().length() <= 0)
+//        {
+//            Toast.makeText(this, "Please ensure all fields are filled out", Toast.LENGTH_LONG).show();
+//        }
+//        else {
         String itemType = typeOfItem.getText().toString();
         String itemName = nameOfItem.getText().toString();
-        String itemQuantity = quantityOfItem.getText().toString();
-        String calories = totalCalories.getText().toString();
+        int itemQuantity = Integer.parseInt(quantityOfItem.getText().toString());
+        int calories = Integer.parseInt(totalCalories.getText().toString());
 
         Intent intent = new Intent(this, CalorieActivity.class);
         intent.putExtra("Item Type", itemType);
         intent.putExtra("Item Name", itemName);
         intent.putExtra("Item Quantity", itemQuantity);
         intent.putExtra("Total Calorie", calories);
-        startActivity(intent);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+        //}
     }
 }
