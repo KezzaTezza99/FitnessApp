@@ -76,6 +76,8 @@
         app:layout_constraintVertical_bias="0.073" />
 
     <!--Breakfast Listview-->
+
+    <!--Add Icon-->
     <ListView
         android:id="@+id/calorieBreakfastListView"
         android:layout_width="323dp"
@@ -85,9 +87,8 @@
         app:layout_constraintHorizontal_bias="0.228"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.122" />
+        app:layout_constraintVertical_bias="0.133" />
 
-    <!--Add Icon-->
     <ImageView
         android:id="@+id/calorieAddIcon"
         android:layout_width="33dp"

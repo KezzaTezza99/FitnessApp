@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class CustomAdapter extends ArrayAdapter<PairOfInfo> {
@@ -18,7 +20,6 @@ public class CustomAdapter extends ArrayAdapter<PairOfInfo> {
 
     public CustomAdapter(@NonNull Context context, int resource, @NonNull ArrayList<PairOfInfo> objects)
     {
-        //Android would become custom layout
         super(context, android.R.layout.simple_list_item_2, android.R.id.text1, objects);
         info = objects;
         myContext = context;
@@ -30,13 +31,13 @@ public class CustomAdapter extends ArrayAdapter<PairOfInfo> {
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.custom_row, parent, false);
 
-        TextView fname = view.findViewById(R.id.listViewFname);
-        TextView sname = view.findViewById(R.id.listViewSname);
-        TextView test = view.findViewById(R.id.textTest);
+        TextView quantity = view.findViewById(R.id.listViewQuantityOfItem);
+        TextView theItem = view.findViewById(R.id.listViewItem);
+        TextView amountOfCalories = view.findViewById(R.id.listViewItemTotalCalories);
 
-        fname.setText(info.get(position).getFname());
-        sname.setText(info.get(position).getSname());
-        test.setText(info.get(position).getTest());
+        quantity.setText(info.get(position).getFname());
+        theItem.setText(info.get(position).getSname());
+        amountOfCalories.setText(info.get(position).getTest());
 
         return view;
     }

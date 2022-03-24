@@ -10,9 +10,9 @@ import android.widget.Toast;
 
 public class AddToMultiListActivity extends AppCompatActivity {
 
-    EditText nameField;
-    EditText surnameField;
-    EditText testField;
+    EditText nameOfItemField;
+    EditText quantityOfItemField;
+    EditText totalCaloriesOfItemField;
     Button add;
 
     @Override
@@ -20,11 +20,11 @@ public class AddToMultiListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_multi_list);
 
-        nameField = findViewById(R.id.addToListTextMulti);
-        surnameField = findViewById(R.id.addToListText2Multi);
-        testField = findViewById(R.id.addTestField);
-        add = findViewById(R.id.addButtonToListMulti);
+        nameOfItemField = findViewById(R.id.addToListViewItemName);
+        quantityOfItemField = findViewById(R.id.addTOListViewQuantityOfItem);
+        totalCaloriesOfItemField = findViewById(R.id.addToListViewTotalCalories);
 
+        add = findViewById(R.id.addButtonToListMulti);
         add.setOnClickListener(view -> addToList());
     }
 
@@ -32,14 +32,20 @@ public class AddToMultiListActivity extends AppCompatActivity {
     {
         //Could rewrite this if statement
         //Getting the text inside the field
-        if(nameField.getText().toString().length() > 0 && surnameField.getText().toString().length() > 0) {
-            String name = nameField.getText().toString();
-            String surname = surnameField.getText().toString();
-            String test = testField.getText().toString();
+        if(nameOfItemField.getText().toString().length() > 0 &&
+                quantityOfItemField.getText().toString().length() > 0 &&
+                totalCaloriesOfItemField.getText().toString().length() > 0)
+        {
+            String itemName = nameOfItemField.getText().toString();
+            String itemQuantity = quantityOfItemField.getText().toString();
+            String itemCalories = totalCaloriesOfItemField.getText().toString();
+
+            //Need to sort this
             Intent intent = new Intent(this, CalorieActivity.class);
-            intent.putExtra("Name", name);
-            intent.putExtra("Surname", surname);
-            intent.putExtra("TestStr", test);
+            intent.putExtra("Item Quantity", itemQuantity);
+            intent.putExtra("Item Name", itemName);
+            intent.putExtra("Item Calories", itemCalories);
+
             setResult(Activity.RESULT_OK, intent);
             finish();
         }

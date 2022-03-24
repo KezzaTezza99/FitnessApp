@@ -12,54 +12,49 @@ import android.widget.Toast;
 
 public class AddCaloriesActivity extends AppCompatActivity {
     //TODO Refactor
-    private EditText typeOfItem;
-    private EditText nameOfItem;
-    private EditText quantityOfItem;
-    private EditText totalCalories;
-    private Button backButton;
-    private Button addButton;
+    EditText nameOfItemField;
+    EditText quantityOfItemField;
+    EditText totalCaloriesOfItemField;
+    Button add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_calories);
+        setContentView(R.layout.activity_add_to_multi_list);
 
-        typeOfItem = findViewById(R.id.addCalorieTypeOfItem);
-        nameOfItem = findViewById(R.id.addCalorieNameOfItem);
-        quantityOfItem = findViewById(R.id.addCalorieQuantityOfItem);
-        totalCalories = findViewById(R.id.addCalorieTotalCalories);
-        backButton = findViewById(R.id.addCalorieBackButton);
-        addButton = findViewById(R.id.addCalorieAddButton);
 
-        backButton.setOnClickListener(view -> goBackToCalorieActivity());
-        addButton.setOnClickListener(view -> addItemToCalorieActivity());
+        nameOfItemField = findViewById(R.id.addToListViewItemName);
+        quantityOfItemField = findViewById(R.id.addTOListViewQuantityOfItem);
+        totalCaloriesOfItemField = findViewById(R.id.addToListViewTotalCalories);
+
+        add = findViewById(R.id.addButtonToListMulti);
+        add.setOnClickListener(view -> addToList());
     }
 
-    private void goBackToCalorieActivity()
+    private void addToList()
     {
-        finish();
-    }
+        //Could rewrite this if statement
+        //Getting the text inside the field
+        if(nameOfItemField.getText().toString().length() > 0 &&
+                quantityOfItemField.getText().toString().length() > 0 &&
+                totalCaloriesOfItemField.getText().toString().length() > 0)
+        {
+            String itemName = nameOfItemField.getText().toString();
+            String itemQuantity = quantityOfItemField.getText().toString();
+            String itemCalories = totalCaloriesOfItemField.getText().toString();
 
-    private void addItemToCalorieActivity()
-    {
-//        if(typeOfItem.getText().toString().length() <= 0 || nameOfItem.getText().toString().length() <= 0
-//                || quantityOfItem.getText().toString().length() <= 0 || totalCalories.getText().toString().length() <= 0)
-//        {
-//            Toast.makeText(this, "Please ensure all fields are filled out", Toast.LENGTH_LONG).show();
-//        }
-//        else {
-        String itemType = typeOfItem.getText().toString();
-        String itemName = nameOfItem.getText().toString();
-        int itemQuantity = Integer.parseInt(quantityOfItem.getText().toString());
-        int calories = Integer.parseInt(totalCalories.getText().toString());
+            //Need to sort this
+            Intent intent = new Intent(this, CalorieActivity.class);
+            intent.putExtra("Name", itemQuantity);
+            intent.putExtra("Surname", itemName);
+            intent.putExtra("TestStr", itemCalories);
 
-        Intent intent = new Intent(this, CalorieActivity.class);
-        intent.putExtra("Item Type", itemType);
-        intent.putExtra("Item Name", itemName);
-        intent.putExtra("Item Quantity", itemQuantity);
-        intent.putExtra("Total Calorie", calories);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
-        //}
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
+        else
+        {
+            Toast.makeText(this, "Please ensure you have entered a name", Toast.LENGTH_LONG).show();
+        }
     }
 }

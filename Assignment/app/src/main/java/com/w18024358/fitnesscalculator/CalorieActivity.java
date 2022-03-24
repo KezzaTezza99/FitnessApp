@@ -29,9 +29,9 @@ public class CalorieActivity extends AppCompatActivity {
     ImageView addButton;
 
     //Values from the other activity
-    String fname;
-    String sname;
-    String txtTest;
+    String itemQuantity;
+    String itemName;
+    String itemCalories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +58,11 @@ public class CalorieActivity extends AppCompatActivity {
 
         if(requestCode == RETURNED_VALUES || requestCode == RESULT_OK)
         {
-            fname = data.getStringExtra("Name");
-            sname = data.getStringExtra("Surname");
-            txtTest = data.getStringExtra("TestStr");
+            itemQuantity = data.getStringExtra("Item Quantity");
+            itemName = data.getStringExtra("Item Name");
+            itemCalories = data.getStringExtra("Item Calories");
 
-            foodItems.add(new PairOfInfo(fname, sname, txtTest));
+            foodItems.add(new PairOfInfo(itemQuantity, itemName, itemCalories));
             adapter.notifyDataSetChanged();
         }
     }
