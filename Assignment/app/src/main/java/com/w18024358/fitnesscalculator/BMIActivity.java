@@ -68,7 +68,7 @@ public class BMIActivity extends AppCompatActivity {
         if(currentMetricSelected() == 1)
         {
             if(!bmiHeightFoot().getText().toString().isEmpty() && !bmiHeightInches().getText().toString().isEmpty() && !bmiWeightStone().getText().toString().isEmpty()
-            && !bmiWeightLbs().getText().toString().isEmpty())
+                    && !bmiWeightLbs().getText().toString().isEmpty())
             {
                 calculateBMIPressed();
             }

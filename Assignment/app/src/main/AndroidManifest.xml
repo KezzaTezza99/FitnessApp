@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitnessCalculator">
         <activity
-            android:name=".AddToMultiListActivity"
+            android:name=".FitnessActivity"
             android:exported="false" />
         <activity
             android:name=".AddCaloriesActivity"
@@ -23,6 +23,9 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FullFoodList"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

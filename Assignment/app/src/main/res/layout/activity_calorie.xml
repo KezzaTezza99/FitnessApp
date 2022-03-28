@@ -11,7 +11,7 @@
         android:id="@+id/calorieTotalCalorieText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Calories:"
+        android:text="Total Calories: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.047"
@@ -20,26 +20,26 @@
         app:layout_constraintVertical_bias="0.019" />
 
     <!--Calorie Total Value-->
-    <EditText
-        android:id="@+id/calorieTotalCalories"
-        android:layout_width="61dp"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:enabled="false"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.343"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01" />
 
     <!--Calories Left Text-->
+
+    <TextView
+        android:id="@+id/calorieTotalCalories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="kcal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/calorieTotalCalorieText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
     <TextView
         android:id="@+id/calorieCaloriesLeftText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Calories Left:"
+        android:text="Calories Left: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.656"
@@ -48,21 +48,25 @@
         app:layout_constraintVertical_bias="0.018" />
 
     <!--Calories Left Value-->
-    <EditText
-        android:id="@+id/calorieRemainingCalories"
-        android:layout_width="90dp"
-        android:layout_height="25dp"
-        android:ems="10"
-        android:inputType="number"
-        android:enabled="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.976"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01" />
 
     <!--Breakfast Header-->
+
+    <!--Breakfast Header Label-->
+
+    <!--Breakfast Listview-->
+
+    <TextView
+        android:id="@+id/calorieRemainingCalories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="kcal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/calorieCaloriesLeftText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
     <TextView
         android:id="@+id/calorieBreakfastHeader"
         android:layout_width="wrap_content"
@@ -70,36 +74,154 @@
         android:text="Breakfast:"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintHorizontal_bias="0.043"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.073" />
+        app:layout_constraintVertical_bias="0.057" />
 
-    <!--Breakfast Listview-->
-
-    <!--Add Icon-->
     <ListView
         android:id="@+id/calorieBreakfastListView"
-        android:layout_width="323dp"
-        android:layout_height="197dp"
+        android:layout_width="391dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.228"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.133" />
+        app:layout_constraintTop_toBottomOf="@+id/calorieBreakfastHeader"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/calorieAddIcon"
+        android:id="@+id/calorieBreakfastAddIcon"
         android:layout_width="33dp"
         android:layout_height="37dp"
         android:src="@drawable/add_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/calorieBreakfastListView"
+        app:layout_constraintEnd_toEndOf="@+id/calorieBreakfastListView"
+        app:layout_constraintStart_toStartOf="@+id/calorieBreakfastListView"
+        app:layout_constraintTop_toTopOf="@+id/calorieBreakfastListView"
+        app:layout_constraintHorizontal_bias="0.990"
+        app:layout_constraintVertical_bias="0.990"/>
+
+    <!--Lunch Header Label-->
+
+    <!--Lunch ListView-->
+
+    <!--Add Icon for the Lunch ListView-->
+
+    <TextView
+        android:id="@+id/calorieLunchHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lunch:"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.941"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.294" />
+        app:layout_constraintTop_toBottomOf="@+id/calorieBreakfastListView"
+        app:layout_constraintVertical_bias="0.008" />
 
+    <ListView
+        android:id="@+id/calorieLunchListView"
+        android:layout_width="391dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calorieLunchHeader"
+        app:layout_constraintVertical_bias="0.0" />
 
+    <ImageView
+        android:id="@+id/calorieLunchListAddIcon"
+        android:layout_width="33dp"
+        android:layout_height="37dp"
+        android:src="@drawable/add_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/calorieLunchListView"
+        app:layout_constraintEnd_toEndOf="@+id/calorieLunchListView"
+        app:layout_constraintStart_toStartOf="@+id/calorieLunchListView"
+        app:layout_constraintTop_toTopOf="@+id/calorieLunchListView"
+        app:layout_constraintHorizontal_bias="0.990"
+        app:layout_constraintVertical_bias="0.990"/>
+
+    <!--Dinner Header-->
+
+    <!--Dinner List View-->
+    <TextView
+        android:id="@+id/calorieDinnerHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Dinner:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calorieLunchListView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ListView
+        android:id="@+id/calorieDinnerListView"
+        android:layout_width="391dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calorieDinnerHeader"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/calorieDinnerListAddIcon"
+        android:layout_width="33dp"
+        android:layout_height="37dp"
+        android:src="@drawable/add_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/calorieDinnerListView"
+        app:layout_constraintEnd_toEndOf="@+id/calorieDinnerListView"
+        app:layout_constraintStart_toStartOf="@+id/calorieDinnerListView"
+        app:layout_constraintTop_toTopOf="@+id/calorieDinnerListView"
+        app:layout_constraintHorizontal_bias="0.990"
+        app:layout_constraintVertical_bias="0.990"/>
+
+    <TextView
+        android:id="@+id/calorieSnackHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Snacks:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calorieDinnerListView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ListView
+        android:id="@+id/calorieSnackListView"
+        android:layout_width="391dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calorieSnackHeader"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/calorieSnacksListAddIcon"
+        android:layout_width="33dp"
+        android:layout_height="37dp"
+        android:src="@drawable/add_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/calorieSnackListView"
+        app:layout_constraintEnd_toEndOf="@+id/calorieSnackListView"
+        app:layout_constraintStart_toStartOf="@+id/calorieSnackListView"
+        app:layout_constraintTop_toTopOf="@+id/calorieSnackListView"
+        app:layout_constraintHorizontal_bias="0.990"
+        app:layout_constraintVertical_bias="0.990"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

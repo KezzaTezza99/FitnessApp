@@ -14,7 +14,7 @@ public class FoodItemListAdapter extends ArrayAdapter<FoodItem>
     ArrayList<FoodItem> foodItems;
     Context myContext;
 
-    public FoodItemListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<FoodItem> objects)
+    public FoodItemListAdapter(@NonNull Context context, @NonNull ArrayList<FoodItem> objects)
     {
         super(context, android.R.layout.simple_list_item_2, android.R.id.text1, objects);
         foodItems = objects;
@@ -39,56 +39,3 @@ public class FoodItemListAdapter extends ArrayAdapter<FoodItem>
         return view;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        //TODO Get these values dynamically
-//        //Getting the Food Item Information
-//        int quantityOfItem = getItem(position).getQuantity();
-//        String nameOfItem = getItem(position).getItem();
-//        int calorieOfItem = getItem(position).getCalories();
-//
-//        //Creating a FoodItem Object with this information
-//        FoodItem foodItem = new FoodItem(quantityOfItem, nameOfItem, calorieOfItem);
-//
-//        LayoutInflater inflater = LayoutInflater.from(context);
-//        convertView = inflater.inflate(resource, parent, false);
-//
-//        //Declaring the fields inside the ListView
-//        EditText quantity = convertView.findViewById(R.id.calorieLayoutQuantityOfItem);
-//        EditText name = convertView.findViewById(R.id.calorieLayoutItem);
-//        EditText calorie = convertView.findViewById(R.id.calorieLayoutCalorie);
-//
-//        //Setting the values
-//        quantity.setText(quantityOfItem);
-//        name.setText(nameOfItem);
-//        calorie.setText(calorieOfItem);
-//
-//        return convertView;

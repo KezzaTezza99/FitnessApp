@@ -14,7 +14,11 @@ public class AddCaloriesActivity extends AppCompatActivity {
     EditText nameOfItemField;
     EditText quantityOfItemField;
     EditText totalCaloriesOfItemField;
-    Button add;
+
+    Button backButton;
+    Button addButton;
+
+    String selectedList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,34 +30,48 @@ public class AddCaloriesActivity extends AppCompatActivity {
         quantityOfItemField = findViewById(R.id.addTOListViewQuantityOfItem);
         totalCaloriesOfItemField = findViewById(R.id.addToListViewTotalCalories);
 
-        add = findViewById(R.id.addButtonToListMulti);
-        add.setOnClickListener(view -> addToList());
+        backButton = findViewById(R.id.addToListViewBackButton);
+        addButton = findViewById(R.id.addToListViewAddButton);
+
+        backButton.setOnClickListener(view -> returnToCalorieActivity());
+        addButton.setOnClickListener(view -> addToList());
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            selectedList = extras.getString("Current List");
+        }
+    }
+
+    private void returnToCalorieActivity()
+    {
+        //TODO Fix this as if I go back and have items in the List it actually wipes them
+        //finish() and finishActivity() don't work
+        Intent intent = new Intent(this, CalorieActivity.class);
+        startActivity(intent);
     }
 
     private void addToList()
     {
-        //Could rewrite this if statement
-        //Getting the text inside the field
-        if(nameOfItemField.getText().toString().length() > 0 &&
-                quantityOfItemField.getText().toString().length() > 0 &&
-                totalCaloriesOfItemField.getText().toString().length() > 0)
+        if(nameOfItemField.getText().toString().length() == 0 ||
+                quantityOfItemField.getText().toString().length() == 0 ||
+                totalCaloriesOfItemField.getText().toString().length() == 0)
+        {
+            Toast.makeText(this, "Please ensure you have entered valid values", Toast.LENGTH_SHORT).show();
+        }
+        else
         {
             String itemName = nameOfItemField.getText().toString();
             String itemQuantity = quantityOfItemField.getText().toString();
             String itemCalories = totalCaloriesOfItemField.getText().toString();
 
-            //Need to sort this
             Intent intent = new Intent(this, CalorieActivity.class);
             intent.putExtra("Item Quantity", itemQuantity);
             intent.putExtra("Item Name", itemName);
             intent.putExtra("Item Calories", itemCalories);
+            intent.putExtra("Current List", selectedList);
 
             setResult(Activity.RESULT_OK, intent);
             finish();
-        }
-        else
-        {
-            Toast.makeText(this, "Please ensure you have entered a name", Toast.LENGTH_LONG).show();
         }
     }
 }

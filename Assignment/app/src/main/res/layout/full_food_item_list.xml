@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FullFoodList">
+
+    <!--Current List Header Label-->
+    <TextView
+        android:id="@+id/fullItemListHeaderLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <!--The full list-->
+    <ListView
+        android:id="@+id/fullItemList"
+        android:layout_width="380dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fullItemListHeaderLabel"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <!--Add Icon-->
+    <ImageView
+        android:id="@+id/fullItemListAddIcon"
+        android:layout_width="33dp"
+        android:layout_height="37dp"
+        android:src="@drawable/add_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/fullItemList"
+        app:layout_constraintEnd_toEndOf="@+id/fullItemList"
+        app:layout_constraintStart_toStartOf="@+id/fullItemList"
+        app:layout_constraintTop_toTopOf="@+id/fullItemList"
+        app:layout_constraintHorizontal_bias="0.990"
+        app:layout_constraintVertical_bias="0.998"/>
+
+    <!--Done Button-->
+    <Button
+        android:id="@+id/fullItemListDoneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fullItemList"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <!--Edit Button-->
+    <Button
+        android:id="@+id/fullItemListEditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="Edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fullItemListRemoveButton"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toEndOf="@+id/fullItemListDoneButton"
+        app:layout_constraintTop_toBottomOf="@+id/fullItemList"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/fullItemListRemoveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.91"
+        app:layout_constraintStart_toEndOf="@+id/fullItemListDoneButton"
+        app:layout_constraintTop_toBottomOf="@+id/fullItemList"
+        app:layout_constraintVertical_bias="0.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

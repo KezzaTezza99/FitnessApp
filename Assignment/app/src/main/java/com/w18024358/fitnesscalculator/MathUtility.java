@@ -68,7 +68,7 @@ public class MathUtility
         String valueAfterDecimalPoint = measurementString[1];
 
         System.out.println("Value before Point: " + valueBeforeDecimalPoint + "\n" +
-                            "Value after Point: " + valueAfterDecimalPoint);
+                "Value after Point: " + valueAfterDecimalPoint);
 
         return new String[] {valueBeforeDecimalPoint, valueAfterDecimalPoint};
     }
