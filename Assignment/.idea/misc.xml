@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_add_to_calorie_list.xml" value="0.30117753623188404" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/custom_calorie_layout_view.xml" value="0.30117753623188404" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/custom_calorie_list_view.xml" value="0.22871376811594202" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/full_food_item_list.xml" value="0.22871376811594202" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/FitnessApp/app/src/main/res/drawable-v24/border.xml" value="0.1855" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/FitnessApp/app/src/main/res/drawable/border.xml" value="0.1855" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/FitnessApp/app/src/main/res/layout/activity_add_to_calorie_list.xml" value="0.2" />

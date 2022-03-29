@@ -51,6 +51,9 @@ public class CalorieActivity extends AppCompatActivity {
     //Calorie(s) Label(s)
     TextView totalCalories;
     int totalCaloriesOverall = 0;
+    int sum = 0;
+
+    int breakfastSum, lunchSum, dinnerSum, snackSum = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,7 @@ public class CalorieActivity extends AppCompatActivity {
         snacksAddButton.setOnClickListener(view -> openAddCaloriesActivity("Snacks"));
 
         totalCalories = findViewById(R.id.calorieTotalCalories);
+
     }
 
     @Override
@@ -124,7 +128,7 @@ public class CalorieActivity extends AppCompatActivity {
 
                 System.out.println("Current Selected List: " + listToAddTo);
 
-                addToCalorieTotal(breakfastFoodItems);
+                addToCalorieTotal(breakfastFoodItems, "breakfast");
             }
             else if(listToAddTo.equals("Lunch"))
             {
@@ -142,7 +146,7 @@ public class CalorieActivity extends AppCompatActivity {
 
                 System.out.println("Current Selected List: " + listToAddTo);
 
-                addToCalorieTotal(lunchFoodItems);
+                addToCalorieTotal(lunchFoodItems, "lunch");
             }
             else if(listToAddTo.equals("Dinner"))
             {
@@ -160,6 +164,7 @@ public class CalorieActivity extends AppCompatActivity {
 
                 System.out.println("Current Selected List: " + listToAddTo);
 
+                addToCalorieTotal(dinnerFoodItems, "dinner");
             }
             else if(listToAddTo.equals("Snacks"))
             {
@@ -176,6 +181,8 @@ public class CalorieActivity extends AppCompatActivity {
                 });
 
                 System.out.println("Current Selected List: " + listToAddTo);
+
+                addToCalorieTotal(snacksFoodItems, "snacks");
             }
             else
             {
@@ -183,6 +190,7 @@ public class CalorieActivity extends AppCompatActivity {
                 //Something went wrong
                 System.out.println("Something went wrong when getting the list to add too - List value:  " + listToAddTo);
             }
+            setCalorieTotal();
         }
     }
 
@@ -228,13 +236,44 @@ public class CalorieActivity extends AppCompatActivity {
         startActivityForResult(intent, RETURNED_VALUES);
     }
 
-    private void addToCalorieTotal(ArrayList<FoodItem> items)
+    private int addToCalorieTotal(ArrayList<FoodItem> items, String type)
     {
-        for(int i = 0; i < items.size(); i++)
-        {
-            totalCaloriesOverall = totalCaloriesOverall + Integer.parseInt(items.get(i).getItemCalories());
-        }
+        int tempSum = 0;
 
+        switch(type)
+        {
+            case "breakfast":
+            for (int i = 0; i < items.size(); i++) {
+                tempSum += Integer.parseInt(items.get(i).getItemCalories());
+            }
+            return breakfastSum = tempSum;
+
+            case "lunch":
+            for (int i = 0; i < items.size(); i++) {
+                tempSum += Integer.parseInt(items.get(i).getItemCalories());
+            }
+            return lunchSum = tempSum;
+
+            case "dinner":
+            for (int i = 0; i < items.size(); i++) {
+                tempSum += Integer.parseInt(items.get(i).getItemCalories());
+            }
+            return dinnerSum = tempSum;
+
+            case "snacks":
+                for (int i = 0; i < items.size(); i++) {
+                    tempSum += Integer.parseInt(items.get(i).getItemCalories());
+                }
+                return snackSum = tempSum;
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
+        }
+    }
+
+    private void setCalorieTotal()
+    {
+        totalCaloriesOverall = breakfastSum + lunchSum + dinnerSum + snackSum;
         totalCalories.setText(totalCaloriesOverall + "kcal");
     }
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddCaloriesActivity extends AppCompatActivity {
@@ -19,6 +20,8 @@ public class AddCaloriesActivity extends AppCompatActivity {
     Button addButton;
 
     String selectedList;
+
+    TextView header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,9 @@ public class AddCaloriesActivity extends AppCompatActivity {
         if(extras != null) {
             selectedList = extras.getString("Current List");
         }
+
+        header = findViewById(R.id.addToListViewHeaderLabel);
+        header.setText(String.format("Adding item to %s:", selectedList));
     }
 
     private void returnToCalorieActivity()
