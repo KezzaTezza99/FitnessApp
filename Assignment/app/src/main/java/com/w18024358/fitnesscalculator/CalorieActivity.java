@@ -107,15 +107,15 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         caloriesLeft = findViewById(R.id.calorieRemainingCalories);
 
         //TODO Add this back in for final build
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("Hold down on calories to set your intended target")
-//                .setPositiveButton("Okay", (dialogInterface, i) -> {});
-//        builder.show();
-//
-//        caloriesLeft.setOnLongClickListener(view -> {
-//            setTargetCalories();
-//            return false;
-//        });
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Hold down on calories to set your intended target")
+                .setPositiveButton("Okay", (dialogInterface, i) -> {});
+        builder.show();
+
+        caloriesLeft.setOnLongClickListener(view -> {
+            setTargetCalories();
+            return false;
+        });
     }
 
     @Override
@@ -282,22 +282,22 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         switch(type)
         {
             case "breakfast":
-            for (int i = 0; i < items.size(); i++) {
-                tempSum += Integer.parseInt(items.get(i).getItemCalories());
-            }
-            return breakfastSum = tempSum;
+                for (int i = 0; i < items.size(); i++) {
+                    tempSum += Integer.parseInt(items.get(i).getItemCalories());
+                }
+                return breakfastSum = tempSum;
 
             case "lunch":
-            for (int i = 0; i < items.size(); i++) {
-                tempSum += Integer.parseInt(items.get(i).getItemCalories());
-            }
-            return lunchSum = tempSum;
+                for (int i = 0; i < items.size(); i++) {
+                    tempSum += Integer.parseInt(items.get(i).getItemCalories());
+                }
+                return lunchSum = tempSum;
 
             case "dinner":
-            for (int i = 0; i < items.size(); i++) {
-                tempSum += Integer.parseInt(items.get(i).getItemCalories());
-            }
-            return dinnerSum = tempSum;
+                for (int i = 0; i < items.size(); i++) {
+                    tempSum += Integer.parseInt(items.get(i).getItemCalories());
+                }
+                return dinnerSum = tempSum;
 
             case "snacks":
                 for (int i = 0; i < items.size(); i++) {
