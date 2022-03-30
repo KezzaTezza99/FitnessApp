@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private Button CalorieButton;
+    private Button FitnessButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +19,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         CalorieButton = findViewById(R.id.Calorie);
+        FitnessButton = findViewById(R.id.Fitness);
 
         SignIn().setOnClickListener(view -> checkUserDetails());
         LogIn().setOnClickListener(view -> openLoginActivity());
 
         CalorieButton.setOnClickListener(view -> openCalorieActivity());
+        FitnessButton.setOnClickListener(view -> openFitnessActivity());
     }
 
     private void checkUserDetails()
@@ -87,9 +90,16 @@ public class MainActivity extends AppCompatActivity {
         return findViewById(R.id.mainLoginButton);
     }
 
+    //TEMP
     private void openCalorieActivity()
     {
         Intent intent = new Intent(this, CalorieActivity.class);
+        startActivity(intent);
+    }
+
+    private void openFitnessActivity()
+    {
+        Intent intent = new Intent(this, FitnessActivity.class);
         startActivity(intent);
     }
 }

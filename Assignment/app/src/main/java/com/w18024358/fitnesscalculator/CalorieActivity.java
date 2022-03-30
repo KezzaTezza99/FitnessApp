@@ -1,10 +1,13 @@
 package com.w18024358.fitnesscalculator;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,7 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CalorieActivity extends AppCompatActivity {
+public class CalorieActivity extends AppCompatActivity implements TargetCalorieDialog.CalorieDialogListener {
     //TODO REFACTOR THIS CLASS
     //TODO Add a class that does toasts for me?? Maybe another UTIL class? Like Advanced Programming
     //TODO make sure all of the boxes and headers are the same size and in the same positions
@@ -51,9 +54,12 @@ public class CalorieActivity extends AppCompatActivity {
     //Calorie(s) Label(s)
     TextView totalCalories;
     int totalCaloriesOverall = 0;
-    int sum = 0;
 
     int breakfastSum, lunchSum, dinnerSum, snackSum = 0;
+
+    //--- TEMP SOLUTION?
+    TextView caloriesLeft;
+    int targetCalories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +104,18 @@ public class CalorieActivity extends AppCompatActivity {
         snacksAddButton.setOnClickListener(view -> openAddCaloriesActivity("Snacks"));
 
         totalCalories = findViewById(R.id.calorieTotalCalories);
+        caloriesLeft = findViewById(R.id.calorieRemainingCalories);
 
+        //TODO Add this back in for final build
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("Hold down on calories to set your intended target")
+//                .setPositiveButton("Okay", (dialogInterface, i) -> {});
+//        builder.show();
+//
+//        caloriesLeft.setOnLongClickListener(view -> {
+//            setTargetCalories();
+//            return false;
+//        });
     }
 
     @Override
@@ -191,11 +208,33 @@ public class CalorieActivity extends AppCompatActivity {
                 System.out.println("Something went wrong when getting the list to add too - List value:  " + listToAddTo);
             }
             setCalorieTotal();
+            recalculateRemainingCalories();
         }
+    }
+
+    @Override
+    public void applyUsersCalorieTarget(String target) {
+        caloriesLeft.setText(target + "kcal");
+        targetCalories = Integer.parseInt(target);
+    }
+
+    //User can set what their daily calorie goals are
+    private void setTargetCalories()
+    {
+        //Need to open something that allows the user to enter a value
+        TargetCalorieDialog calorieDialog = new TargetCalorieDialog();
+        calorieDialog.show(getSupportFragmentManager(), "Calorie Dialog");
     }
 
     private void openAddCaloriesActivity(String currentlySelectedListView)
     {
+        //User hasn't entered a target yet so don't allow them to enter anything into the list
+        if(caloriesLeft.getText().toString().equals("target kcal"))
+        {
+            Toast.makeText(this, "Please enter a calorie target", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         System.out.println("Calorie Activity _variable: " + currentlySelectedListView);
         Intent intent = new Intent(this, AddCaloriesActivity.class);
         //Need to tell the intent which list to the user is adding too
@@ -275,6 +314,15 @@ public class CalorieActivity extends AppCompatActivity {
     {
         totalCaloriesOverall = breakfastSum + lunchSum + dinnerSum + snackSum;
         totalCalories.setText(totalCaloriesOverall + "kcal");
+    }
+
+    private void recalculateRemainingCalories()
+    {
+        //As the string will include after the number it causes crashes. Need to only get the number
+        String caloriesEaten[] = String.valueOf(totalCalories.getText().toString()).split("k");
+
+        int caloriesRemaining = targetCalories - Integer.parseInt(caloriesEaten[0]);
+        caloriesLeft.setText(caloriesRemaining + "kcal");
     }
 }
 
