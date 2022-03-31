@@ -13,8 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
-public class FullFoodList extends AppCompatActivity {
-
+public class FullFoodList extends AppCompatActivity implements EditItemCalorieDialog.EditCalorieDialogListener {
     //TODO Refactor
     TextView itemListHeader;
     ImageView addButton;
@@ -29,6 +28,11 @@ public class FullFoodList extends AppCompatActivity {
 
     ListView list;
     FoodItemListAdapter adapter;
+
+    int position;
+
+    //Flags
+    Boolean onClickPressed,onLongClickPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +50,11 @@ public class FullFoodList extends AppCompatActivity {
         stringItemList = new ArrayList<String>();
         theList = new ArrayList<FoodItem>();
 
+        onClickPressed = false;
+        onLongClickPressed = false;
+
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if (extras != null) {
             selectedList = extras.getString("Current List Name");
             stringItemList = extras.getStringArrayList("Item List");
             listSize = extras.getInt("Item List Size");
@@ -58,8 +65,7 @@ public class FullFoodList extends AppCompatActivity {
 
         int count = 0;
 
-        for(int i = 0; i < listSize; i++)
-        {
+        for (int i = 0; i < listSize; i++) {
             theList.add(new FoodItem(stringItemList.get(count),
                     stringItemList.get(count + 1),
                     stringItemList.get(count + 2)));
@@ -77,7 +83,8 @@ public class FullFoodList extends AppCompatActivity {
 
             DialogInterface.OnClickListener dcl = (dialogInterface, j) -> {
                 if (j == DialogInterface.BUTTON_POSITIVE) {
-                    Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
+                    position = i;
+                    openDialog();
                 }
             };
             builder.setMessage(msg)
@@ -85,6 +92,33 @@ public class FullFoodList extends AppCompatActivity {
                     .setNegativeButton("No", dcl);
             builder.show();
         });
+
+        list.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            //Delete Item
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            String message = "Do you want to delete " + theList.get(i).getItemName();
+
+            DialogInterface.OnClickListener dcl = ((dialogInterface, j) -> {
+                if (j == DialogInterface.BUTTON_POSITIVE) {
+                    theList.remove(i);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+            builder.setMessage(message)
+                    .setPositiveButton("Yes", dcl)
+                    .setNegativeButton("No", dcl);
+            builder.show();
+            return true;
+        });
+    }
+
+    @Override
+    public void applyNewCalorieItem(String itemName, int itemQuantity, int totalCalories) {
+        theList.get(position).setItemName(itemName);
+        theList.get(position).setItemQuantity(String.valueOf(itemQuantity));
+        theList.get(position).setItemCalories(String.valueOf(totalCalories));
+        adapter.notifyDataSetChanged();
     }
 
     private void openAddToCalorieList()
@@ -98,5 +132,12 @@ public class FullFoodList extends AppCompatActivity {
         finishActivity(Activity.RESULT_CANCELED);
         setResult(RESULT_CANCELED, getIntent());
         finish();
+    }
+
+    private void openDialog()
+    {
+        //Custom Dialog to edit the currently selected item
+        EditItemCalorieDialog editItemCalorieDialog = new EditItemCalorieDialog();
+        editItemCalorieDialog.show(getSupportFragmentManager(), "Edit Calorie Dialog");
     }
 }

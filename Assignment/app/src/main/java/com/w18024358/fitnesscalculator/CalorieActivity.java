@@ -107,10 +107,10 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         caloriesLeft = findViewById(R.id.calorieRemainingCalories);
 
         //TODO Add this back in for final build
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Hold down on calories to set your intended target")
-                .setPositiveButton("Okay", (dialogInterface, i) -> {});
-        builder.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("Hold down on calories to set your intended target")
+//                .setPositiveButton("Okay", (dialogInterface, i) -> {});
+//        builder.show();
 
         caloriesLeft.setOnLongClickListener(view -> {
             setTargetCalories();
@@ -325,41 +325,3 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         caloriesLeft.setText(caloriesRemaining + "kcal");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        //Onclick event for clicking on element(s) inside the ListView
-//        breakfastListView.setOnItemClickListener((adapterView, view, i, l) -> {
-//            Toast.makeText(CalorieActivity.this, "Clicked Item: " + i + " " + arrayList.get(i), Toast.LENGTH_SHORT).show();
-//            Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
-//        });
-//
-////        //Onclick for entering
-////        enter.setOnClickListener(view -> {
-////            String text = inputText.getText().toString();
-////            if(text == null || text.length() == 0)
-////            {
-////                Toast.makeText(this, "Enter an item", Toast.LENGTH_LONG).show();
-////            }
-////            else
-////            {
-////                addItem(text);
-////                inputText.setText("");
-////                Toast.makeText(this, "Added: " + text, Toast.LENGTH_SHORT).show();
-////            }
-////        });
