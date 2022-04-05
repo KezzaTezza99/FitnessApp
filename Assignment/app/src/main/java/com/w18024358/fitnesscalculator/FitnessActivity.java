@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class FitnessActivity extends AppCompatActivity {
-
     TextView currentDay;
 
     @Override
@@ -26,5 +25,15 @@ public class FitnessActivity extends AppCompatActivity {
         Date date = calendar.getTime();
         String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime());
         currentDay.setText(today);
+
+        //TODO Maybe do a long click
+        currentDay.setOnClickListener(view -> openCalendar());
+    }
+
+    private void openCalendar()
+    {
+        CalendarDialog calendarDialog = new CalendarDialog();
+        //TODO look what this actually does
+        calendarDialog.show(getSupportFragmentManager(), "Calendar Dialog");
     }
 }
