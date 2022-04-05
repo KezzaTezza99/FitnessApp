@@ -3,18 +3,28 @@ package com.w18024358.fitnesscalculator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+//TODO From Nick ----> Make code bulletproof, make the app as user-friendly as possible (i.e., already provide keyboards to type etc), add extra functionality that is unique to course
 public class MainActivity extends AppCompatActivity {
+
+    //Temp Code
     private Button CalorieButton;
     private Button FitnessButton;
 
+    //Messing with SharedPreferences
+    public static final String SHARED_PREFERENCES = "sharedPrefs";
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -57,9 +67,24 @@ public class MainActivity extends AppCompatActivity {
     //User has made an account
     private void openBMIActivity(EditText emailAddress)
     {
-        //Creating an intent
-        Intent intent = new Intent(this, BMIActivity.class);
-        intent.putExtra("EmailAddress", emailAddress.getText().toString());
+//        //Creating an intent
+//        Intent intent = new Intent(this, BMIActivity.class);
+//        intent.putExtra("EmailAddress", emailAddress.getText().toString());
+//        startActivity(intent);
+
+        //SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String msg = MainEmail().getText().toString();
+        editor.putString("EmailTest", msg);
+        editor.commit();
+        Log.i("KYLE COMMITTING TO SHAREDPREFS: ", msg);
+
+        //TODO COME BACK TO THIS
+        //Temp shit but will become final
+        Intent intent = new Intent(this, FirstUseLoginActivity.class);
+        intent.putExtra("Username", MainEmail().getText().toString());
         startActivity(intent);
     }
 

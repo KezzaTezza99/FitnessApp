@@ -10,10 +10,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.nio.channels.CancelledKeyException;
 import java.util.ArrayList;
 
-public class FullFoodList extends AppCompatActivity implements EditItemCalorieDialog.EditCalorieDialogListener {
+public class FullFoodList extends AppCompatActivity implements EditItemCalorieDialog.EditCalorieDialogListener
+{
+    static final int RETURNED_VALUES = 1;
+
     //TODO Refactor
     TextView itemListHeader;
     ImageView addButton;
@@ -25,6 +31,7 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
     ArrayList<String> stringItemList;
     ArrayList<FoodItem> theList;
     int listSize;
+    int newListSize;
 
     ListView list;
     FoodItemListAdapter adapter;
@@ -33,6 +40,14 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
 
     //Flags
     Boolean onClickPressed,onLongClickPressed;
+
+    //Values from the other activity
+    String itemQuantity;
+    String itemName;
+    String itemCalories;
+
+    ArrayList<Integer> positionsOfDeletedItem;
+    int arrayPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +68,8 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
         onClickPressed = false;
         onLongClickPressed = false;
 
+        positionsOfDeletedItem = new ArrayList<Integer>();
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             selectedList = extras.getString("Current List Name");
@@ -65,6 +82,7 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
 
         int count = 0;
 
+        //Taking the string array of all the items and transforming it into a FoodItem Array
         for (int i = 0; i < listSize; i++) {
             theList.add(new FoodItem(stringItemList.get(count),
                     stringItemList.get(count + 1),
@@ -72,11 +90,13 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
             count += 3;
         }
 
+        //Getting the ListView
         list = findViewById(R.id.fullItemList);
         adapter = new FoodItemListAdapter(this, theList);
         list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+        //Adding on item click which will allow the User to Edit an item in the list
         list.setOnItemClickListener((adapterView, view, i, l) -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             String msg = "Would you like to edit item: " + theList.get(i).getItemName();
@@ -93,14 +113,20 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
             builder.show();
         });
 
+        //Adding an on long item click which will allow the User to Delete an item in the list
         list.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            //Delete Item
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             String message = "Do you want to delete " + theList.get(i).getItemName();
 
-            DialogInterface.OnClickListener dcl = ((dialogInterface, j) -> {
+            DialogInterface.OnClickListener dcl = ((dialogInterface, j) ->
+            {
+                //TODO Item deletes from FullList but crashes when returning to the CalorieActivity
                 if (j == DialogInterface.BUTTON_POSITIVE) {
+                    //Deleted the item from the new list that was passed to FullFoodList
+                    //Also need to delete the item from the main list in CalorieActivity!!!!!!!
                     theList.remove(i);
+                    positionsOfDeletedItem.add(arrayPosition, i);
+                    arrayPosition++;
                     adapter.notifyDataSetChanged();
                 }
             });
@@ -113,27 +139,76 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
         });
     }
 
+    //The user has edited an item
     @Override
-    public void applyNewCalorieItem(String itemName, int itemQuantity, int totalCalories) {
+    public void applyNewCalorieItem(String itemName, String itemQuantity, String totalCalories) {
+        //TODO Make the changes carry over to the list view (Calorie Activity)
+        //Getting the item that needs to be edited and then applying the new values
+        theList.get(position).setItemQuantity(itemQuantity);
         theList.get(position).setItemName(itemName);
-        theList.get(position).setItemQuantity(String.valueOf(itemQuantity));
-        theList.get(position).setItemCalories(String.valueOf(totalCalories));
+        theList.get(position).setItemCalories(totalCalories);
+
         adapter.notifyDataSetChanged();
+        newListSize++;
     }
 
+    //When the user returns to this activity from AddCaloriesActivity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RETURNED_VALUES || requestCode == RESULT_OK)
+        {
+            if(data == null)
+            {
+                Toast.makeText(this, "There was null data returned, please try again", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            //The user has added an item using the Add button inside the FullListView
+            itemQuantity = data.getStringExtra("Item Quantity");
+            itemName = data.getStringExtra("Item Name");
+            itemCalories = data.getStringExtra("Item Calories");
+
+            //Applied the new item to the local list, still need to tell the CalorieActivity list that there has been an item added
+            theList.add(new FoodItem(itemQuantity, itemName, itemCalories));
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    //The user wants to add to the list
     private void openAddToCalorieList()
     {
         Intent intent = new Intent(this, AddCaloriesActivity.class);
-        startActivity(intent);
+        //As the user is adding from the FullList and not CalorieActivity the activity needs to know
+        intent.putExtra("FullFoodList", Boolean.TRUE);
+        startActivityForResult(intent, RETURNED_VALUES);
     }
 
+    //Method to go back to CalorieActivity once the user has clicked done
     private void goBackToCaloriePage()
     {
-        finishActivity(Activity.RESULT_CANCELED);
-        setResult(RESULT_CANCELED, getIntent());
+        //TODO this now stops crash but list doesn't update
+        if(newListSize > listSize) {
+            finishActivity(RETURNED_VALUES);
+            setResult(RETURNED_VALUES, getIntent());
+            getIntent().putExtra("Item Quantity", itemQuantity);
+            getIntent().putExtra("Item Name", itemName);
+            getIntent().putExtra("Item Calories", itemCalories);
+            getIntent().putExtra("Current List", selectedList);
+            getIntent().putExtra("Previous List Size", listSize);
+            getIntent().putExtra("New List Size", newListSize);
+            getIntent().putExtra("Positions To Delete", positionsOfDeletedItem);
+        }
+        else
+        {
+            finishActivity(RESULT_CANCELED);
+            setResult(RESULT_CANCELED, getIntent());
+        }
         finish();
     }
 
+    //The user wants to edit an item so need to open the dialog box that will allow them to
     private void openDialog()
     {
         //Custom Dialog to edit the currently selected item

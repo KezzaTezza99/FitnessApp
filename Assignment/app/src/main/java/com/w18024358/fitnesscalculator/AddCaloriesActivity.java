@@ -23,6 +23,8 @@ public class AddCaloriesActivity extends AppCompatActivity {
 
     TextView header;
 
+    boolean addedFromFullFoodList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,18 +44,18 @@ public class AddCaloriesActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             selectedList = extras.getString("Current List");
+            addedFromFullFoodList = extras.getBoolean("FullFoodList");
         }
 
         header = findViewById(R.id.addToListViewHeaderLabel);
         header.setText(String.format("Adding item to %s:", selectedList));
     }
 
+    //User wants to return to the CalorieActivity without adding anything (back button)
     private void returnToCalorieActivity()
     {
-        //TODO Fix this as if I go back and have items in the List it actually wipes them
-        //finish() and finishActivity() don't work
-        Intent intent = new Intent(this, CalorieActivity.class);
-        startActivity(intent);
+        setResult(Activity.RESULT_CANCELED, getIntent());
+        finish();
     }
 
     private void addToList()
@@ -70,12 +72,20 @@ public class AddCaloriesActivity extends AppCompatActivity {
             String itemQuantity = quantityOfItemField.getText().toString();
             String itemCalories = totalCaloriesOfItemField.getText().toString();
 
-            Intent intent = new Intent(this, CalorieActivity.class);
+            Intent intent;
+
+            //If true then the user needs to be returned to the FullList Activity otherwise CalorieActivity
+            if(!addedFromFullFoodList) {
+                intent = new Intent(this, CalorieActivity.class);
+            }
+            else
+            {
+                intent = new Intent(this, FullFoodList.class);
+            }
             intent.putExtra("Item Quantity", itemQuantity);
             intent.putExtra("Item Name", itemName);
             intent.putExtra("Item Calories", itemCalories);
             intent.putExtra("Current List", selectedList);
-
             setResult(Activity.RESULT_OK, intent);
             finish();
         }

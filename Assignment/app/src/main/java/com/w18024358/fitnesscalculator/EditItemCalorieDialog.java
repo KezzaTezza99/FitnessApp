@@ -52,7 +52,7 @@ public class EditItemCalorieDialog extends AppCompatDialogFragment
                         int itemQuantity = Integer.parseInt(newItemQuantity.getText().toString());
                         int itemCalories = Integer.parseInt(newItemCalories.getText().toString());
 
-                        listener.applyNewCalorieItem(itemName, itemQuantity, itemCalories);
+                        listener.applyNewCalorieItem(itemName, String.valueOf(itemQuantity), String.valueOf(itemCalories));
                     }
                 });
         newItemName = view.findViewById(R.id.editCaloriesItemName);
@@ -78,6 +78,6 @@ public class EditItemCalorieDialog extends AppCompatDialogFragment
 
     public interface EditCalorieDialogListener
     {
-        void applyNewCalorieItem(String itemName, int itemQuantity, int totalCalories);
+        void applyNewCalorieItem(String itemName, String itemQuantity, String totalCalories);
     }
 }

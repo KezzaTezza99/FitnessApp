@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitnessCalculatorAssignment">
         <activity
+            android:name=".FirstUseLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".FitnessActivity"
             android:exported="false" />
         <activity
