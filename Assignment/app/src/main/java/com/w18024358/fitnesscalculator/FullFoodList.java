@@ -21,11 +21,6 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
     static final int RETURNED_VALUES = 1;
 
     //TODO Refactor
-    TextView itemListHeader;
-    ImageView addButton;
-    Button doneButton;
-    Button editButton;
-    Button removeButton;
 
     String selectedList;
     ArrayList<String> stringItemList;
@@ -54,13 +49,8 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.full_food_item_list);
 
-        addButton = findViewById(R.id.fullItemListAddIcon);
-        doneButton = findViewById(R.id.fullItemListDoneButton);
-        editButton = findViewById(R.id.fullItemListEditButton);
-        removeButton = findViewById(R.id.fullItemListRemoveButton);
-
-        addButton.setOnClickListener(view -> openAddToCalorieList());
-        doneButton.setOnClickListener(view -> goBackToCaloriePage());
+        getAddButton().setOnClickListener(view -> openAddToCalorieList());
+        getDoneButton().setOnClickListener(view -> goBackToCaloriePage());
 
         stringItemList = new ArrayList<String>();
         theList = new ArrayList<FoodItem>();
@@ -77,8 +67,7 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
             listSize = extras.getInt("Item List Size");
         }
 
-        itemListHeader = findViewById(R.id.fullItemListHeaderLabel);
-        itemListHeader.setText(selectedList + ":");
+        getItemListHeader().setText(selectedList + ":");
 
         int count = 0;
 
@@ -214,5 +203,31 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
         //Custom Dialog to edit the currently selected item
         EditItemCalorieDialog editItemCalorieDialog = new EditItemCalorieDialog();
         editItemCalorieDialog.show(getSupportFragmentManager(), "Edit Calorie Dialog");
+    }
+
+    //Helper Methods
+    private TextView getItemListHeader()
+    {
+        return findViewById(R.id.fullItemListHeaderLabel);
+    }
+
+    private ImageView getAddButton()
+    {
+        return findViewById(R.id.fullItemListAddIcon);
+    }
+
+    private Button getDoneButton()
+    {
+        return findViewById(R.id.fullItemListDoneButton);
+    }
+
+    private Button getEditButton()
+    {
+        return findViewById(R.id.fullItemListEditButton);
+    }
+
+    private Button getRemoveButton()
+    {
+        return findViewById(R.id.fullItemListRemoveButton);
     }
 }

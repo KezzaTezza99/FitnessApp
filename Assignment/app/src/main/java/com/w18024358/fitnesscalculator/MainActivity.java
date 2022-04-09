@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 //TODO From Nick ----> Make code bulletproof, make the app as user-friendly as possible (i.e., already provide keyboards to type etc), add extra functionality that is unique to course
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     //Temp Code
     private Button CalorieButton;
     private Button FitnessButton;
+    private Switch testSwitch;
 
     //Messing with SharedPreferences
     public static final String SHARED_PREFERENCES = "sharedPrefs";
@@ -36,6 +38,14 @@ public class MainActivity extends AppCompatActivity {
 
         CalorieButton.setOnClickListener(view -> openCalorieActivity());
         FitnessButton.setOnClickListener(view -> openFitnessActivity());
+
+        testSwitch = findViewById(R.id.test_switch);
+        testSwitch.setChecked(Boolean.TRUE);
+        
+        if(testSwitch.isChecked())
+        {
+            Toast.makeText(this, "Checked", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void checkUserDetails()
@@ -72,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra("EmailAddress", emailAddress.getText().toString());
 //        startActivity(intent);
 
+        //TODO Refactor
         //SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -79,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         String msg = MainEmail().getText().toString();
         editor.putString("EmailTest", msg);
         editor.commit();
-        Log.i("KYLE COMMITTING TO SHAREDPREFS: ", msg);
+        Log.i("KYLE COMMITTING TO SHAREDPREFERENCES: ", msg);
 
         //TODO COME BACK TO THIS
         //Temp shit but will become final

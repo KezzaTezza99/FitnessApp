@@ -26,8 +26,10 @@ public class FitnessActivity extends AppCompatActivity {
         String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime());
         currentDay.setText(today);
 
-        //TODO Maybe do a long click
-        currentDay.setOnClickListener(view -> openCalendar());
+        currentDay.setOnLongClickListener(view -> {
+            openCalendar();
+            return true;
+        });
     }
 
     private void openCalendar()

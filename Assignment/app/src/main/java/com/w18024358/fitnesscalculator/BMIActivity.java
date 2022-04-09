@@ -1,8 +1,8 @@
 package com.w18024358.fitnesscalculator;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +13,8 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 import java.util.Locale;
 
-public class BMIActivity extends AppCompatActivity {
+public class BMIActivity extends AppCompatActivity
+{
     //TODO change the Imperial fields to actually use one value and then split that value to two
     //Every value before the decimal place (to the left) will be the first edittext field and everything to the right will be the second
     //TODO ensure that once changing metrics actually clears the field.
@@ -21,20 +22,36 @@ public class BMIActivity extends AppCompatActivity {
     //and then clears the fields and changes back then the other metric actually still appears when it should now be blank
     //TODO the app crashes if you change metric and have no foot inputted and only have an inch
     //TODO If I clear the fields I can no longer calculate both weight and height if switching metrics only one at a time
+    //TODO the values still need restricting i.e., inches should not go over 12 before going to a Ft
+    //TODO If the SharedPreferences had data in it then should automatically display it
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bmi);
+
+        //Checking to see if the user entered any data previously if so displaying the information
+        if(getIntent().getBooleanExtra("DataSaved", Boolean.TRUE))
+        {
+            Log.i("Data Loaded: ", "True");
+            checkUserData();
+        }
+        else
+        {
+            Log.i("Data Loaded: ", "False");
+
+            //Make this a method as repeating code
+            //Hiding the Imperial Measurements by default
+            bmiHeightFoot().setVisibility(View.GONE);
+            bmiHeightInches().setVisibility(View.GONE);
+            bmiWeightStone().setVisibility(View.GONE);
+            bmiWeightLbs().setVisibility(View.GONE);
+        }
 
         //Hiding BMI result fields until the user presses the calculate button
         bmiText().setVisibility(View.GONE);
         bmiField().setVisibility(View.GONE);
-
-        //Hiding the Imperial Measurements by default
-        bmiHeightFoot().setVisibility(View.GONE);
-        bmiHeightInches().setVisibility(View.GONE);
-        bmiWeightStone().setVisibility(View.GONE);
-        bmiWeightLbs().setVisibility(View.GONE);
 
         //Getting the Toggle and setting an onclick listener
         bmiMeasurementToggle().setOnClickListener(view -> changeMetrics());
@@ -42,11 +59,49 @@ public class BMIActivity extends AppCompatActivity {
         bmiCalculateButton().setOnClickListener(view -> checkFieldsNotEmpty());
     }
 
-    //Is this bad?
-    private MathUtility Util()
+    private void checkUserData()
     {
-        return new MathUtility();
+        boolean metric = getIntent().getBooleanExtra("Metric", Boolean.FALSE);
+        boolean imperial = getIntent().getBooleanExtra("Imperial", Boolean.FALSE);
+
+        //The user has entered metric measurements
+        if(getIntent().getBooleanExtra("Metric", Boolean.TRUE) == metric)
+        {
+            //Hiding imperial fields first
+            bmiHeightFoot().setVisibility(View.GONE);
+            bmiHeightInches().setVisibility(View.GONE);
+            bmiWeightStone().setVisibility(View.GONE);
+            bmiWeightLbs().setVisibility(View.GONE);
+
+            //Now putting the data entered into the fields
+            bmiUserHeight().setText(getIntent().getStringExtra("HeightCM"));
+            bmiUserWeight().setText((getIntent().getStringExtra("WeightKG")));
+        }
+        //User has entered imperial measurements
+        else if(getIntent().getBooleanExtra("Imperial", Boolean.TRUE) == imperial)
+        {
+            //Hiding metric fields and showing the imperial --- TODO Make these methods as well
+            bmiUserHeight().setVisibility(View.GONE);
+            bmiUserWeight().setVisibility(View.GONE);
+
+            bmiHeightFoot().setVisibility(View.VISIBLE);
+            bmiHeightInches().setVisibility(View.VISIBLE);
+            bmiWeightStone().setVisibility(View.VISIBLE);
+            bmiWeightLbs().setVisibility(View.VISIBLE);
+
+            //Setting the fields
+            bmiHeightFoot().setText(getIntent().getStringExtra("HeightFT"));
+            bmiHeightInches().setText(getIntent().getStringExtra("HeightInch"));
+            bmiWeightStone().setText(getIntent().getStringExtra("WeightST"));
+            bmiWeightLbs().setText(getIntent().getStringExtra("WeightLBS"));
+
+            bmiMeasurementToggle().setText("Imperial");
+            bmiMeasurementToggle().setChecked(true);
+        }
     }
+
+    //Is this bad?
+    private MathUtility Util() { return new MathUtility(); }
 
     //Checking the fields are not empty before calling calculateBMI() ensures that the app doesn't crash if a field is empty
     private void checkFieldsNotEmpty()
@@ -158,118 +213,61 @@ public class BMIActivity extends AppCompatActivity {
     //Or simply do everything here and not have to use different methods
     private void convertCurrentMeasurements(int metric)
     {
-        if(metric == 0) {
+        if(metric == 0)
+        {
             //Height
-            if (!bmiUserHeight().getText().toString().isEmpty()) {
+            if (!bmiUserHeight().getText().toString().isEmpty())
+            {
                 //Converting cm to ft
-                convertHeight(0);
+                String answer[] = Util().convertHeight(0, Integer.parseInt(bmiUserHeight().getText().toString()), 0, 0);
+                bmiHeightFoot().setText(answer[0]);
+                bmiHeightInches().setText(answer[1]);
+
+                Log.i("Answer[0] CM -> Ft: ", answer[0]);
+                Log.i("Answer[1]: Cm -> Ft: ", answer[1]);
+
+                clearMetricHeightFields();
             }
             //Weight
-            if (!bmiUserWeight().getText().toString().isEmpty()) {
-                convertWeight(0);
+            if (!bmiUserWeight().getText().toString().isEmpty())
+            {
+                //KG to Stone
+                String answer[] = Util().convertWeight(0, Integer.parseInt(bmiUserWeight().getText().toString()), 0 , 0);
+                bmiWeightStone().setText(answer[0]);
+                bmiWeightLbs().setText(answer[1]);
+
+                Log.i("Answer[0] KG -> St: ", answer[0]);
+                Log.i("Answer[1]: KG -> St: ", answer[1]);
+
+                clearMetricWeightFields();
             }
         }
-        if(metric == 1) {
+        if(metric == 1)
+        {
             //Height
-            if (!bmiHeightFoot().getText().toString().isEmpty() || !bmiHeightInches().getText().toString().isEmpty()) {
-                convertHeight(1);
+            if (!bmiHeightFoot().getText().toString().isEmpty() || !bmiHeightInches().getText().toString().isEmpty())
+            {
+                //Converting FT to CM
+                String answer[] = Util().convertHeight(1, 0, Integer.parseInt(bmiHeightFoot().getText().toString()), Integer.parseInt(bmiHeightInches().getText().toString()));
+                bmiUserHeight().setText(answer[0]);
+
+                Log.i("Answer[0] Ft -> Cm: ", answer[0]);
+                Log.i("Answer[1]: Ft -> Cm: ", answer[1]);
+
+                clearImperialHeightFields();
             }
             //Weight
-            if (!bmiWeightStone().getText().toString().isEmpty() || !bmiWeightLbs().getText().toString().isEmpty()) {
-                convertWeight(1);
+            if (!bmiWeightStone().getText().toString().isEmpty() || !bmiWeightLbs().getText().toString().isEmpty())
+            {
+                //Stone to KG
+                String answer[] = Util().convertWeight(1, 0, Integer.parseInt(bmiWeightStone().getText().toString()), Integer.parseInt(bmiWeightLbs().getText().toString()));
+                bmiUserWeight().setText(answer[0]);
+
+                Log.i("Answer[0] St -> KG: ", answer[0]);
+                Log.i("Answer[1]: St -> KG: ", answer[1]);
+
+                clearImperialWeightFields();
             }
-        }
-    }
-
-    //These methods so far stop the crashes
-    private void convertHeight(int metric)
-    {
-        if(metric == 0)
-        {
-            //Getting the currently inputted cm and transferring that into inches
-            double inches = Util().CmToInch(Double.parseDouble(bmiUserHeight().getText().toString()));
-            //Now changing the inches into feet
-            double foot = Util().InchToFoot(inches);
-
-            clearMetricHeightFields();
-
-            //Storing the result in a string that will be split into feet and inches
-            String results[] = Util().BeforeAfterDecimalPoint(foot);
-            //Displaying the relative information in the correct EditText(s)
-            bmiHeightFoot().setText("" + results[0]);
-            bmiHeightInches().setText("" + results[1]);
-        }
-
-        if(metric == 1)
-        {
-            double ft;
-            //Setting this value to 0 so if the user doesn't add a measurement for the inch EditText field and then changes metrics the application would crash
-            //with out ensuring this value is set if bmiHeightInches() == null -> this way also means no necessary check
-            double inches = 0;
-
-            //Need to check the foot and the inch fields before calculating the CM
-            if(bmiHeightInches().getText().toString().length() != 0)
-            {
-                //As inches here will not be accurate, i.e lets say this returns 10 inches it should be treat as 0.10 inches and not 10
-                //as the conversion back to cm will lead to a value to high so need to multiply this value by 0.01
-                inches = Double.parseDouble(bmiHeightInches().getText().toString()) * 0.01;
-                System.out.println("Inside inches != 0, Inches: " + inches);
-            }
-
-            double foot;
-            if(!bmiHeightFoot().getText().toString().isEmpty())
-            {
-                foot = Double.parseDouble(bmiHeightFoot().getText().toString());
-            } else { foot = 0; }
-
-            clearImperialHeightFields();
-
-            DecimalFormat decimalFormat = new DecimalFormat("##.##");
-            ft = Double.parseDouble(decimalFormat.format(foot + inches));
-
-            bmiUserHeight().setText("" + Util().FootToCm(ft));
-        }
-    }
-
-    //Defiantly needs a rework and refactoring
-    private void convertWeight(int metric)
-    {
-        if(metric == 0)
-        {
-            //TODO Need to write a method here that accurately splits up KG to Stone if the stone is one decimal value before point
-            double lbs = Util().KgToLbs(Double.parseDouble(bmiUserWeight().getText().toString()));
-            double stone = Util().LbsToStone(lbs);
-
-            clearMetricWeightFields();
-
-            String results[] = Util().BeforeAfterDecimalPoint(stone);
-            bmiWeightStone().setText("" + results[0]);
-            bmiWeightLbs().setText("" + results[1]);
-        }
-
-        if(metric == 1)
-        {
-            double st;
-            double lbs = 0;
-
-            //Need to check the foot and the inch fields before calculating the CM
-            if(bmiWeightLbs().getText().toString().length() != 0)
-            {
-                lbs = Double.parseDouble(bmiWeightLbs().getText().toString()) * 0.01;
-            }
-
-            double stone;
-            if(!bmiWeightStone().getText().toString().isEmpty())
-            {
-                stone = Double.parseDouble(bmiWeightStone().getText().toString());
-            } else { stone = 0; }
-
-            clearImperialWeightFields();
-
-            DecimalFormat decimalFormat = new DecimalFormat("##.##");
-            st = Double.parseDouble(decimalFormat.format(stone + lbs));
-
-            bmiUserWeight().setText("" + Util().StoneToKg(st));
         }
     }
 
@@ -333,8 +331,14 @@ public class BMIActivity extends AppCompatActivity {
     private int currentMetricSelected()
     {
         //Returns 0 for Metric and 1 for Imperial
-        if(bmiUserHeight().getVisibility() == View.VISIBLE) { return 0; }
-        else { return 1; }
+        if(bmiUserHeight().getVisibility() == View.VISIBLE)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1;
+        }
     }
 
     //Looking to builder pattern so I can use one method to clear fields based on input??
@@ -355,26 +359,62 @@ public class BMIActivity extends AppCompatActivity {
         bmiUserAge().setText("");
     }
 
-    private void clearMetricHeightFields()
-    {
-        bmiUserHeight().setText("");
-    }
-
-    private void clearMetricWeightFields()
-    {
-        bmiUserWeight().setText("");
-
-    }
-
+    private void clearMetricHeightFields() { bmiUserHeight().setText(""); }
+    private void clearMetricWeightFields() { bmiUserWeight().setText(""); }
     private void clearImperialHeightFields()
     {
         bmiHeightFoot().setText("");
         bmiHeightInches().setText("");
     }
-
     private void clearImperialWeightFields()
     {
         bmiWeightStone().setText("");
         bmiWeightLbs().setText("");
+    }
+
+    private void loadData()
+    {
+        //TEMP
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+
+        if (sharedPreferences.getBoolean("MetricToggle", Boolean.FALSE)) {
+            bmiMeasurementToggle().setChecked(Boolean.FALSE);
+            String height = sharedPreferences.getString("HeightCm", "");
+            bmiUserHeight().setText(height);
+            String weight = sharedPreferences.getString("WeightKg", "");
+            bmiUserWeight().setText(weight);
+
+            //Need to ensure metric fields visible and imperial invisible
+            bmiUserHeight().setVisibility(View.VISIBLE);
+            bmiUserWeight().setVisibility(View.VISIBLE);
+
+            bmiHeightFoot().setVisibility(View.INVISIBLE);
+            bmiHeightInches().setVisibility(View.INVISIBLE);
+            bmiWeightStone().setVisibility(View.INVISIBLE);
+            bmiWeightLbs().setVisibility(View.INVISIBLE);
+
+            Log.i("Metric Measurements: ", height + weight);
+        } else if (sharedPreferences.getBoolean("MetricToggle", Boolean.TRUE)) {
+            //Doesn't reach here yet???? WHY
+            //Changing the text to Imperial and turning the toggle on
+            bmiMeasurementToggle().setText("Imperial");
+            bmiMeasurementToggle().setChecked(Boolean.TRUE);
+            bmiHeightFoot().setText(sharedPreferences.getString("HeightFt", ""));
+            bmiHeightInches().setText(sharedPreferences.getString("HeightInch", ""));
+            bmiWeightStone().setText(sharedPreferences.getString("WeightSt", ""));
+            bmiWeightLbs().setText(sharedPreferences.getString("WeightLbs", ""));
+
+            Log.i("Imperial Measurements: ", sharedPreferences.getString("HeightFt", "") + sharedPreferences.getString("HeightInch", ""));
+            Log.i("Imperial Measurements: ", sharedPreferences.getString("WeightSt", "") + sharedPreferences.getString("WeightLbs", ""));
+
+            //Need to ensure metric fields invisible and imperial visible
+            bmiUserHeight().setVisibility(View.INVISIBLE);
+            bmiUserWeight().setVisibility(View.INVISIBLE);
+
+            bmiHeightFoot().setVisibility(View.VISIBLE);
+            bmiHeightInches().setVisibility(View.VISIBLE);
+            bmiWeightStone().setVisibility(View.VISIBLE);
+            bmiWeightLbs().setVisibility(View.VISIBLE);
+        }
     }
 }

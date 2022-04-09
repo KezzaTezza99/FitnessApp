@@ -24,12 +24,9 @@ public class CalendarDialog extends AppCompatDialogFragment
         View view = inflater.inflate(R.layout.calendar, null);
 
         builder.setView(view)
-                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO The user would be able to do some stuff here but not to sure what yet
-                        Toast.makeText(getContext(), "To be honest not sure what to add here", Toast.LENGTH_SHORT).show();
-                    }
+                .setPositiveButton("Okay", (dialogInterface, i) -> {
+                    //TODO The user would be able to do some stuff here but not to sure what yet
+                    Toast.makeText(getContext(), "To be honest not sure what to add here", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("Cancel", null);
         return builder.create();

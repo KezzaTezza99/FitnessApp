@@ -1,5 +1,4 @@
 package com.w18024358.fitnesscalculator;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -10,45 +9,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AddCaloriesActivity extends AppCompatActivity {
+public class AddCaloriesActivity extends AppCompatActivity
+{
     //TODO Refactor
-    EditText nameOfItemField;
-    EditText quantityOfItemField;
-    EditText totalCaloriesOfItemField;
-
-    Button backButton;
-    Button addButton;
-
     String selectedList;
-
-    TextView header;
-
     boolean addedFromFullFoodList;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_calorie_list);
 
-
-        nameOfItemField = findViewById(R.id.addToListViewItemName);
-        quantityOfItemField = findViewById(R.id.addTOListViewQuantityOfItem);
-        totalCaloriesOfItemField = findViewById(R.id.addToListViewTotalCalories);
-
-        backButton = findViewById(R.id.addToListViewBackButton);
-        addButton = findViewById(R.id.addToListViewAddButton);
-
-        backButton.setOnClickListener(view -> returnToCalorieActivity());
-        addButton.setOnClickListener(view -> addToList());
+        getBackButton().setOnClickListener(view -> returnToCalorieActivity());
+        getAddButton().setOnClickListener(view -> addToList());
 
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if(extras != null)
+        {
             selectedList = extras.getString("Current List");
             addedFromFullFoodList = extras.getBoolean("FullFoodList");
         }
-
-        header = findViewById(R.id.addToListViewHeaderLabel);
-        header.setText(String.format("Adding item to %s:", selectedList));
+        getHeader().setText(String.format("Adding item to %s:", selectedList));
     }
 
     //User wants to return to the CalorieActivity without adding anything (back button)
@@ -60,22 +42,23 @@ public class AddCaloriesActivity extends AppCompatActivity {
 
     private void addToList()
     {
-        if(nameOfItemField.getText().toString().length() == 0 ||
-                quantityOfItemField.getText().toString().length() == 0 ||
-                totalCaloriesOfItemField.getText().toString().length() == 0)
+        if(getNameOfItemField().getText().toString().length() == 0 ||
+                getQuantityOfItemField().getText().toString().length() == 0 ||
+                getTotalCaloriesOfItemField().getText().toString().length() == 0)
         {
             Toast.makeText(this, "Please ensure you have entered valid values", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            String itemName = nameOfItemField.getText().toString();
-            String itemQuantity = quantityOfItemField.getText().toString();
-            String itemCalories = totalCaloriesOfItemField.getText().toString();
+            String itemName = getNameOfItemField().getText().toString();
+            String itemQuantity = getQuantityOfItemField().getText().toString();
+            String itemCalories = getTotalCaloriesOfItemField().getText().toString();
 
             Intent intent;
 
             //If true then the user needs to be returned to the FullList Activity otherwise CalorieActivity
-            if(!addedFromFullFoodList) {
+            if(!addedFromFullFoodList)
+            {
                 intent = new Intent(this, CalorieActivity.class);
             }
             else
@@ -90,4 +73,12 @@ public class AddCaloriesActivity extends AppCompatActivity {
             finish();
         }
     }
+
+    //Helper methods
+    private EditText getNameOfItemField() { return findViewById(R.id.addToListViewItemName); }
+    private EditText getQuantityOfItemField() { return findViewById(R.id.addTOListViewQuantityOfItem); }
+    private EditText getTotalCaloriesOfItemField() { return findViewById(R.id.addToListViewTotalCalories); }
+    private Button getBackButton() { return findViewById(R.id.addToListViewBackButton); }
+    private Button getAddButton() { return findViewById(R.id.addToListViewAddButton); }
+    private TextView getHeader() { return findViewById(R.id.addToListViewHeaderLabel); }
 }
