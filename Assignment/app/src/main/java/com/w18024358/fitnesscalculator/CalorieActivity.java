@@ -212,7 +212,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                          openFullItemList(listToAddTo, breakfastFoodItems);
                          return false;
                      });
-                     addToCalorieTotal(breakfastFoodItems, "breakfast");
+                     addToCalorieTotal(breakfastFoodItems,"breakfast");
                      break;
                  case "Lunch":
                      itemQuantity = data.getStringExtra("Item Quantity");
@@ -226,10 +226,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                          openFullItemList(listToAddTo, lunchFoodItems);
                          return false;
                      });
-
-                     System.out.println("Current Selected List: " + listToAddTo);
-
-                     //addToCalorieTotal(lunchFoodItems, "lunch");
+                     addToCalorieTotal(lunchFoodItems, "lunch");
                      break;
                  case "Dinner":
                      itemQuantity = data.getStringExtra("Item Quantity");
@@ -243,10 +240,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                          openFullItemList(listToAddTo, dinnerFoodItems);
                          return false;
                      });
-
-                     System.out.println("Current Selected List: " + listToAddTo);
-
-                     //addToCalorieTotal(dinnerFoodItems, "dinner");
+                     addToCalorieTotal(dinnerFoodItems, "dinner");
                      break;
                  case "Snacks":
                      itemQuantity = data.getStringExtra("Item Quantity");
@@ -260,10 +254,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                          openFullItemList(listToAddTo, snacksFoodItems);
                          return false;
                      });
-
-                     System.out.println("Current Selected List: " + listToAddTo);
-
-                     //addToCalorieTotal(snacksFoodItems, "snacks");
+                     addToCalorieTotal(snacksFoodItems, "snacks");
                      break;
                  default:
                      //TODO Add error handling?
@@ -349,6 +340,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     {
         int tempSum = 0;
 
+        //TODO refactor this to be nicer
         switch(type)
         {
             case "breakfast":
@@ -444,6 +436,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                     count += 3;
                 }
                 breakfastAdapter.notifyDataSetChanged();
+                addToCalorieTotal(breakfastFoodItems, "breakfast");
                 break;
             case "Lunch":
                 lunchFoodItems.clear();
@@ -455,6 +448,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                     count += 3;
                 }
                 lunchAdapter.notifyDataSetChanged();
+                addToCalorieTotal(lunchFoodItems, "lunch");
                 break;
             case "Dinner":
                 dinnerFoodItems.clear();
@@ -466,6 +460,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                     count += 3;
                 }
                 dinnerAdapter.notifyDataSetChanged();
+                addToCalorieTotal(dinnerFoodItems, "dinner");
                 break;
             case "Snacks":
                 snacksFoodItems.clear();
@@ -477,10 +472,12 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                     count += 3;
                 }
                 snacksAdapter.notifyDataSetChanged();
+                addToCalorieTotal(snacksFoodItems, "snacks");
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + whichList);
         }
-        //Update calories?
+        setCalorieTotal();
+        recalculateRemainingCalories();
     }
 }
