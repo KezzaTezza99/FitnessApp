@@ -38,14 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         CalorieButton.setOnClickListener(view -> openCalorieActivity());
         FitnessButton.setOnClickListener(view -> openFitnessActivity());
-
-        testSwitch = findViewById(R.id.test_switch);
-        testSwitch.setChecked(Boolean.TRUE);
-        
-        if(testSwitch.isChecked())
-        {
-            Toast.makeText(this, "Checked", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void checkUserDetails()

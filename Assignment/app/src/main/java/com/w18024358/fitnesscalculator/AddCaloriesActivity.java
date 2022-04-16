@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,7 +12,7 @@ import android.widget.Toast;
 
 public class AddCaloriesActivity extends AppCompatActivity
 {
-    //TODO Refactor
+    //Don't like this - Could come up with a better way
     String selectedList;
     boolean addedFromFullFoodList;
 
@@ -33,10 +34,12 @@ public class AddCaloriesActivity extends AppCompatActivity
         getHeader().setText(String.format("Adding item to %s:", selectedList));
     }
 
-    //User wants to return to the CalorieActivity without adding anything (back button)
+    //User wants to return to the CalorieActivity (back button)
     private void returnToCalorieActivity()
     {
-        setResult(Activity.RESULT_CANCELED, getIntent());
+        if(!addedFromFullFoodList) {
+            setResult(Activity.RESULT_CANCELED, getIntent());
+        }
         finish();
     }
 
@@ -47,31 +50,34 @@ public class AddCaloriesActivity extends AppCompatActivity
                 getTotalCaloriesOfItemField().getText().toString().length() == 0)
         {
             Toast.makeText(this, "Please ensure you have entered valid values", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String itemName = getNameOfItemField().getText().toString();
+        String itemQuantity = getQuantityOfItemField().getText().toString();
+        String itemCalories = getTotalCaloriesOfItemField().getText().toString();
+
+        Intent intent;
+
+        //If true then the user needs to be returned to the FullList Activity otherwise CalorieActivity
+        if(!addedFromFullFoodList)
+        {
+            intent = new Intent(this, CalorieActivity.class);
         }
         else
         {
-            String itemName = getNameOfItemField().getText().toString();
-            String itemQuantity = getQuantityOfItemField().getText().toString();
-            String itemCalories = getTotalCaloriesOfItemField().getText().toString();
-
-            Intent intent;
-
-            //If true then the user needs to be returned to the FullList Activity otherwise CalorieActivity
-            if(!addedFromFullFoodList)
-            {
-                intent = new Intent(this, CalorieActivity.class);
-            }
-            else
-            {
-                intent = new Intent(this, FullFoodList.class);
-            }
-            intent.putExtra("Item Quantity", itemQuantity);
-            intent.putExtra("Item Name", itemName);
-            intent.putExtra("Item Calories", itemCalories);
-            intent.putExtra("Current List", selectedList);
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+            intent = new Intent(this, FullFoodList.class);
         }
+
+        intent.putExtra("Item Quantity", itemQuantity);
+        intent.putExtra("Item Name", itemName);
+        intent.putExtra("Item Calories", itemCalories);
+        intent.putExtra("Current List", selectedList);
+        intent.putExtra("Update List", true);
+        finishActivity(Activity.RESULT_OK);
+        setResult(Activity.RESULT_OK, intent);
+
+        finish();
     }
 
     //Helper methods

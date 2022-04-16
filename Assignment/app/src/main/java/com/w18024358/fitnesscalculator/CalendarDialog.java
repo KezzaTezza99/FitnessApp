@@ -26,7 +26,7 @@ public class CalendarDialog extends AppCompatDialogFragment
         builder.setView(view)
                 .setPositiveButton("Okay", (dialogInterface, i) -> {
                     //TODO The user would be able to do some stuff here but not to sure what yet
-                    Toast.makeText(getContext(), "To be honest not sure what to add here", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Eventually this would show previous workouts etc", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("Cancel", null);
         return builder.create();

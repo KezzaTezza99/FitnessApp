@@ -1,11 +1,14 @@
 package com.w18024358.fitnesscalculator;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,11 +28,17 @@ public class BMIActivity extends AppCompatActivity
     //TODO the values still need restricting i.e., inches should not go over 12 before going to a Ft
     //TODO If the SharedPreferences had data in it then should automatically display it
 
+    //TODO fix the BMI page when you access it by logging in - if no details show nothing if details then show the weight / height
+    ImageView fitnessButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bmi);
+
+        fitnessButton = findViewById(R.id.bmiFitnessButton);
+        fitnessButton.setOnClickListener(view -> openFitness());
 
         //Checking to see if the user entered any data previously if so displaying the information
         if(getIntent().getBooleanExtra("DataSaved", Boolean.TRUE))
@@ -57,6 +66,13 @@ public class BMIActivity extends AppCompatActivity
         bmiMeasurementToggle().setOnClickListener(view -> changeMetrics());
         //Getting the Button and setting an onclick listener
         bmiCalculateButton().setOnClickListener(view -> checkFieldsNotEmpty());
+    }
+
+    //Temp
+    private void openFitness()
+    {
+        Intent intent = new Intent(this, FitnessActivity.class);
+        startActivity(intent);
     }
 
     private void checkUserData()
