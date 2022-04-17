@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/drawable/bmi_icon.xml" value="0.286" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/drawable/border.xml" value="0.286" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/drawable/calorie_icon.xml" value="0.286" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/drawable/fitness_icon.xml" value="0.286" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/drawable/nav_bar_background.xml" value="0.286" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_bmi.xml" value="0.32592592592592595" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_calorie.xml" value="0.21875" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_first_use_login.xml" value="0.264" />

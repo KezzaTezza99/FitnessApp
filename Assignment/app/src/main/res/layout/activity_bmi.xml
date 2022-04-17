@@ -222,7 +222,7 @@
     <ImageView
         android:id="@+id/bmiNavBackground"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -230,17 +230,92 @@
         app:layout_constraintVertical_bias="1"
         app:srcCompat="@drawable/nav_bar_background" />
 
+    <!--BMI Button-->
+    <ImageView
+        android:id="@+id/bmiBMIButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bmi_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/bmiNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/bmiNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/bmiNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/bmiNavBackground"
+        app:layout_constraintHorizontal_bias="0.1"/>
+
+    <!--BMI Text-->
+    <TextView
+        android:id="@+id/bmiBmiButtonLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BMI"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/bmiNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/bmiNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/bmiNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/bmiNavBackground"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintVertical_bias="0.94"/>
+
+    <!--Calorie Button-->
+    <ImageView
+        android:id="@+id/bmiCalorieButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/calorie_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/bmiNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/bmiNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/bmiNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/bmiNavBackground" />
+
+    <!--Calorie Text-->
+    <TextView
+        android:id="@+id/bmiCalorieButtonLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Caloire"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/bmiNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/bmiNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/bmiNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/bmiNavBackground"
+        app:layout_constraintVertical_bias="0.94"/>
+
+    <!--Fitness Button-->
     <ImageView
         android:id="@+id/bmiFitnessButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/fitness_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/bmiNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/bmiNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/bmiNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/bmiNavBackground"
+        app:layout_constraintHorizontal_bias="0.9"/>
+
+    <!--Fitness Text-->
+    <TextView
+        android:id="@+id/bmiFitnessButtonLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fitness"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/bmiNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/bmiNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/bmiNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/bmiNavBackground"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintVertical_bias="0.94"/>
+
+    <!--Some info about the users weight status-->
+    <TextView
+        android:id="@+id/bmiUserResultsInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BMI Results"
+        app:layout_constraintBottom_toTopOf="@+id/bmiNavBackground"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bmiBMIResult"
-        app:layout_constraintVertical_bias="0.94" />
-
-
+        app:layout_constraintVertical_bias="0.152" />
 </androidx.constraintlayout.widget.ConstraintLayout>

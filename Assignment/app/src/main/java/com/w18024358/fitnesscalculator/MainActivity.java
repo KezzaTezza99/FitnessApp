@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     //Temp Code
     private Button CalorieButton;
     private Button FitnessButton;
-    private Switch testSwitch;
 
     //Messing with SharedPreferences
     public static final String SHARED_PREFERENCES = "sharedPrefs";
@@ -38,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
         CalorieButton.setOnClickListener(view -> openCalorieActivity());
         FitnessButton.setOnClickListener(view -> openFitnessActivity());
+
+        SharedPreferences sp = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        sp.edit().clear().apply();
     }
 
     private void checkUserDetails()

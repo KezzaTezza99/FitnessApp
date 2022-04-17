@@ -3,6 +3,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +30,6 @@ public class BMIActivity extends AppCompatActivity
     //TODO If the SharedPreferences had data in it then should automatically display it
 
     //TODO fix the BMI page when you access it by logging in - if no details show nothing if details then show the weight / height
-    ImageView fitnessButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,11 +37,15 @@ public class BMIActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bmi);
 
-        fitnessButton = findViewById(R.id.bmiFitnessButton);
-        fitnessButton.setOnClickListener(view -> openFitness());
+        getResultsInfo().setVisibility(View.INVISIBLE);
+        getBmiButton().setOnClickListener(view -> openBMI());
+        getCalorieButton().setOnClickListener(view -> openCalorie());
+        getFitnessButton().setOnClickListener(view -> openFitness());
+
+        boolean data = getIntent().getBooleanExtra("DataSaved", Boolean.FALSE);
 
         //Checking to see if the user entered any data previously if so displaying the information
-        if(getIntent().getBooleanExtra("DataSaved", Boolean.TRUE))
+        if(data)
         {
             Log.i("Data Loaded: ", "True");
             checkUserData();
@@ -68,7 +72,20 @@ public class BMIActivity extends AppCompatActivity
         bmiCalculateButton().setOnClickListener(view -> checkFieldsNotEmpty());
     }
 
-    //Temp
+    //Temp - Could make one method and pass name in?
+    private void openBMI()
+    {
+        //Do I want to open BMI?
+        Intent intent = new Intent(this, BMIActivity.class);
+        startActivity(intent);
+    }
+
+    private void openCalorie()
+    {
+        Intent intent = new Intent(this, CalorieActivity.class);
+        startActivity(intent);
+    }
+
     private void openFitness()
     {
         Intent intent = new Intent(this, FitnessActivity.class);
@@ -169,6 +186,8 @@ public class BMIActivity extends AppCompatActivity
         {
             answer = calculateBMI(1);
         }
+        //Sending the result to set the info msg
+        setResultsInfo(answer);
 
         //Displaying the answer briefly as a popup
         Toast.makeText(this, "BMI: " + answer, Toast.LENGTH_LONG).show();
@@ -235,7 +254,7 @@ public class BMIActivity extends AppCompatActivity
             if (!bmiUserHeight().getText().toString().isEmpty())
             {
                 //Converting cm to ft
-                String answer[] = Util().convertHeight(0, Integer.parseInt(bmiUserHeight().getText().toString()), 0, 0);
+                String[] answer = Util().convertHeight(0, Integer.parseInt(bmiUserHeight().getText().toString()), 0, 0);
                 bmiHeightFoot().setText(answer[0]);
                 bmiHeightInches().setText(answer[1]);
 
@@ -248,7 +267,7 @@ public class BMIActivity extends AppCompatActivity
             if (!bmiUserWeight().getText().toString().isEmpty())
             {
                 //KG to Stone
-                String answer[] = Util().convertWeight(0, Integer.parseInt(bmiUserWeight().getText().toString()), 0 , 0);
+                String[] answer = Util().convertWeight(0, Integer.parseInt(bmiUserWeight().getText().toString()), 0 , 0);
                 bmiWeightStone().setText(answer[0]);
                 bmiWeightLbs().setText(answer[1]);
 
@@ -264,7 +283,7 @@ public class BMIActivity extends AppCompatActivity
             if (!bmiHeightFoot().getText().toString().isEmpty() || !bmiHeightInches().getText().toString().isEmpty())
             {
                 //Converting FT to CM
-                String answer[] = Util().convertHeight(1, 0, Integer.parseInt(bmiHeightFoot().getText().toString()), Integer.parseInt(bmiHeightInches().getText().toString()));
+                String[] answer = Util().convertHeight(1, 0, Integer.parseInt(bmiHeightFoot().getText().toString()), Integer.parseInt(bmiHeightInches().getText().toString()));
                 bmiUserHeight().setText(answer[0]);
 
                 Log.i("Answer[0] Ft -> Cm: ", answer[0]);
@@ -276,7 +295,7 @@ public class BMIActivity extends AppCompatActivity
             if (!bmiWeightStone().getText().toString().isEmpty() || !bmiWeightLbs().getText().toString().isEmpty())
             {
                 //Stone to KG
-                String answer[] = Util().convertWeight(1, 0, Integer.parseInt(bmiWeightStone().getText().toString()), Integer.parseInt(bmiWeightLbs().getText().toString()));
+                String[] answer = Util().convertWeight(1, 0, Integer.parseInt(bmiWeightStone().getText().toString()), Integer.parseInt(bmiWeightLbs().getText().toString()));
                 bmiUserWeight().setText(answer[0]);
 
                 Log.i("Answer[0] St -> KG: ", answer[0]);
@@ -327,6 +346,41 @@ public class BMIActivity extends AppCompatActivity
         }
     }
 
+    private void setResultsInfo(double usersBMI)
+    {
+        //Underweight (< 18.5)
+        if(usersBMI < 18.5)
+        {
+            getResultsInfo().setText("Underweight");
+        }
+        //Normal weight (18.5 - 24.9)
+        else if(usersBMI >= 18.5 && usersBMI <= 24.9)
+        {
+            getResultsInfo().setText("Normal Weight");
+        }
+        //Overweight (25.0 - 29.9)
+        else if(usersBMI >= 25.0 && usersBMI <= 29.9)
+        {
+            getResultsInfo().setText("Overweight");
+        }
+        //Obesity class 1 (30.0 - 34.9)
+        else if(usersBMI >= 30.0 && usersBMI <= 34.9)
+        {
+            getResultsInfo().setText("Obesity class 1");
+        }
+        //Obesity class 2 (35.0 - 39.9)
+        else if(usersBMI >= 35.0 && usersBMI <= 39.9)
+        {
+            getResultsInfo().setText("Obesity class 2");
+        }
+        //Obesity class 3 (> 40)
+        else
+        {
+            getResultsInfo().setText("Obesity class 3");
+        }
+        getResultsInfo().setVisibility(View.VISIBLE);
+    }
+
     //Helper Methods
     //Returning Switches / EditText etc this way allows me to stop repeating code
     private Switch bmiMeasurementToggle() { return findViewById(R.id.bmiMetricToggle); }
@@ -343,6 +397,10 @@ public class BMIActivity extends AppCompatActivity
     private EditText bmiWeightLbs() { return findViewById(R.id.bmiLbsTextField); }
     private TextView bmiText() { return findViewById(R.id.bmiBMILabel); }
     private EditText bmiField() { return findViewById(R.id.bmiBMIResult); }
+    private ImageView getBmiButton() { return findViewById(R.id.bmiBMIButton); }
+    private ImageView getCalorieButton() { return findViewById(R.id.bmiCalorieButton); }
+    private ImageView getFitnessButton() { return findViewById(R.id.bmiFitnessButton); }
+    private TextView getResultsInfo() { return findViewById(R.id.bmiUserResultsInfo); }
 
     private int currentMetricSelected()
     {

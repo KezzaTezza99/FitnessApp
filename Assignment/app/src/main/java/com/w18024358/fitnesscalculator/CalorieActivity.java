@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.ArraySet;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CalorieActivity extends AppCompatActivity implements TargetCalorieDialog.CalorieDialogListener {
     //TODO REFACTOR THIS CLASS
@@ -60,7 +63,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     TextView caloriesLeft;
     int targetCalories;
 
-    ArrayList<Integer> itemsToDelete = new ArrayList<Integer>();
     ArrayList<String> updatedList = new ArrayList<>();
     int theListSizeNew;
 
@@ -130,19 +132,16 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     //TODO make it actually make changes to the list when going back to the CalorieActivity
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         //TODO Create static codes for return(s)
         //Returning from adding calories but deciding to go back / or back from FullListView
-        if(requestCode == RESULT_CANCELED || resultCode == RESULT_CANCELED)
-        {
+        if (requestCode == RESULT_CANCELED || resultCode == RESULT_CANCELED) {
             Log.i("CalorieActivity:", "Just returning");
         }
         //Returning from FullListView and have edited an item
-        else if(requestCode == 2 || resultCode == 2)
-        {
+        else if (requestCode == 2 || resultCode == 2) {
             Log.i("CalorieActivity:", "Item in list Edited");
             assert data != null;
             updatedList = data.getStringArrayListExtra("The New Item List");
@@ -151,17 +150,14 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             updateList(currentLst);
         }
         //Returning from FullListView and have deleted an item
-        else if(requestCode == 3 || resultCode == 3)
-        {
+        else if (requestCode == 3 || resultCode == 3) {
             Log.i("CalorieActivity:", "Deleted from List");
             assert data != null;
             updatedList = data.getStringArrayListExtra("The New Item List");
             theListSizeNew = data.getIntExtra("SIZE", 0);
             String currentLst = data.getStringExtra("Current List");
             updateList(currentLst);
-        }
-        else if(requestCode == 10 || resultCode == 10)
-        {
+        } else if (requestCode == 10 || resultCode == 10) {
             Log.i("CalorieActivity:", "Added to list from FullListView");
 
             assert data != null;
@@ -171,8 +167,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             updateList(currentLst);
         }
         //Returning from adding an item to list from AddToCalories and FullListView
-        else if(requestCode == RETURNED_VALUES || requestCode == RESULT_OK)
-        {
+        else if (requestCode == RETURNED_VALUES || requestCode == RESULT_OK) {
             Log.i("CalorieActivity:", "Added to list from Calorie Activity");
             assert data != null;
             String listToAddTo = data.getStringExtra("Current List");
@@ -182,51 +177,50 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             itemName = data.getStringExtra("Item Name");
             itemCalories = data.getStringExtra("Item Calories");
 
-            switch (listToAddTo)
-             {
-                 case "Breakfast":
-                     breakfastFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
-                     breakfastAdapter.notifyDataSetChanged();
+            switch (listToAddTo) {
+                case "Breakfast":
+                    breakfastFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
+                    breakfastAdapter.notifyDataSetChanged();
 
-                     breakfastListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
-                         openFullItemList(listToAddTo, breakfastFoodItems);
-                         return false;
-                     });
-                     addToCalorieTotal(breakfastFoodItems, "breakfast");
-                     break;
-                 case "Lunch":
-                     lunchFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
-                     lunchAdapter.notifyDataSetChanged();
+                    breakfastListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                        openFullItemList(listToAddTo, breakfastFoodItems);
+                        return false;
+                    });
+                    addToCalorieTotal(breakfastFoodItems, "breakfast");
+                    break;
+                case "Lunch":
+                    lunchFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
+                    lunchAdapter.notifyDataSetChanged();
 
-                     lunchListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
-                         openFullItemList(listToAddTo, lunchFoodItems);
-                         return false;
-                     });
-                     addToCalorieTotal(lunchFoodItems, "lunch");
-                     break;
-                 case "Dinner":
-                     dinnerFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
-                     dinnerAdapter.notifyDataSetChanged();
+                    lunchListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                        openFullItemList(listToAddTo, lunchFoodItems);
+                        return false;
+                    });
+                    addToCalorieTotal(lunchFoodItems, "lunch");
+                    break;
+                case "Dinner":
+                    dinnerFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
+                    dinnerAdapter.notifyDataSetChanged();
 
-                     dinnerListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
-                         openFullItemList(listToAddTo, dinnerFoodItems);
-                         return false;
-                     });
-                     addToCalorieTotal(dinnerFoodItems, "dinner");
-                     break;
-                 case "Snacks":
-                     snacksFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
-                     snacksAdapter.notifyDataSetChanged();
+                    dinnerListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                        openFullItemList(listToAddTo, dinnerFoodItems);
+                        return false;
+                    });
+                    addToCalorieTotal(dinnerFoodItems, "dinner");
+                    break;
+                case "Snacks":
+                    snacksFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
+                    snacksAdapter.notifyDataSetChanged();
 
-                     snacksListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
-                         openFullItemList(listToAddTo, snacksFoodItems);
-                         return false;
-                     });
-                     addToCalorieTotal(snacksFoodItems, "snacks");
-                     break;
-                 default:
-                     throw new IllegalStateException("Unexpected value: " + listToAddTo);
-             }
+                    snacksListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                        openFullItemList(listToAddTo, snacksFoodItems);
+                        return false;
+                    });
+                    addToCalorieTotal(snacksFoodItems, "snacks");
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + listToAddTo);
+            }
             setCalorieTotal();
             recalculateRemainingCalories();
         }
@@ -242,18 +236,15 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     }
 
     //User can set what their daily calorie goals are
-    private void setTargetCalories()
-    {
+    private void setTargetCalories() {
         //Need to open something that allows the user to enter a value
         TargetCalorieDialog calorieDialog = new TargetCalorieDialog();
         calorieDialog.show(getSupportFragmentManager(), "Calorie Dialog");
     }
 
-    private void openAddCaloriesActivity(String currentlySelectedListView)
-    {
+    private void openAddCaloriesActivity(String currentlySelectedListView) {
         //User hasn't entered a target yet so don't allow them to enter anything into the list
-        if(caloriesLeft.getText().toString().equals("target kcal"))
-        {
+        if (caloriesLeft.getText().toString().equals("target kcal")) {
             Toast.makeText(this, "Please enter a calorie target", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -265,14 +256,12 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         startActivityForResult(intent, RETURNED_VALUES);
     }
 
-    private void openFullItemList(String selectedListName, ArrayList<FoodItem> theList)
-    {
+    private void openFullItemList(String selectedListName, ArrayList<FoodItem> theList) {
         ArrayList<String> convertedArray = new ArrayList<String>();
         int size = theList.size();
         System.out.println("Size: " + size);
 
-        for(int i = 0; i < theList.size(); i++)
-        {
+        for (int i = 0; i < theList.size(); i++) {
             convertedArray.add(theList.get(i).getItemQuantity());
             convertedArray.add(theList.get(i).getItemName());
             convertedArray.add(theList.get(i).getItemCalories());
@@ -282,8 +271,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             System.out.println("The list: " + theList.get(i).getItemCalories());
         }
 
-        for(int j = 0; j < convertedArray.size(); j++)
-        {
+        for (int j = 0; j < convertedArray.size(); j++) {
             System.out.println("Converted Array " + j + ": " + convertedArray.get(j));
         }
 
@@ -298,10 +286,8 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         startActivityForResult(intent, RETURNED_VALUES);
     }
 
-    private void addToCalorieTotal(ArrayList<FoodItem> items, String type)
-    {
-        switch(type)
-        {
+    private void addToCalorieTotal(ArrayList<FoodItem> items, String type) {
+        switch (type) {
             case "breakfast":
                 breakfastSum = addingAllItemCalories(items);
                 break;
@@ -319,15 +305,13 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         }
     }
 
-    private void setCalorieTotal()
-    {
+    private void setCalorieTotal() {
         totalCaloriesOverall = breakfastSum + lunchSum + dinnerSum + snackSum;
         totalCalories.setText(totalCaloriesOverall + "kcal");
     }
 
     //TODO make this work
-    private void recalculateRemainingCalories()
-    {
+    private void recalculateRemainingCalories() {
         //As the string will include after the number it causes crashes. Need to only get the number
         String[] caloriesEaten = totalCalories.getText().toString().split("k");
 
@@ -335,8 +319,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         caloriesLeft.setText(caloriesRemaining + "kcal");
     }
 
-    private void saveData()
-    {
+    private void saveData() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -346,30 +329,26 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     }
 
     //TODO make sharedPrefs a method and return it like in BMI keep good DRY
-    private void loadData()
-    {
+    private void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        if(sharedPreferences.getBoolean("DataSaved", Boolean.TRUE))
-        {
+        if (sharedPreferences.getBoolean("DataSaved", Boolean.TRUE)) {
             int ogCal = sharedPreferences.getInt("TargetCalories", 0);
             Log.i("Load Data:", String.valueOf(ogCal));
             caloriesLeft.setText(ogCal + "kcal");
         }
     }
 
-    private void updateList(String whichList)
-    {
+    private void updateList(String whichList) {
         Log.i("Updating", "-------------------------------------------UPDATING-------------------------------------------");
         Log.i("Updating:", whichList);
-        int count = 0;
 
-        switch(whichList)
-        {
+        switch (whichList) {
             case "Breakfast":
                 breakfastFoodItems.clear();
                 updatingList(breakfastFoodItems);
                 breakfastAdapter.notifyDataSetChanged();
                 addToCalorieTotal(breakfastFoodItems, "breakfast");
+                //saveLists(breakfastFoodItems);
                 break;
             case "Lunch":
                 lunchFoodItems.clear();
@@ -396,8 +375,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         recalculateRemainingCalories();
     }
 
-    private void updatingList(ArrayList<FoodItem> items)
-    {
+    private void updatingList(ArrayList<FoodItem> items) {
         int count = 0;
 
         for (int i = 0; i < theListSizeNew; i++) {
@@ -408,8 +386,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         }
     }
 
-    private int addingAllItemCalories(ArrayList<FoodItem> items)
-    {
+    private int addingAllItemCalories(ArrayList<FoodItem> items) {
         int tempSum = 0;
 
         for (int i = 0; i < items.size(); i++) {
@@ -418,3 +395,27 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         return tempSum;
     }
 }
+
+//TODO --- Look at saving using JSON
+//    private void saveLists(ArrayList<FoodItem> items)
+//    {
+////        Log.i("Calorie Activity: ", "------Saving Data------");
+////        //TODO make SharedPreferences a method and call that?
+////        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+////        SharedPreferences.Editor editor = sharedPreferences.edit();
+////
+////        ArraySet<String> itemSet = new ArraySet<>();
+////        for(int i = 0; i < items.size(); i++)
+////        {
+////            itemSet.add(items.get(i).getItemQuantity());
+////            itemSet.add(items.get(i).getItemName());
+////            itemSet.add(items.get(i).getItemCalories());
+////
+////            Log.i("Saved list in loop:", itemSet.toString());
+////        }
+////        Log.i("Saved List: ", String.valueOf(itemSet));
+////
+////        editor.putStringSet("Breakfast List", itemSet);
+////        editor.apply();
+////    }
+//}
