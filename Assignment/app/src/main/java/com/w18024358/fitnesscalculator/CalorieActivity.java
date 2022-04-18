@@ -66,10 +66,25 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     ArrayList<String> updatedList = new ArrayList<>();
     int theListSizeNew;
 
+    //NAV Stuff
+    ImageView bmiButton;
+    ImageView calorieButton;
+    ImageView fitnessButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calorie);
+
+        //Temp
+        bmiButton = findViewById(R.id.calorieBMIButton);
+        calorieButton = findViewById(R.id.calorieCalorieButton);
+        fitnessButton = findViewById(R.id.calorieFitnessButton);
+
+        bmiButton.setOnClickListener(view -> openBMI());
+        calorieButton.setOnClickListener(view -> openCalorie());
+        fitnessButton.setOnClickListener(view -> openFitness());
+        //end of nav
 
         //Hardcoding a value for testing purposes
         //Breakfast
@@ -394,8 +409,25 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         }
         return tempSum;
     }
-}
 
+    private void openBMI()
+    {
+        Intent intent = new Intent(this, BMIActivity.class);
+        startActivity(intent);
+    }
+
+    private void openCalorie()
+    {
+        Intent intent = new Intent(this, CalorieActivity.class);
+        startActivity(intent);
+    }
+
+    private void openFitness()
+    {
+        Intent intent = new Intent(this, FitnessActivity.class);
+        startActivity(intent);
+    }
+}
 //TODO --- Look at saving using JSON
 //    private void saveLists(ArrayList<FoodItem> items)
 //    {

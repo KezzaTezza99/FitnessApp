@@ -142,4 +142,93 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fitnessIsolationMovementListView1"
         app:layout_constraintVertical_bias="0.0" />
+
+    <!--TEMP NEED TO FIGURE OUT ACTUAL NAV AGAIN-->
+    <!--Make shift Nav Bar-->
+    <ImageView
+        android:id="@+id/fitnessNavBackground"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fitnessIsolationMovementListView2"
+        app:layout_constraintVertical_bias="1"
+        app:srcCompat="@drawable/nav_bar_background" />
+
+    <!--BMI Button-->
+    <ImageView
+        android:id="@+id/fitnessBMIButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bmi_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/fitnessNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/fitnessNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/fitnessNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/fitnessNavBackground"
+        app:layout_constraintHorizontal_bias="0.1"/>
+
+    <!--BMI Text-->
+    <TextView
+        android:id="@+id/fitnessBmiButtonLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BMI"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/fitnessNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/fitnessNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/fitnessNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/fitnessNavBackground"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintVertical_bias="0.94"/>
+
+    <!--Calorie Button-->
+    <ImageView
+        android:id="@+id/fitnessCalorieButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/calorie_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/fitnessNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/fitnessNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/fitnessNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/fitnessNavBackground" />
+
+    <!--Calorie Text-->
+    <TextView
+        android:id="@+id/fitnessCalorieButtonLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calorie"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/fitnessNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/fitnessNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/fitnessNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/fitnessNavBackground"
+        app:layout_constraintVertical_bias="0.94"/>
+
+    <!--Fitness Button-->
+    <ImageView
+        android:id="@+id/fitnessFitnessButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fitness_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/fitnessNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/fitnessNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/fitnessNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/fitnessNavBackground"
+        app:layout_constraintHorizontal_bias="0.9"/>
+
+    <!--Fitness Text-->
+    <TextView
+        android:id="@+id/fitnessFitnessButtonLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fitness"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/fitnessNavBackground"
+        app:layout_constraintEnd_toEndOf="@+id/fitnessNavBackground"
+        app:layout_constraintStart_toStartOf="@+id/fitnessNavBackground"
+        app:layout_constraintTop_toTopOf="@+id/fitnessNavBackground"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintVertical_bias="0.94"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
