@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sp = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         sp.edit().clear().apply();
+
+//        Intent intent = new Intent(this, UserProfileActivity.class);
+//        startActivity(intent);
     }
 
     private void checkUserDetails()

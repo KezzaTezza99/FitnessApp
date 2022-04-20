@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserProfileActivity">
+
+    <!--Welcome message that will include the username and brief message-->
+    <TextView
+        android:id="@+id/userProfileUsernameMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.037" />
+
+    <!--Metric Toggle-->
+    <Switch
+        android:id="@+id/userProfileMetricToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Metric"
+        app:layout_constraintBottom_toTopOf="@+id/userProfilePersonalDetailLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileUsernameMessage"
+        app:layout_constraintHorizontal_bias="0.05"/>
+
+    <!--Subheading (Personal Details)-->
+    <TextView
+        android:id="@+id/userProfilePersonalDetailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Personal Details"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileUsernameMessage" />
+
+    <!--Height Input Metric (CM)-->
+    <EditText
+        android:id="@+id/userProfileHeightCM"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="Height (CM)"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfilePersonalDetailLabel"
+        app:layout_constraintVertical_bias="0.025" />
+
+    <!--Height Input Imperial (FT)-->
+    <EditText
+        android:id="@+id/userProfileHeightFT"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:hint="Height (FT)"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfilePersonalDetailLabel"
+        app:layout_constraintVertical_bias="0.025"
+        android:visibility="invisible"/>
+
+    <!--Height Input (Inches)-->
+    <EditText
+        android:id="@+id/userProfileHeightInches"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:hint="Height (Inch)"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfilePersonalDetailLabel"
+        app:layout_constraintVertical_bias="0.025"
+        android:visibility="invisible"/>
+
+    <!--Weight Input Metric (KG)-->
+    <EditText
+        android:id="@+id/userProfileWeightKG"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="Weight (KG)"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileHeightCM"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.05"/>
+
+    <!--Weight Input Imperial (ST)-->
+    <EditText
+        android:id="@+id/userProfileWeightST"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:hint="Weight (ST)"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileHeightCM"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintVertical_bias="0.05"
+        android:visibility="invisible"/>
+
+    <EditText
+        android:id="@+id/userProfileWeightLBS"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:hint="Weight (LBS)"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileHeightCM"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintVertical_bias="0.05"
+        android:visibility="invisible"/>
+
+    <!--Subheading (Fitness Details)-->
+    <TextView
+        android:id="@+id/userProfileFitnessDetailsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fitness Details"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileWeightKG"
+        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintVertical_bias="0.03"/>
+
+    <!--Bench Press Label-->
+    <TextView
+        android:id="@+id/userProfileBenchPressLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bench Press (Rep Max)"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileFitnessDetailsLabel"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <!--Bench Press 1 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileBP1RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="1RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileFitnessDetailsLabel"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <!--Bench press 3 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileBP3RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="3RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileFitnessDetailsLabel"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <!--Bench press 5 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileBP5RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="5RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileFitnessDetailsLabel"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <!--Overhead Press Label-->
+    <TextView
+        android:id="@+id/userProfileOverHeadPressLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Overhead Press"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileBenchPressLabel"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <!--Overhead press 1 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileOP1RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="1RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileBenchPressLabel"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <!--Overhead press 3 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileOP3RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="3RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileBenchPressLabel"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <!--Overhead press 5 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileOP5RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="5RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileBenchPressLabel"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <!--Squat Label-->
+    <TextView
+        android:id="@+id/userProfileSquatLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Squat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileOverHeadPressLabel"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <!--Overhead press 1 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileSquat1RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="1RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileOverHeadPressLabel"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <!--Overhead press 3 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileSquat3RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="3RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileOverHeadPressLabel"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <!--Overhead press 5 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileSquat5RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="5RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileOverHeadPressLabel"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <!--Deadlift Label-->
+    <TextView
+        android:id="@+id/userProfileDeadliftLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deadlift"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileSquatLabel"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <!--Overhead press 1 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileDeadlift1RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="1RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileSquatLabel"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <!--Overhead press 3 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileDeadlift3RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="3RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileSquatLabel"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <!--Overhead press 5 Rep Max Input Field-->
+    <EditText
+        android:id="@+id/userProfileDeadlift5RM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="5RM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileSquatLabel"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <!--Save Button-->
+    <Button
+        android:id="@+id/userProfileSaveDetailsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Details"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileDeadliftLabel"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.9"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

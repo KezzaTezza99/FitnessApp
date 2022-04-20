@@ -214,6 +214,7 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
         getIntent().putExtra("New List Size", newListSize);
 
         //Putting the entire list into a ArrayList<String> that can be given to the intent
+        //TODO UTIL
         ArrayList<String> listForStorage = new ArrayList<>();
         for(int i = 0; i < theList.size(); i++)
         {

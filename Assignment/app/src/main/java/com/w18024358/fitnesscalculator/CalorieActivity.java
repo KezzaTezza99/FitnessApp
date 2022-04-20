@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -141,7 +143,11 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         //Maybe add a bundles bit here like other activity to stop null data being passed?
         //Load all data previously entered (so far this is only the total calories the user would like to eat a day)
         //Add a flag
-        //loadData();
+        //TODO calories doesnt work as intended if loaded from intent
+        //It should be modified to only work on new days???
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        boolean loaded = sharedPreferences.getBoolean("DataSaved", Boolean.FALSE);
+        if(loaded) loadData();
     }
 
     //TODO make it actually make changes to the list when going back to the CalorieActivity
@@ -202,6 +208,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                         return false;
                     });
                     addToCalorieTotal(breakfastFoodItems, "breakfast");
+                    saveLists(breakfastFoodItems, "Breakfast");
                     break;
                 case "Lunch":
                     lunchFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
@@ -240,6 +247,23 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             recalculateRemainingCalories();
         }
     }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        Log.i("OnPause:", "Pausing and Saving Data");
+//        if(!breakfastFoodItems.isEmpty())
+//            saveLists(breakfastFoodItems, "Breakfast");
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        Log.i("OnResume:", "Resuming and Loading Data");
+//        boolean load = getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("DataSaved", Boolean.FALSE);
+//        if(load)
+//            loadData();
+//    }
 
     @Override
     public void applyUsersCalorieTarget(String target) {
@@ -344,13 +368,38 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     }
 
     //TODO make sharedPrefs a method and return it like in BMI keep good DRY
+    //Need to save individual lists, maybe pass the list name and then save that to preferences and save potentially 4 lists?
+    //Load all 4 if not null?
+    //Redisplay the values??
+    //Save the date it was so can use a calendar
     private void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        if (sharedPreferences.getBoolean("DataSaved", Boolean.TRUE)) {
-            int ogCal = sharedPreferences.getInt("TargetCalories", 0);
-            Log.i("Load Data:", String.valueOf(ogCal));
-            caloriesLeft.setText(ogCal + "kcal");
+
+        Log.i("Load Data", "Just Loaded");
+        int ogCal = sharedPreferences.getInt("TargetCalories", 0);
+        Log.i("Load Data:", String.valueOf(ogCal));
+        caloriesLeft.setText(ogCal + "kcal");
+
+        //LIST STILL ONLY SHOWS ONE ITEM, ITS A STRING IT GETS OVER-RIDDEN (TRY HAVING MULTIPLE BEFORE RELOADING?)
+        //NEED TO PUT IT BACK INTO LIST?
+        //Loading just BREAKFAST FOR NOW!!
+        boolean breakfast = sharedPreferences.getBoolean("Breakfast List Needs Loading", Boolean.FALSE);
+        Log.i("Load Data:", String.valueOf(breakfast));
+        int size = sharedPreferences.getInt("Breakfast List Size On Save", 0);
+
+        if (breakfast == Boolean.TRUE) {
+            //Retrieving the JSON lists
+            String json = sharedPreferences.getString("Breakfast List Saved Items", "");
+            Log.i("JSON:", json);
+            Utility utility = new Utility();
+            ArrayList<String> strings = new Gson().fromJson(json, ArrayList.class);
+            Log.i("JSON ArrayList", strings.toString());
+
+            breakfastFoodItems.clear();
+            breakfastFoodItems = utility.stringListToItemList(strings, breakfastFoodItems, size);
         }
+        totalCaloriesEatenNeedsRecalculating();
+        Log.i("Load Data", "Finished loading");
     }
 
     private void updateList(String whichList) {
@@ -363,7 +412,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                 updatingList(breakfastFoodItems);
                 breakfastAdapter.notifyDataSetChanged();
                 addToCalorieTotal(breakfastFoodItems, "breakfast");
-                //saveLists(breakfastFoodItems);
+                saveLists(breakfastFoodItems, "Breakfast");
                 break;
             case "Lunch":
                 lunchFoodItems.clear();
@@ -427,27 +476,89 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         Intent intent = new Intent(this, FitnessActivity.class);
         startActivity(intent);
     }
+
+    private void saveLists(ArrayList<FoodItem> items, String theList)
+    {
+        //TEMP
+        Utility utility = new Utility();
+        //
+
+        Log.i("Calorie Activity: ", "------Saving Data------");
+        //TODO make SharedPreferences a method and call that?
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        //Turning the FoodItem ArrayList to a String ArrayList (Easier to get back from the JSON object)
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList = utility.itemListToStringList(items);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(stringArrayList);
+        Log.i("Ths JSON being saved:", json);
+
+        switch (theList)
+        {
+            case "Breakfast":
+                Log.i("Inside Switch:", "Made it");
+                editor.putBoolean("Breakfast List Needs Loading", Boolean.TRUE);
+                editor.putString("Breakfast List Saved Items", json);
+                editor.putInt("Breakfast List Size On Save", breakfastFoodItems.size());
+                break;
+            case "Lunch":
+                editor.putBoolean("Lunch List Needs Loading", true);
+                editor.putString("Lunch List Saved Items", json);
+                break;
+            case "Dinner":
+                editor.putBoolean("Dinner List Needs Loading", true);
+                editor.putString("Dinner List Saved Items", json);
+                break;
+            case "Snacks":
+                editor.putBoolean("Snacks List Needs Loading", true);
+                editor.putString("Snacks List Saved Items", json);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + theList);
+        }
+        editor.apply();
+    }
+
+    //When the app loads data the calories wont be be accounted for (recalculating here but need to know which lists had items in)
+    private void totalCaloriesEatenNeedsRecalculating()
+    {
+        Utility utility = new Utility();
+        int runningTotal = 0;
+
+        if(!breakfastFoodItems.isEmpty())
+        {
+            breakfastSum += utility.totalCaloriesEaten(breakfastFoodItems);
+            runningTotal += breakfastSum;
+        }
+
+        if(!lunchFoodItems.isEmpty())
+        {
+
+        }
+
+        if(!dinnerFoodItems.isEmpty())
+        {
+
+        }
+
+        if(!snacksFoodItems.isEmpty())
+        {
+
+        }
+        setCalorieTotal();
+        caloriesLeftNeedRecalculating(runningTotal);
+    }
+
+    private void caloriesLeftNeedRecalculating(int caloriesEaten)
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        int calorieTarget = sharedPreferences.getInt("TargetCalories", 0);
+
+        int calories = calorieTarget - caloriesEaten;
+
+        caloriesLeft.setText(calories + "kcal");
+    }
 }
-//TODO --- Look at saving using JSON
-//    private void saveLists(ArrayList<FoodItem> items)
-//    {
-////        Log.i("Calorie Activity: ", "------Saving Data------");
-////        //TODO make SharedPreferences a method and call that?
-////        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-////        SharedPreferences.Editor editor = sharedPreferences.edit();
-////
-////        ArraySet<String> itemSet = new ArraySet<>();
-////        for(int i = 0; i < items.size(); i++)
-////        {
-////            itemSet.add(items.get(i).getItemQuantity());
-////            itemSet.add(items.get(i).getItemName());
-////            itemSet.add(items.get(i).getItemCalories());
-////
-////            Log.i("Saved list in loop:", itemSet.toString());
-////        }
-////        Log.i("Saved List: ", String.valueOf(itemSet));
-////
-////        editor.putStringSet("Breakfast List", itemSet);
-////        editor.apply();
-////    }
-//}
