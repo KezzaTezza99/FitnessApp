@@ -406,6 +406,12 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
 
             breakfastFoodItems.clear();
             breakfastFoodItems = utility.stringListToItemList(strings, breakfastFoodItems, breakfastSize);
+
+            //Need to reapply the onLongClickListener
+            breakfastListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                openFullItemList("Breakfast", breakfastFoodItems);
+                return false;
+            });
         }
 
         if(lunch)
@@ -502,6 +508,8 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                     updatedList.get(count + 2)));
             count += 3;
         }
+        setCalorieTotal();
+        recalculateRemainingCalories();
     }
 
     private int addingAllItemCalories(ArrayList<FoodItem> items) {
