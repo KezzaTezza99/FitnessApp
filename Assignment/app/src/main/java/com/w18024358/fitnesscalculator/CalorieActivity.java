@@ -219,6 +219,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                         return false;
                     });
                     addToCalorieTotal(lunchFoodItems, "lunch");
+                    saveLists(lunchFoodItems, "Lunch");
                     break;
                 case "Dinner":
                     dinnerFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
@@ -229,6 +230,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                         return false;
                     });
                     addToCalorieTotal(dinnerFoodItems, "dinner");
+                    saveLists(dinnerFoodItems, "Dinner");
                     break;
                 case "Snacks":
                     snacksFoodItems.add(new FoodItem(itemQuantity, itemName, itemCalories));
@@ -239,6 +241,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                         return false;
                     });
                     addToCalorieTotal(snacksFoodItems, "snacks");
+                    saveLists(snacksFoodItems, "Snacks");
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + listToAddTo);
@@ -384,19 +387,67 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         //NEED TO PUT IT BACK INTO LIST?
         //Loading just BREAKFAST FOR NOW!!
         boolean breakfast = sharedPreferences.getBoolean("Breakfast List Needs Loading", Boolean.FALSE);
-        Log.i("Load Data:", String.valueOf(breakfast));
-        int size = sharedPreferences.getInt("Breakfast List Size On Save", 0);
+        boolean lunch = sharedPreferences.getBoolean("Lunch List Needs Loading", Boolean.FALSE);
+        boolean dinner = sharedPreferences.getBoolean("Dinner List Needs Loading", Boolean.FALSE);
+        boolean snacks = sharedPreferences.getBoolean("Snacks List Needs Loading", Boolean.FALSE);
 
-        if (breakfast == Boolean.TRUE) {
+        Log.i("Load Data:", String.valueOf(breakfast));
+
+        if (breakfast)
+        {
+            //MAKE THIS UTIL?
             //Retrieving the JSON lists
             String json = sharedPreferences.getString("Breakfast List Saved Items", "");
+            int breakfastSize = sharedPreferences.getInt("Breakfast List Size On Save", 0);
             Log.i("JSON:", json);
             Utility utility = new Utility();
             ArrayList<String> strings = new Gson().fromJson(json, ArrayList.class);
             Log.i("JSON ArrayList", strings.toString());
 
             breakfastFoodItems.clear();
-            breakfastFoodItems = utility.stringListToItemList(strings, breakfastFoodItems, size);
+            breakfastFoodItems = utility.stringListToItemList(strings, breakfastFoodItems, breakfastSize);
+        }
+
+        if(lunch)
+        {
+            //Retrieving the JSON lists
+            String json = sharedPreferences.getString("Lunch List Saved Items", "");
+            int lunchSize = sharedPreferences.getInt("Lunch List Size On Save", 0);
+            Log.i("JSON:", json);
+            Utility utility = new Utility();
+            ArrayList<String> strings = new Gson().fromJson(json, ArrayList.class);
+            Log.i("JSON ArrayList", strings.toString());
+
+            lunchFoodItems.clear();
+            lunchFoodItems = utility.stringListToItemList(strings, lunchFoodItems, lunchSize);
+        }
+
+        if(dinner)
+        {
+            //Retrieving the JSON lists
+            String json = sharedPreferences.getString("Dinner List Saved Items", "");
+            int dinnerSize = sharedPreferences.getInt("Dinner List Size On Save", 0);
+            Log.i("JSON:", json);
+            Utility utility = new Utility();
+            ArrayList<String> strings = new Gson().fromJson(json, ArrayList.class);
+            Log.i("JSON ArrayList", strings.toString());
+
+            dinnerFoodItems.clear();
+            dinnerFoodItems = utility.stringListToItemList(strings, dinnerFoodItems, dinnerSize);
+        }
+
+        if(snacks)
+        {
+            //Retrieving the JSON lists
+            String json = sharedPreferences.getString("Snacks List Saved Items", "");
+            int snacksSize = sharedPreferences.getInt("Snacks List Size On Save", 0);
+            Log.i("JSON:", json);
+            Utility utility = new Utility();
+            ArrayList<String> strings = new Gson().fromJson(json, ArrayList.class);
+            Log.i("JSON ArrayList", strings.toString());
+
+            snacksFoodItems.clear();
+            snacksFoodItems = utility.stringListToItemList(strings, snacksFoodItems, snacksSize);
         }
         totalCaloriesEatenNeedsRecalculating();
         Log.i("Load Data", "Finished loading");
@@ -419,18 +470,21 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                 updatingList(lunchFoodItems);
                 lunchAdapter.notifyDataSetChanged();
                 addToCalorieTotal(lunchFoodItems, "lunch");
+                saveLists(lunchFoodItems, "Lunch");
                 break;
             case "Dinner":
                 dinnerFoodItems.clear();
                 updatingList(dinnerFoodItems);
                 dinnerAdapter.notifyDataSetChanged();
                 addToCalorieTotal(dinnerFoodItems, "dinner");
+                saveLists(dinnerFoodItems, "Dinner");
                 break;
             case "Snacks":
                 snacksFoodItems.clear();
                 updatingList(snacksFoodItems);
                 snacksAdapter.notifyDataSetChanged();
                 addToCalorieTotal(snacksFoodItems, "snacks");
+                saveLists(snacksFoodItems, "Snacks");
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + whichList);
@@ -505,16 +559,19 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                 editor.putInt("Breakfast List Size On Save", breakfastFoodItems.size());
                 break;
             case "Lunch":
-                editor.putBoolean("Lunch List Needs Loading", true);
+                editor.putBoolean("Lunch List Needs Loading", Boolean.TRUE);
                 editor.putString("Lunch List Saved Items", json);
+                editor.putInt("Lunch List Size On Save", lunchFoodItems.size());
                 break;
             case "Dinner":
                 editor.putBoolean("Dinner List Needs Loading", true);
                 editor.putString("Dinner List Saved Items", json);
+                editor.putInt("Dinner List Size On Save", dinnerFoodItems.size());
                 break;
             case "Snacks":
                 editor.putBoolean("Snacks List Needs Loading", true);
                 editor.putString("Snacks List Saved Items", json);
+                editor.putInt("Snacks List Size On Save", snacksFoodItems.size());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + theList);
@@ -536,17 +593,20 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
 
         if(!lunchFoodItems.isEmpty())
         {
-
+            lunchSum += utility.totalCaloriesEaten(lunchFoodItems);
+            runningTotal += lunchSum;
         }
 
         if(!dinnerFoodItems.isEmpty())
         {
-
+            dinnerSum += utility.totalCaloriesEaten(dinnerFoodItems);
+            runningTotal += dinnerSum;
         }
 
         if(!snacksFoodItems.isEmpty())
         {
-
+            snackSum += utility.totalCaloriesEaten(snacksFoodItems);
+            runningTotal += snackSum;
         }
         setCalorieTotal();
         caloriesLeftNeedRecalculating(runningTotal);
