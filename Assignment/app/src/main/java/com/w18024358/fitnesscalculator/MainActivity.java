@@ -12,6 +12,13 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+
 //TODO From Nick ----> Make code bulletproof, make the app as user-friendly as possible (i.e., already provide keyboards to type etc), add extra functionality that is unique to course
 public class MainActivity extends AppCompatActivity {
 

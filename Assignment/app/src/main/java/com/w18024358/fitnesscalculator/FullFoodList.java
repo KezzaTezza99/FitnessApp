@@ -20,9 +20,11 @@ import java.util.ArrayList;
 public class FullFoodList extends AppCompatActivity implements EditItemCalorieDialog.EditCalorieDialogListener
 {
     static final int RETURNED_VALUES = 1;
+    static final int EDITED_VALUE = 2;
+    static final int DELETED_VALUE = 3;
+    static final int ADDED_VALUE = 4;
 
     //TODO Refactor
-
     String selectedList;
     ArrayList<String> stringItemList;
     ArrayList<FoodItem> theList;
@@ -119,7 +121,6 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
                     positionsOfDeletedItem.add(arrayPosition, i);
                     arrayPosition++;
                     adapter.notifyDataSetChanged();
-
                 }
             });
 
@@ -146,7 +147,8 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
 
     //When the user returns to this activity from AddCaloriesActivity
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RETURNED_VALUES || requestCode == RESULT_OK || requestCode == 10 || resultCode == 10)
@@ -186,21 +188,21 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
         if(itemEdited)
         {
             getIntent().putExtra("Item Edited", true);
-            finishActivity(2);
-            setResult(2, getIntent());
+            finishActivity(EDITED_VALUE);
+            setResult(EDITED_VALUE, getIntent());
 
         }
         else if(itemDeleted)
         {
             getIntent().putExtra("Item Deleted", true);
-            finishActivity(3);
-            setResult(3, getIntent());
+            finishActivity(DELETED_VALUE);
+            setResult(DELETED_VALUE, getIntent());
         }
         else if(itemAdded)
         {
             getIntent().putExtra("Item Added", true);
-            finishActivity(10);
-            setResult(10, getIntent());
+            finishActivity(ADDED_VALUE);
+            setResult(ADDED_VALUE, getIntent());
         }
         else
         {
@@ -243,24 +245,12 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
     {
         return findViewById(R.id.fullItemListHeaderLabel);
     }
-
     private ImageView getAddButton()
     {
         return findViewById(R.id.fullItemListAddIcon);
     }
-
     private Button getDoneButton()
     {
         return findViewById(R.id.fullItemListDoneButton);
-    }
-
-    private Button getEditButton()
-    {
-        return findViewById(R.id.fullItemListEditButton);
-    }
-
-    private Button getRemoveButton()
-    {
-        return findViewById(R.id.fullItemListRemoveButton);
     }
 }

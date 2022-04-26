@@ -26,7 +26,7 @@ public class BMIActivity extends AppCompatActivity
     //and then clears the fields and changes back then the other metric actually still appears when it should now be blank
     //TODO the app crashes if you change metric and have no foot inputted and only have an inch
     //TODO If I clear the fields I can no longer calculate both weight and height if switching metrics only one at a time
-    //TODO the values still need restricting i.e., inches should not go over 12 before going to a Ft
+    //TODO the values still need restricting i.e., inches should not go over 12 before going to a Ft (Should be done need to test)
     //TODO If the SharedPreferences had data in it then should automatically display it
 
     //TODO fix the BMI page when you access it by logging in - if no details show nothing if details then show the weight / height
@@ -255,6 +255,7 @@ public class BMIActivity extends AppCompatActivity
             {
                 //Converting cm to ft
                 String[] answer = Util().convertHeight(0, Integer.parseInt(bmiUserHeight().getText().toString()), 0, 0);
+
                 bmiHeightFoot().setText(answer[0]);
                 bmiHeightInches().setText(answer[1]);
 

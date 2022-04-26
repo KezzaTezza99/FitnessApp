@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.ArraySet;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -14,10 +13,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
+import java.util.Locale;
 
 public class CalorieActivity extends AppCompatActivity implements TargetCalorieDialog.CalorieDialogListener {
     //TODO REFACTOR THIS CLASS
@@ -25,7 +24,14 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     //TODO make sure all of the boxes and headers are the same size and in the same positions
     //TODO --- The lists all need to be saved :/ keep data persistence
     static final int RETURNED_VALUES = 1;
+    static final int EDITED_VALUE = 2;
+    static final int DELETED_VALUE = 3;
+    static final int ADDED_VALUE = 4;
 
+    //TODO save data on app close and leaving activity only
+    //need to fix calories doubling on reload
+
+    //TODO if come back to the app when not wiping SP then the calories is wrong (calories eaten are double)
     //Breakfast
     ArrayList<FoodItem> breakfastFoodItems;
     ListView breakfastListView;
@@ -72,6 +78,9 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     ImageView bmiButton;
     ImageView calorieButton;
     ImageView fitnessButton;
+
+    //Date
+    TextView currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +157,16 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         boolean loaded = sharedPreferences.getBoolean("DataSaved", Boolean.FALSE);
         if(loaded) loadData();
+
+        currentDate = findViewById(R.id.calorieCurrentDate);
+        //Setting the date to equal today's date
+        currentDate.setText(getUtility().getCurrentDate());
+
+        currentDate.setOnLongClickListener(view -> {
+            openCalendar();
+            return true;
+        });
+
     }
 
     //TODO make it actually make changes to the list when going back to the CalorieActivity
@@ -156,13 +175,12 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //TODO Create static codes for return(s)
         //Returning from adding calories but deciding to go back / or back from FullListView
         if (requestCode == RESULT_CANCELED || resultCode == RESULT_CANCELED) {
             Log.i("CalorieActivity:", "Just returning");
         }
         //Returning from FullListView and have edited an item
-        else if (requestCode == 2 || resultCode == 2) {
+        else if (requestCode == EDITED_VALUE || resultCode == EDITED_VALUE) {
             Log.i("CalorieActivity:", "Item in list Edited");
             assert data != null;
             updatedList = data.getStringArrayListExtra("The New Item List");
@@ -171,14 +189,14 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             updateList(currentLst);
         }
         //Returning from FullListView and have deleted an item
-        else if (requestCode == 3 || resultCode == 3) {
+        else if (requestCode == DELETED_VALUE || resultCode == DELETED_VALUE) {
             Log.i("CalorieActivity:", "Deleted from List");
             assert data != null;
             updatedList = data.getStringArrayListExtra("The New Item List");
             theListSizeNew = data.getIntExtra("SIZE", 0);
             String currentLst = data.getStringExtra("Current List");
             updateList(currentLst);
-        } else if (requestCode == 10 || resultCode == 10) {
+        } else if (requestCode == ADDED_VALUE || resultCode == ADDED_VALUE) {
             Log.i("CalorieActivity:", "Added to list from FullListView");
 
             assert data != null;
@@ -251,22 +269,29 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         }
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        Log.i("OnPause:", "Pausing and Saving Data");
-//        if(!breakfastFoodItems.isEmpty())
-//            saveLists(breakfastFoodItems, "Breakfast");
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        Log.i("OnResume:", "Resuming and Loading Data");
-//        boolean load = getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("DataSaved", Boolean.FALSE);
-//        if(load)
-//            loadData();
-//    }
+    //TODO save the data once the user has closed the application - just in case they don't save the data before closing
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("OnPause:", "Pausing and Saving Data");
+        if(!breakfastFoodItems.isEmpty())
+            saveLists(breakfastFoodItems, "Breakfast");
+        if(!lunchFoodItems.isEmpty())
+            saveLists(lunchFoodItems, "Lunch");
+        if(!dinnerFoodItems.isEmpty())
+            saveLists(dinnerFoodItems, "Dinner");
+        if(!snacksFoodItems.isEmpty())
+            saveLists(snacksFoodItems, "Snacks");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("OnResume:", "Resuming and Loading Data");
+        boolean load = getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("DataSaved", Boolean.FALSE);
+        if(load)
+            loadData();
+    }
 
     @Override
     public void applyUsersCalorieTarget(String target) {
@@ -362,11 +387,28 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     }
 
     private void saveData() {
+        //TODO maybe only save data if no data saved?
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt("TargetCalories", targetCalories);
         editor.putBoolean("DataSaved", Boolean.TRUE);
+
+        //Saving today's data separately (as it'll be quicker to save / load just today's - all other dates only needed if user wants to go back through the calendar)
+        editor.putString("CurrentDate", getUtility().getCurrentDateNumerical());
+
+        //Storing an array list which will hold all the dates that the user has saved data for
+        if(!getUtility().getAllDates().contains(getUtility().getCurrentDateNumerical()))
+        {
+            getUtility().addDateToList(getUtility().getCurrentDateNumerical() + "-");
+        }
+
+        //Saving the Array List as a String in SharedPreferences
+        //TODO make Gson a method
+        Gson gson = new Gson();
+        String datesSaved = gson.toJson(getUtility().getAllDates());
+        Log.i("CalorieActivity saveData()", String.valueOf(datesSaved));
+        editor.putString("AllDatesSaved", datesSaved);
         editor.apply();
     }
 
@@ -417,15 +459,21 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         if(lunch)
         {
             //Retrieving the JSON lists
-            String json = sharedPreferences.getString("Lunch List Saved Items", "");
+            String json1 = sharedPreferences.getString("Lunch List Saved Items", "");
             int lunchSize = sharedPreferences.getInt("Lunch List Size On Save", 0);
-            Log.i("JSON:", json);
+            Log.i("JSON:", json1);
             Utility utility = new Utility();
-            ArrayList<String> strings = new Gson().fromJson(json, ArrayList.class);
+            ArrayList<String> strings = new Gson().fromJson(json1, ArrayList.class);
             Log.i("JSON ArrayList", strings.toString());
 
             lunchFoodItems.clear();
             lunchFoodItems = utility.stringListToItemList(strings, lunchFoodItems, lunchSize);
+
+            //Need to reapply the onLongClickListener
+            lunchListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                openFullItemList("Lunch", lunchFoodItems);
+                return false;
+            });
         }
 
         if(dinner)
@@ -440,6 +488,12 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
 
             dinnerFoodItems.clear();
             dinnerFoodItems = utility.stringListToItemList(strings, dinnerFoodItems, dinnerSize);
+
+            //Need to reapply the onLongClickListener
+            dinnerListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                openFullItemList("Dinner", dinnerFoodItems);
+                return false;
+            });
         }
 
         if(snacks)
@@ -454,6 +508,12 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
 
             snacksFoodItems.clear();
             snacksFoodItems = utility.stringListToItemList(strings, snacksFoodItems, snacksSize);
+
+            //Need to reapply the onLongClickListener
+            snacksListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                openFullItemList("Snacks", snacksFoodItems);
+                return false;
+            });
         }
         totalCaloriesEatenNeedsRecalculating();
         Log.i("Load Data", "Finished loading");
@@ -628,5 +688,17 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         int calories = calorieTarget - caloriesEaten;
 
         caloriesLeft.setText(calories + "kcal");
+    }
+
+    private void openCalendar()
+    {
+        Intent intent = new Intent(this, Calendar.class);
+        intent.putExtra("ActivityID", "Calorie");
+        startActivityForResult(intent, RETURNED_VALUES);
+    }
+
+    private  Utility getUtility()
+    {
+        return new Utility();
     }
 }

@@ -8,11 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class FitnessActivity extends AppCompatActivity {
+    static final int RETURNED_VALUES = 1;
+
     TextView currentDay;
 
     ImageView bmiButton;
@@ -37,7 +38,7 @@ public class FitnessActivity extends AppCompatActivity {
         //
 
         //Getting the current day
-        Calendar calendar = Calendar.getInstance();
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
         Date date = calendar.getTime();
         String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime());
         currentDay.setText(today);
@@ -68,8 +69,8 @@ public class FitnessActivity extends AppCompatActivity {
 
     private void openCalendar()
     {
-        CalendarDialog calendarDialog = new CalendarDialog();
-        //TODO look what this actually does
-        calendarDialog.show(getSupportFragmentManager(), "Calendar Dialog");
+        Intent intent = new Intent(this, Calendar.class);
+        intent.putExtra("ActivityID", "Fitness");
+        startActivityForResult(intent, RETURNED_VALUES);
     }
 }

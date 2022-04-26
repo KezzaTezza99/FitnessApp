@@ -3,11 +3,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 //Class that will hold some common functionality to stop repeating code
 public class Utility
 {
+    ArrayList<String> allDates = new ArrayList<>();
+
     //Transforming a ArrayList<FoodItem> to ArrayList<String>
     ArrayList<String> itemListToStringList(ArrayList<FoodItem> items)
     {
@@ -49,6 +56,36 @@ public class Utility
             sum += Integer.parseInt(items.get(i).getItemCalories());
         }
         return sum;
+    }
+
+    //Get the current date
+    String getCurrentDate()
+    {
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        Date date = calendar.getTime();
+        String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime());
+
+        return today;
+    }
+
+    String getCurrentDateNumerical()
+    {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        java.util.Calendar date = Calendar.getInstance();
+
+        return dateFormat.format(date.getTime());
+    }
+
+    ArrayList<String> getAllDates()
+    {
+        Log.i("Utility: getAllDates()", allDates.toString());
+        return allDates;
+    }
+
+    void addDateToList(String date)
+    {
+        Log.i("Utility: addDateToList()", date);
+        allDates.add(date);
     }
 
     //Hiding input fields

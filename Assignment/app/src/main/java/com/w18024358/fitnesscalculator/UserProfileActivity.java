@@ -1,6 +1,7 @@
 package com.w18024358.fitnesscalculator;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,6 +49,23 @@ public class UserProfileActivity extends AppCompatActivity
             && !getUserWeightST().getText().toString().isEmpty() && !getUserWeightLBS().toString().isEmpty())
         {
             Toast.makeText(this, "Subbed Personal", Toast.LENGTH_SHORT).show();
+
+            //TODO now that I have saved the data need to automatically display it on the BMI page
+            if(getMetricToggle().equals("Metric"))
+            {
+                //Need to save the metric measurements
+                getSharedPreferencesEditor().putString("User Height CM", getUserHeightCM().toString());
+                getSharedPreferencesEditor().putString("User Weight KG", getUserWeightKG().toString());
+            }
+            else if(getMetricToggle().equals("Imperial"))
+            {
+                //Need to save the imperial measurements
+                getSharedPreferencesEditor().putString("User Height FT", getUserHeightFT().toString());
+                getSharedPreferencesEditor().putString("User Height Inches", getUserHeightInch().toString());
+                getSharedPreferencesEditor().putString("User Weight ST", getUserWeightST().toString());
+                getSharedPreferencesEditor().putString("User Weight LBS", getUserWeightLBS().toString());
+            }
+
         }
         else if(!getBench1RM().getText().toString().isEmpty() && !getBench3RM().getText().toString().isEmpty() && !getBench5RM().getText().toString().isEmpty()
             || !getOverhead1RM().getText().toString().isEmpty() && !getOverhead3RM().getText().toString().isEmpty() && !getOverhead5RM().toString().isEmpty()
@@ -67,6 +85,16 @@ public class UserProfileActivity extends AppCompatActivity
         //Getting the username
         //String username
         //getUser().setText("Message" + username);
+    }
+
+    private SharedPreferences getSharedPreferences()
+    {
+        return getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+    }
+
+    private SharedPreferences.Editor getSharedPreferencesEditor()
+    {
+        return getSharedPreferences().edit();
     }
 
     private TextView getUser() { return findViewById(R.id.userProfileUsernameMessage); }
