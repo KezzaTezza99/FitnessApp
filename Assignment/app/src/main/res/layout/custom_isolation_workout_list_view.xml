@@ -1,6 +1,437 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--Isolation Movement 1-->
+    <TextView
+        android:id="@+id/customIsolationWorkoutName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Isolation Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <!--Label for set 1-->
+    <TextView
+        android:id="@+id/customIsolationSet1Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 1: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationWorkoutName"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 1-->
+    <TextView
+        android:id="@+id/customIsolationSet1Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet1Label"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationWorkoutName"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 2-->
+    <TextView
+        android:id="@+id/customIsolationSet2Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 2: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet1Label"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 2-->
+    <TextView
+        android:id="@+id/customIsolationSet2Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet2Label"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet1Label"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 3-->
+    <TextView
+        android:id="@+id/customIsolationSet3Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 3: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet2Label"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 3-->
+    <TextView
+        android:id="@+id/customIsolationSet3Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet3Label"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet2Label"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 4-->
+    <TextView
+        android:id="@+id/customIsolationSet4Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 4: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet3Label"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 4-->
+    <TextView
+        android:id="@+id/customIsolationSet4Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet4Label"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet3Label"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 5-->
+    <TextView
+        android:id="@+id/customIsolationSet5Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 5: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet4Label"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 5-->
+    <TextView
+        android:id="@+id/customIsolationSet5Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet5Label"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet4Label"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Isolation Movement 2-->
+
+    <!--Label for set 1-->
+    <TextView
+        android:id="@+id/customIsolationWorkoutName2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Isolation Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.229"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationWorkoutName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <TextView
+        android:id="@+id/customIsolationSet1LabelExercise2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 1: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationWorkoutName2"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 1-->
+    <TextView
+        android:id="@+id/customIsolationSet1ValueExercise2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet1LabelExercise2"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationWorkoutName2"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 2-->
+    <TextView
+        android:id="@+id/customIsolationSet2LabelExercise2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 2: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet1LabelExercise2"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 2-->
+    <TextView
+        android:id="@+id/customIsolationSet2ValueExercise2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet2LabelExercise2"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet1LabelExercise2"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 3-->
+    <TextView
+        android:id="@+id/customIsolationSet3LabelExercise2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 3: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet2LabelExercise2"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 3-->
+    <TextView
+        android:id="@+id/customIsolationSet3ValueExercise2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet3LabelExercise2"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet2LabelExercise2"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 4-->
+    <TextView
+        android:id="@+id/customIsolationSet4LabelExercise2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 4: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet3LabelExercise2"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 3-->
+    <TextView
+        android:id="@+id/customIsolationSet4ValueExercise2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet4LabelExercise2"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet3LabelExercise2"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 5-->
+    <TextView
+        android:id="@+id/customIsolationSet5LabelExercise2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 5: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet4LabelExercise2"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 3-->
+    <TextView
+        android:id="@+id/customIsolationSet5ValueExercise2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet5LabelExercise2"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet4LabelExercise2"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Exercise 3-->
+    <TextView
+        android:id="@+id/customIsolationWorkoutName3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Isolation Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.761"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationWorkoutName2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <!--Label for set 1-->
+    <TextView
+        android:id="@+id/customIsolationSet1LabelExercise3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 1: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationWorkoutName3"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 1-->
+    <TextView
+        android:id="@+id/customIsolationSet1ValueExercise3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet1LabelExercise3"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationWorkoutName3"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 2-->
+    <TextView
+        android:id="@+id/customIsolationSet2LabelExercise3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 2: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet1LabelExercise3"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 2-->
+    <TextView
+        android:id="@+id/customIsolationSet2ValueExercise3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet2LabelExercise3"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet1LabelExercise3"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 3-->
+    <TextView
+        android:id="@+id/customIsolationSet3LabelExercise3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 3: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet2LabelExercise3"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 3-->
+    <TextView
+        android:id="@+id/customIsolationSet3ValueExercise3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet3LabelExercise3"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet2LabelExercise3"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 4-->
+    <TextView
+        android:id="@+id/customIsolationSet4LabelExercise3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 4: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet3LabelExercise3"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 3-->
+    <TextView
+        android:id="@+id/customIsolationSet4ValueExercise3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet4LabelExercise3"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet3LabelExercise3"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Label for set 5-->
+    <TextView
+        android:id="@+id/customIsolationSet5LabelExercise3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 5: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet4LabelExercise3"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <!--Value for set 3-->
+    <TextView
+        android:id="@+id/customIsolationSet5ValueExercise3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customIsolationSet5LabelExercise3"
+        app:layout_constraintTop_toBottomOf="@+id/customIsolationSet4LabelExercise3"
+        app:layout_constraintVertical_bias="0.002" />
 </androidx.constraintlayout.widget.ConstraintLayout>
