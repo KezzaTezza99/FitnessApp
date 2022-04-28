@@ -55,12 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent = new Intent(this, UserProfileActivity.class);
 //        startActivity(intent);
-
-        Utility utility = new Utility();
-        JsonUtility jsonUtility = new JsonUtility(this);
-        String data = jsonUtility.SplitWorkoutBasedOnDays(jsonUtility.json,  utility.getCurrentDate());
-        jsonUtility.SplitTheData(data);
-
     }
 //TODO fix sunday and wednesday
     private void checkUserDetails()

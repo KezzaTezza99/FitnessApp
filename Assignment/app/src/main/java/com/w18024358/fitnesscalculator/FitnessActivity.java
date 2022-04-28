@@ -10,6 +10,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,7 +25,11 @@ public class FitnessActivity extends AppCompatActivity {
     ImageView calorieButton;
     ImageView fitnessButton;
 
-    ListView compoundMovementMain;
+    ListView compoundMovementPrimaryListView;
+    FitnessListAdapter compoundMovementPrimaryAdapter;
+
+    ListView compoundMovementSecondaryListView;
+    FitnessListAdapter compoundMovementSecondaryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +58,39 @@ public class FitnessActivity extends AppCompatActivity {
             return true;
         });
 
-        getWorkout();
-    }
+        //THIS ACTUALLY WORKS BUT I NEED TO GET THE ACTUAL JSON INFORMATION
+        //AND THEN FORMAT IT NICELY
+        //FINALLY GET WEIGHT FROM THE USER PROFILE PAGE IF INCLUDED OTHERWISE NOT SPECIFY?
+//        ArrayList<Workouts> tst = new ArrayList();
+//        tst.add(new Workouts("Bench", "5x5 ", "5x5 ", "5x5", "Triceps ", "5x5 "));
+//        compoundMovementPrimaryListView = findViewById(R.id.fitnessCompoundMovementListView1);
+//        compoundMovementPrimaryAdapter = new FitnessListAdapter(this, tst);
+//        compoundMovementPrimaryListView.setAdapter(compoundMovementPrimaryAdapter);
 
-    private String[] getWorkout()
-    {
-        String json = getJSONUtility().SplitWorkoutBasedOnDays(getJSONUtility().json, getUtility().getCurrentDate());
-        String[] workoutInfo = getJSONUtility().SplitTheData(json);
+        //Doing JSON stuff etc
+        //Make this a method?
+        Utility utility = new Utility();
+        JsonUtility jsonUtility = new JsonUtility(this);
+        String data = jsonUtility.SplitWorkoutBasedOnDays(jsonUtility.json,  utility.getCurrentDate());
+        String[] str = jsonUtility.SplitTheData(data);
+        WorkoutUtil workoutUtil = new WorkoutUtil(str, jsonUtility.getWorkout());
+        //_end
 
-        return workoutInfo;
+        //Primary Exercise
+        ArrayList<Workouts> primaryWorkout = new ArrayList<>();        //Make this global
+        primaryWorkout.add(new Workouts(workoutUtil.getPrimaryCompoundExerciseName(), workoutUtil.getWarmup(), workoutUtil.getPrimaryWorkingSet1(),
+                workoutUtil.getPrimaryWorkingSet2(), workoutUtil.getPrimaryWorkingSet3()));
+        compoundMovementPrimaryListView = findViewById(R.id.fitnessCompoundMovementListView1);
+        compoundMovementPrimaryAdapter = new FitnessListAdapter(this, primaryWorkout, true);
+        compoundMovementPrimaryListView.setAdapter(compoundMovementPrimaryAdapter);
+
+        //Secondary Exercise
+        ArrayList<Workouts> secondaryWorkout = new ArrayList<>();
+        secondaryWorkout.add(new Workouts(workoutUtil.getSecondaryCompoundExerciseName(), workoutUtil.getWarmup(), workoutUtil.getSecondaryWorkingSet1(),
+                workoutUtil.getSecondaryWorkingSet2(), workoutUtil.getSecondaryWorkingSet3()));
+        compoundMovementSecondaryListView = findViewById(R.id.fitnessCompoundMovementListView2);
+        compoundMovementSecondaryAdapter = new FitnessListAdapter(this, secondaryWorkout, false);
+        compoundMovementSecondaryListView.setAdapter(compoundMovementSecondaryAdapter);
     }
 
     private void openBMI()

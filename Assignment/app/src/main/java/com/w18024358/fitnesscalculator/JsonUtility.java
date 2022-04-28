@@ -85,7 +85,7 @@ public class JsonUtility extends AppCompatActivity
             case "Friday":
                 return "Saturday";
             case "Saturday":
-                return "Monday";
+                return "NA";
             default:
                 throw new IllegalStateException("Unexpected value: " + currentDate);
         }
@@ -94,22 +94,25 @@ public class JsonUtility extends AppCompatActivity
     //Break the data into 5 sections (Exercise name, warmup set etc.,)
     String[] SplitTheData(String data)
     {
-        //TODO fix it for is no workout
-        String[] usefulData = new String[data.length()];
+        //String[] usefulData = new String[data.length()];
+        String[] usefulData;
         int compoundIndex;
         if(!workout)
         {
+            usefulData = new String[1];
             //Compound Workout name (Rest Day)
             compoundIndex = data.indexOf("No Workout");
             int compoundEnd = data.indexOf("]", compoundIndex);
-            String workoutName = data.substring(compoundIndex + 12, compoundEnd);
+            String workoutName = data.substring(compoundIndex + 15, compoundEnd - 1);
             usefulData[0] = workoutName;
-            Log.i("Workout name", workoutName);
+            Log.i("Workout name no workout", workoutName);
 
             return usefulData;
         }
         else
         {
+            usefulData = new String[6];
+
             //Compound Workout name
             compoundIndex = data.indexOf("Compound");
             int compoundEnd = data.indexOf("]", compoundIndex);
@@ -154,5 +157,10 @@ public class JsonUtility extends AppCompatActivity
 
             return usefulData;
         }
+    }
+
+    boolean getWorkout()
+    {
+        return workout;
     }
 }
