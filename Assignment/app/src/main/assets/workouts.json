@@ -1,0 +1,51 @@
+[
+  "Monday",
+  {
+    "Compound": ["Bench Press", "Overhead Press"],
+    "Warmup": "2x5",
+    "Working Set Primary": [12, 10, 8],
+    "Working Set Secondary": [8, 5, 3],
+    "Isolation": ["Incline Bench Press", "Dips", "Front Lateral Raises"],
+    "Working Set": [12, 12, 12, 10, 8]
+  },
+  "Tuesday",
+  {
+    "Compound": ["Deadlift", "Bent-over Rows"],
+    "Warmup": "3x5",
+    "Working Set Primary": [5, 3, 3],
+    "Working Set Secondary": [10, 8, 8],
+    "Isolation": ["Dumbbell Rows", "Face Pulls", "Barbell Shrugs"],
+    "Working Set": [12, 12, 12, 10, 8]
+  },
+  "Thursday",
+  {
+    "Compound": ["Bench Press", "Overhead Press"],
+    "Warmup": "2x5",
+    "Working Set Primary": [5, 3, 3],
+    "Working Set Secondary": [12, 10, 8],
+    "Isolation": ["Arnold Press", "Tricep Push Downs", "Side Lateral Raises"],
+    "Working Set": [12, 10, 10, 8, 6]
+  },
+  "Friday",
+  {
+    "Compound": ["Deadlift", "Bent Over Rows"],
+    "Warmup": "3x5",
+    "Working Set Primary": [5, 5, 8],
+    "Working Set Secondary": [12, 10, 8],
+    "Isolation": ["Lat Pull Down", "Bent Over Fly's", "Good Mornings"],
+    "Working Set": [12, 10, 10, 10, 8]
+  },
+  "Saturday",
+  {
+    "Compound": ["Squat", "Leg Press"],
+    "Warmup": "2x5",
+    "Working Set Primary": [5, 3, 3],
+    "Working Set Secondary": [12, 10, 8],
+    "Isolation": ["Hack Squats", "Barbell Lunges", "Hamstring Curls"],
+    "Working Set": [12, 12, 12, 10, 10]
+  },
+  "NA",
+  {
+    "No Workout": ["Rest day"]
+  }
+]

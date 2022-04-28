@@ -1,5 +1,4 @@
 package com.w18024358.fitnesscalculator;
-
 import static java.lang.String.*;
 
 import android.renderscript.Sampler;
@@ -139,6 +138,7 @@ public class MathUtility
         return Double.parseDouble(st + "." + lbs);
     }
 
+    //TODO Round to two decimal places??? more accuracy
     //Rounding a value to the nearest decimal point
     double RoundToNearestDecimalPoint(int valueToRound)
     {

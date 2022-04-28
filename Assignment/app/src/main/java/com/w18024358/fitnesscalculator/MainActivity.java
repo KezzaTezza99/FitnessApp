@@ -12,6 +12,11 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -50,8 +55,14 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent = new Intent(this, UserProfileActivity.class);
 //        startActivity(intent);
-    }
 
+        Utility utility = new Utility();
+        JsonUtility jsonUtility = new JsonUtility(this);
+        String data = jsonUtility.SplitWorkoutBasedOnDays(jsonUtility.json,  utility.getCurrentDate());
+        jsonUtility.SplitTheData(data);
+
+    }
+//TODO fix sunday and wednesday
     private void checkUserDetails()
     {
         //This is temp code

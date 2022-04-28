@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/customWorkoutExerciseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bench Press:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <!--Warmup set-->
+    <TextView
+        android:id="@+id/customWorkoutWarmupLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Warmup: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customWorkoutExerciseName"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <TextView
+        android:id="@+id/customWorkoutWarmupAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2x5 at "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customWorkoutWarmupLabel"
+        app:layout_constraintTop_toTopOf="@+id/customWorkoutWarmupLabel"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/customWorkoutWarmupWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30kg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customWorkoutWarmupAmount"
+        app:layout_constraintTop_toTopOf="@+id/customWorkoutWarmupLabel"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <!--Working set 1-->
+    <TextView
+        android:id="@+id/customWorkoutWorkingSet1Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Working set: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customWorkoutWarmupLabel"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <TextView
+        android:id="@+id/customWorkoutWorkingSet1Amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12x1 at "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customWorkoutWorkingSet1Label"
+        app:layout_constraintTop_toTopOf="@+id/customWorkoutWorkingSet1Label"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/customWorkoutWorkingSet1Weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="40kg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customWorkoutWorkingSet1Amount"
+        app:layout_constraintTop_toTopOf="@+id/customWorkoutWorkingSet1Label"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <!--Working set 2-->
+    <TextView
+        android:id="@+id/customWorkoutWorkingSet2Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Working set: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customWorkoutWorkingSet1Label"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <TextView
+        android:id="@+id/customWorkoutWorkingSet2Amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10x1 at "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customWorkoutWorkingSet2Label"
+        app:layout_constraintTop_toTopOf="@+id/customWorkoutWorkingSet2Label"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/customWorkoutWorkingSet2Weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="45kg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customWorkoutWorkingSet2Amount"
+        app:layout_constraintTop_toTopOf="@+id/customWorkoutWorkingSet2Label"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <!--Working set 3-->
+    <TextView
+        android:id="@+id/customWorkoutWorkingSet3Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Working set: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customWorkoutWorkingSet2Label"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <TextView
+        android:id="@+id/customWorkoutWorkingSet3Amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8x1 at "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customWorkoutWorkingSet3Label"
+        app:layout_constraintTop_toTopOf="@+id/customWorkoutWorkingSet3Label"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/customWorkoutWorkingSet3Weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="50kg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/customWorkoutWorkingSet3Amount"
+        app:layout_constraintTop_toTopOf="@+id/customWorkoutWorkingSet3Label"
+        app:layout_constraintVertical_bias="0.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -19,6 +23,8 @@ public class FitnessActivity extends AppCompatActivity {
     ImageView bmiButton;
     ImageView calorieButton;
     ImageView fitnessButton;
+
+    ListView compoundMovementMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +41,8 @@ public class FitnessActivity extends AppCompatActivity {
         bmiButton.setOnClickListener(view -> openBMI());
         calorieButton.setOnClickListener(view -> openCalorie());
         fitnessButton.setOnClickListener(view -> openFitness());
-        //
 
-        //Getting the current day
+        //Getting the current day -- TODO Utility
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         Date date = calendar.getTime();
         String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime());
@@ -47,6 +52,16 @@ public class FitnessActivity extends AppCompatActivity {
             openCalendar();
             return true;
         });
+
+        getWorkout();
+    }
+
+    private String[] getWorkout()
+    {
+        String json = getJSONUtility().SplitWorkoutBasedOnDays(getJSONUtility().json, getUtility().getCurrentDate());
+        String[] workoutInfo = getJSONUtility().SplitTheData(json);
+
+        return workoutInfo;
     }
 
     private void openBMI()
@@ -72,5 +87,15 @@ public class FitnessActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Calendar.class);
         intent.putExtra("ActivityID", "Fitness");
         startActivityForResult(intent, RETURNED_VALUES);
+    }
+
+    private Utility getUtility()
+    {
+        return new Utility();
+    }
+
+    private JsonUtility getJSONUtility()
+    {
+        return new JsonUtility(this);
     }
 }
