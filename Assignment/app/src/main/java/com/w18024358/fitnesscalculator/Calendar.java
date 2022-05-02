@@ -7,72 +7,51 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 //Was used as a Dialog but changed to be an Activity to get setOnDateChangeListener to work correctly
 public class Calendar extends AppCompatActivity
 {
+    //TODO Crashes if just change date with no data in any list
     //Don't like doing this but necessary
     String userSelectedDate = null;
+    String previouslySelectedDate = "no date";
 
+    //Breakfast
+    ArrayList<FoodItem> breakfastFoodItems;
+    ListView breakfastListView;
+    FoodItemListAdapter breakfastAdapter;
+
+    //Works but I need to think about how does it know which list data to load
+    //How does it know what date was also stores
+    //I think instead of saving a string off all the dates, I actually need to save a HashMap (maybe one for each list) that will hold the date saved and the list
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar);
 
+        breakfastFoodItems = new ArrayList<>();
+        breakfastListView = findViewById(R.id.calendarBreakfastListView);
+        breakfastAdapter = new FoodItemListAdapter(this, breakfastFoodItems);
+        breakfastListView.setAdapter(breakfastAdapter);
+
         getCalendarView().setOnDateChangeListener((calendarView, i, i1, i2) -> {
             String date = i2 + "/" + (i1 + 1) + "/" + i;
             Log.i("onSelectedDayChange: ", "Date: " + date);
             userSelectedDate = date;
-
-
-            //Test -- TODO this is actually semi working
-            SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-            String dateSaved = sharedPreferences.getString("Breakfast Date Saved", "");
-            Log.i("Date from SP -> ", dateSaved);
-            Log.i("Date from cal ->", date);
-
-            //TODO So it gets the data, just need to do something with it
-            //Perhaps show it on this screen underneath the calendar
-            //Could then make okay move calendar and only show lists?
-            if(dateSaved.contains(date)) {
-                //Setting and displaying the message that will inform the user that the selected data does in-fact have data
-                getMessage().setText("Selected date has calorie data stored");
-                getMessage().setVisibility(View.VISIBLE);
-
-                Log.i("Inside Calendar Loading", "-------------------------------------------------------------------------");
-                //Retrieving the JSON lists
-                String json = sharedPreferences.getString("Breakfast List Saved Items", "");
-                int breakfastSize = sharedPreferences.getInt("Breakfast List Size On Save", 0);
-                Log.i("JSON:", json);
-                Utility utility = new Utility();
-                ArrayList<String> strings = new Gson().fromJson(json, ArrayList.class);
-                Log.i("JSON ArrayList", strings.toString());
-
-//                breakfastFoodItems.clear();
-                ArrayList<FoodItem> breakfastFoodItems = new ArrayList<FoodItem>();
-                breakfastFoodItems = utility.stringListToItemList(strings, breakfastFoodItems, breakfastSize);
-
-                for (int j = 0; j < breakfastSize; j++) {
-                    Log.i("Calendar", breakfastFoodItems.get(j).getItemQuantity() + " " + breakfastFoodItems.get(j).getItemName() + " " + breakfastFoodItems.get(j).getItemCalories());
-                    Toast.makeText(this, "Data: " + breakfastFoodItems.get(j).getItemQuantity() + " " + breakfastFoodItems.get(j).getItemName() + " " + breakfastFoodItems.get(j).getItemCalories(), Toast.LENGTH_SHORT).show();
-                }
-                Log.i("Finished Calendar Loading", "-------------------------------------------------------------------------");
-            }
-            else
-            {
-                //Informing the user that the selected date has no stored data
-                getMessage().setText("Selected date has no calorie data stored");
-                getMessage().setVisibility(View.VISIBLE);
-                Log.i("Calendar Info", "Unfortunately no data saved");
-            }
+            openSelectedDate();
         });
 
         Intent inboundIntent = getIntent();
@@ -90,7 +69,6 @@ public class Calendar extends AppCompatActivity
         }
 
         getCancelButton().setOnClickListener(view -> goBack());
-        getOkayButton().setOnClickListener(view -> openSelectedDate());
     }
 
     private void goBack()
@@ -110,7 +88,6 @@ public class Calendar extends AppCompatActivity
         finish();
     }
 
-    //TODO redo this to work with new functionality
     private void openSelectedDate()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
@@ -118,20 +95,79 @@ public class Calendar extends AppCompatActivity
         //User has selected a date now check if the user is from calorie or fitness page
         if(calorieActivity())
         {
-            //Check if that date has an entry
-            String listOfDates = sharedPreferences.getString("AllDates", "");
-            //As the user could check when only used the app for a date need to check for this edge case
-            String currentDateEntry = sharedPreferences.getString("CurrentDate", "");
+            if(!previouslySelectedDate.equals(userSelectedDate))
+            {
+                previouslySelectedDate = userSelectedDate;
 
-            if(!listOfDates.isEmpty() && listOfDates.contains(userSelectedDate))
-            {
-                Log.i("OpenSelectedDate()", "Selected date: " + userSelectedDate);
-            }
-            if(currentDateEntry.contains(getUtility().getCurrentDateNumerical()))
-            {
-                Log.i("OpenSelectedDate()", "Selected today idiot");
-                goBack();
-            }
+                Gson gson = new Gson();
+                String dateSaved = sharedPreferences.getString("AllDatesSaved", "");
+
+                //No data saved yet but doesn't catch all errors
+                if(dateSaved == null) return;
+
+                //It contains the dates but now need to find out which list has saved data
+                if (dateSaved.contains(userSelectedDate))
+                {
+                    //Getting the HashMap that contains all dates with data saved then getting HashMap that stored the size of lists
+                    String breakfastData = sharedPreferences.getString("Breakfast List All Saved Data", "");
+                    String breakfastInfo = sharedPreferences.getString("Breakfast List All Info", "");
+
+                    //Turning back into HashMap to check the keys contain the selected date
+                    Type type = new TypeToken<HashMap<String, String>>() {}.getType();
+                    HashMap<String, String> breakfast = gson.fromJson(breakfastData, type);
+
+                    Type type2 = new TypeToken<HashMap<String, Integer>>() {}.getType();
+                    HashMap<String, Integer> breakfastInfoMap = gson.fromJson(breakfastInfo, type2);
+
+                    //User could have saved data i.e., set amount of calories but no lists can be stored so will crash
+                    if(breakfastData == null || breakfastInfo == null || breakfast == null) return;
+
+                    if(breakfast.containsKey(userSelectedDate))
+                    {
+                        //Making sure the message is not displayed (i.e., the user selected a non valid date first then selected a valid date)
+                        getMessage().setVisibility(View.INVISIBLE);
+
+                        Log.i("The map", String.valueOf(breakfast));
+
+                        String item = breakfast.get(userSelectedDate).replaceAll(",", " ").replaceAll("\\p{Punct}", "");
+                        Log.i("Data", item);
+
+                        //This would split up all the data
+                        String[] foodItem = item.split(" ");
+
+                        int count = 0;
+                        int size = Objects.requireNonNull(breakfastInfoMap.get(userSelectedDate));
+
+                        //Showing the lists
+                        getBreakfastListViewHeader().setVisibility(View.VISIBLE);
+                        getBreakfastListView().setVisibility(View.VISIBLE);
+
+                        for (int j = 0; j < size; j++)
+                        {
+                            breakfastFoodItems.add(new FoodItem(foodItem[count], foodItem[count + 1], foodItem[count + 2]));
+                            count += 3;
+                        }
+                        breakfastAdapter.notifyDataSetChanged();
+                    }// end breakfast.contains()
+                }//end dataSaved.contains()
+                else
+                {
+                    getMessage().setText("No available data on this selected date");
+                    getMessage().setVisibility(View.VISIBLE);
+
+                    //Hiding the list
+                    getBreakfastListViewHeader().setVisibility(View.INVISIBLE);
+                    getBreakfastListView().setVisibility(View.INVISIBLE);
+
+                    //Removing the data if there is any
+                    if(breakfastFoodItems.size() != 0)
+                        breakfastFoodItems.clear();
+                }//end else
+            }//end previouslySelectedDate
+        }//end calorieActivity()
+        else if(fitnessActivity())
+        {
+
         }
     }
 
@@ -147,19 +183,16 @@ public class Calendar extends AppCompatActivity
         return intent.equals("Fitness");
     }
 
-    private Utility getUtility()
-    {
-        return new Utility();
-    }
-
-    private CalendarView getCalendarView()
-    {
-        return findViewById(R.id.calendarCalendarView);
-    }
+    private Utility getUtility() { return new Utility(); }
+    private CalendarView getCalendarView() { return findViewById(R.id.calendarCalendarView); }
     private TextView getMessage() { return findViewById(R.id.calendarDataMessage); }
-    private Button getCancelButton()
-    {
-        return findViewById(R.id.calendarCancelButton);
-    }
-    private Button getOkayButton() { return findViewById(R.id.calendarOkayButton); }
+    private TextView getBreakfastListViewHeader() { return findViewById(R.id.calendarBreakfastHeader); }
+    private ListView getBreakfastListView() { return findViewById(R.id.calendarBreakfastListView); }
+    private TextView getLunchListViewHeader() { return findViewById(R.id.calendarLunchHeader); }
+    private ListView getLunchListView() { return findViewById(R.id.calendarLunchListView); }
+    private TextView getDinnerListViewHeader() { return findViewById(R.id.calendarDinnerListView); }
+    private ListView getDinnerListView() { return findViewById(R.id.calendarDinnerListView); }
+    private TextView getSnacksListViewHeader() { return findViewById(R.id.calendarSnacksHeader); }
+    private ListView getSnacksListView() { return findViewById(R.id.calendarSnacksListView); }
+    private Button getCancelButton() { return findViewById(R.id.calendarCancelButton); }
 }

@@ -19,7 +19,6 @@ public class Utility
     //Transforming a ArrayList<FoodItem> to ArrayList<String>
     ArrayList<String> itemListToStringList(ArrayList<FoodItem> items)
     {
-        Log.i("Items", String.valueOf(items));
         ArrayList<String> convertedArray = new ArrayList<>();
 
         for (int i = 0; i < items.size(); i++)
@@ -71,7 +70,7 @@ public class Utility
 
     String getCurrentDateNumerical()
     {
-        DateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("d/M/yyyy");
         java.util.Calendar date = Calendar.getInstance();
 
         return dateFormat.format(date.getTime());

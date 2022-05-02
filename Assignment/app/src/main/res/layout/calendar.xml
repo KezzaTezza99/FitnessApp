@@ -126,31 +126,17 @@
         app:layout_constraintTop_toBottomOf="@+id/calendarSnacksHeader"
         app:layout_constraintVertical_bias="0" />
 
-    <!--Okay button-->
-
     <!--Cancel button-->
-
-    <Button
-        android:id="@+id/calendarOkayButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Okay"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarSnacksListView"
-        app:layout_constraintVertical_bias="0.276" />
-
     <Button
         android:id="@+id/calendarCancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
+        android:text="Go Back"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.628"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarSnacksListView"
-        app:layout_constraintVertical_bias="0.276" />
+        app:layout_constraintVertical_bias="0.184" />
 </androidx.constraintlayout.widget.ConstraintLayout>
