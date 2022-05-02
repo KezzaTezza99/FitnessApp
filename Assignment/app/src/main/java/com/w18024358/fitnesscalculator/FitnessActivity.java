@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,7 +14,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class FitnessActivity extends AppCompatActivity {
+public class FitnessActivity extends AppCompatActivity
+{
+    //todo sort calories out on here
+    //predict how much each activity would burn?
+    //add the ability to open the lists - then mark complete? (this could then update calories burnt?
+    //maybe start the workout by having a timer that takes up the space at the bottom???
+
+    //TODO Refactor
+
     static final int RETURNED_VALUES = 1;
 
     TextView currentDay;
@@ -58,15 +67,6 @@ public class FitnessActivity extends AppCompatActivity {
             return true;
         });
 
-        //THIS ACTUALLY WORKS BUT I NEED TO GET THE ACTUAL JSON INFORMATION
-        //AND THEN FORMAT IT NICELY
-        //FINALLY GET WEIGHT FROM THE USER PROFILE PAGE IF INCLUDED OTHERWISE NOT SPECIFY?
-//        ArrayList<Workouts> tst = new ArrayList();
-//        tst.add(new Workouts("Bench", "5x5 ", "5x5 ", "5x5", "Triceps ", "5x5 "));
-//        compoundMovementPrimaryListView = findViewById(R.id.fitnessCompoundMovementListView1);
-//        compoundMovementPrimaryAdapter = new FitnessListAdapter(this, tst);
-//        compoundMovementPrimaryListView.setAdapter(compoundMovementPrimaryAdapter);
-
         //Doing JSON stuff etc
         //Make this a method?
         Utility utility = new Utility();
@@ -76,29 +76,44 @@ public class FitnessActivity extends AppCompatActivity {
         WorkoutUtil workoutUtil = new WorkoutUtil(str, jsonUtility.getWorkout());
         //_end
 
-        //Primary Exercise
-        ArrayList<CompoundWorkout> primaryWorkout = new ArrayList<>();
-        primaryWorkout.add(new CompoundWorkout(workoutUtil.getPrimaryCompoundExerciseName(), workoutUtil.getWarmup(), workoutUtil.getPrimaryWorkingSet1(),
-                workoutUtil.getPrimaryWorkingSet2(), workoutUtil.getPrimaryWorkingSet3()));
-        compoundMovementPrimaryListView = findViewById(R.id.fitnessCompoundMovementListView1);
-        compoundMovementPrimaryAdapter = new CompoundWorkoutListAdapter(this, primaryWorkout, true);
-        compoundMovementPrimaryListView.setAdapter(compoundMovementPrimaryAdapter);
+        if(jsonUtility.getWorkout() == Boolean.FALSE)
+        {
+            //Show the message but hide the Lists
 
-        //Secondary Exercise
-        ArrayList<CompoundWorkout> secondaryWorkout = new ArrayList<>();
-        secondaryWorkout.add(new CompoundWorkout(workoutUtil.getSecondaryCompoundExerciseName(), workoutUtil.getWarmup(), workoutUtil.getSecondaryWorkingSet1(),
-                workoutUtil.getSecondaryWorkingSet2(), workoutUtil.getSecondaryWorkingSet3()));
-        compoundMovementSecondaryListView = findViewById(R.id.fitnessCompoundMovementListView2);
-        compoundMovementSecondaryAdapter = new CompoundWorkoutListAdapter(this, secondaryWorkout, false);
-        compoundMovementSecondaryListView.setAdapter(compoundMovementSecondaryAdapter);
+            //TODO make this a method and for the opposite and call in both blocks just in-case
+            getRestDayMessage().setVisibility(View.VISIBLE);
+            getCompoundMovementLabel().setVisibility(View.INVISIBLE);
+            getIsolationMovementLabel().setVisibility(View.INVISIBLE);
+            getCompoundMovementPrimaryListView().setVisibility(View.INVISIBLE);
+            getCompoundMovementSecondaryListView().setVisibility(View.INVISIBLE);
+            getIsolationMovementListView().setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            //Primary Exercise
+            ArrayList<CompoundWorkout> primaryWorkout = new ArrayList<>();
+            primaryWorkout.add(new CompoundWorkout(workoutUtil.getPrimaryCompoundExerciseName(), workoutUtil.getWarmup(), workoutUtil.getPrimaryWorkingSet1(),
+                    workoutUtil.getPrimaryWorkingSet2(), workoutUtil.getPrimaryWorkingSet3()));
+            compoundMovementPrimaryListView = findViewById(R.id.fitnessCompoundMovementListView1);
+            compoundMovementPrimaryAdapter = new CompoundWorkoutListAdapter(this, primaryWorkout, true);
+            compoundMovementPrimaryListView.setAdapter(compoundMovementPrimaryAdapter);
 
-        //Isolation Exercises
-        ArrayList<IsolationWorkout> isolationWorkout = new ArrayList<>();
-        isolationWorkout.add(new IsolationWorkout(workoutUtil.getIsolationExercise1(), workoutUtil.getIsolationExercise2(), workoutUtil.getIsolationExercise3(),
-                workoutUtil.getIsolationWorkingSet1(), workoutUtil.getIsolationWorkingSet2(), workoutUtil.getIsolationWorkingSet3(), workoutUtil.getIsolationWorkingSet4(), workoutUtil.getIsolationWorkingSet5()));
-        isolationMovementListView = findViewById(R.id.fitnessIsolationMovementListView1);
-        isolationWorkoutListAdapter = new IsolationWorkoutListAdapter(this, isolationWorkout);
-        isolationMovementListView.setAdapter(isolationWorkoutListAdapter);
+            //Secondary Exercise
+            ArrayList<CompoundWorkout> secondaryWorkout = new ArrayList<>();
+            secondaryWorkout.add(new CompoundWorkout(workoutUtil.getSecondaryCompoundExerciseName(), workoutUtil.getWarmup(), workoutUtil.getSecondaryWorkingSet1(),
+                    workoutUtil.getSecondaryWorkingSet2(), workoutUtil.getSecondaryWorkingSet3()));
+            compoundMovementSecondaryListView = findViewById(R.id.fitnessCompoundMovementListView2);
+            compoundMovementSecondaryAdapter = new CompoundWorkoutListAdapter(this, secondaryWorkout, false);
+            compoundMovementSecondaryListView.setAdapter(compoundMovementSecondaryAdapter);
+
+            //Isolation Exercises
+            ArrayList<IsolationWorkout> isolationWorkout = new ArrayList<>();
+            isolationWorkout.add(new IsolationWorkout(workoutUtil.getIsolationExercise1(), workoutUtil.getIsolationExercise2(), workoutUtil.getIsolationExercise3(),
+                    workoutUtil.getIsolationWorkingSet1(), workoutUtil.getIsolationWorkingSet2(), workoutUtil.getIsolationWorkingSet3(), workoutUtil.getIsolationWorkingSet4(), workoutUtil.getIsolationWorkingSet5()));
+            isolationMovementListView = findViewById(R.id.fitnessIsolationMovementListView1);
+            isolationWorkoutListAdapter = new IsolationWorkoutListAdapter(this, isolationWorkout);
+            isolationMovementListView.setAdapter(isolationWorkoutListAdapter);
+        }
     }
 
     private void openBMI()
@@ -124,6 +139,36 @@ public class FitnessActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Calendar.class);
         intent.putExtra("ActivityID", "Fitness");
         startActivityForResult(intent, RETURNED_VALUES);
+    }
+
+    private TextView getCompoundMovementLabel()
+    {
+        return findViewById(R.id.fitnessCompoundMovementLabel);
+    }
+
+    private TextView getIsolationMovementLabel()
+    {
+        return findViewById(R.id.fitnessIsolationMovementLabel);
+    }
+
+    private ListView getCompoundMovementPrimaryListView()
+    {
+        return findViewById(R.id.fitnessCompoundMovementListView1);
+    }
+
+    private ListView getCompoundMovementSecondaryListView()
+    {
+        return findViewById(R.id.fitnessCompoundMovementListView2);
+    }
+
+    private ListView getIsolationMovementListView()
+    {
+        return findViewById(R.id.fitnessIsolationMovementListView1);
+    }
+
+    private TextView getRestDayMessage()
+    {
+        return findViewById(R.id.fitnessRestDayMessage);
     }
 
     private Utility getUtility()

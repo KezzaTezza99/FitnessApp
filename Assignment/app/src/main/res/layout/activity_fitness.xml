@@ -219,4 +219,18 @@
         app:layout_constraintTop_toTopOf="@+id/fitnessNavBackground"
         app:layout_constraintHorizontal_bias="0.93"
         app:layout_constraintVertical_bias="0.94"/>
+
+    <!--If no workout display this brief message-->
+    <TextView
+        android:id="@+id/fitnessRestDayMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Today is a rest day"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/fitnessCompoundMovementListView1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fitnessCurrentDayLabel"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

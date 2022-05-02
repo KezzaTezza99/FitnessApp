@@ -269,30 +269,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         }
     }
 
-    //TODO save the data once the user has closed the application - just in case they don't save the data before closing
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i("OnPause:", "Pausing and Saving Data");
-        if(!breakfastFoodItems.isEmpty())
-            saveLists(breakfastFoodItems, "Breakfast");
-        if(!lunchFoodItems.isEmpty())
-            saveLists(lunchFoodItems, "Lunch");
-        if(!dinnerFoodItems.isEmpty())
-            saveLists(dinnerFoodItems, "Dinner");
-        if(!snacksFoodItems.isEmpty())
-            saveLists(snacksFoodItems, "Snacks");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i("OnResume:", "Resuming and Loading Data");
-        boolean load = getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("DataSaved", Boolean.FALSE);
-        if(load)
-            loadData();
-    }
-
     @Override
     public void applyUsersCalorieTarget(String target) {
         caloriesLeft.setText(target + "kcal");

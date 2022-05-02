@@ -23,6 +23,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 //TODO From Nick ----> Make code bulletproof, make the app as user-friendly as possible (i.e., already provide keyboards to type etc), add extra functionality that is unique to course
 public class MainActivity extends AppCompatActivity {
@@ -51,12 +54,29 @@ public class MainActivity extends AppCompatActivity {
         FitnessButton.setOnClickListener(view -> openFitnessActivity());
 
         SharedPreferences sp = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        sp.edit().clear().apply();
+        //sp.edit().clear().apply();
+
+//        //Testing save dates and data using HashMap
+//        Utility utility = new Utility();
+//        String numericalDate = utility.getCurrentDateNumerical();
+//        Log.i("Numerical Date:", numericalDate);
+//        String yesterday = "28/04/2022";
+//
+//        HashMap<String, String> dates = new HashMap<String, String>();
+//        dates.put(numericalDate, "10 Apples 100");
+//        Log.i("Map", String.valueOf(dates));
+//
+//        //Turning to JSON
+//        Gson gson = new Gson();
+//        String hashMapString = gson.toJson(dates);
+//
+//        sp.edit().putString("HashMap", hashMapString).apply();
+
 
 //        Intent intent = new Intent(this, UserProfileActivity.class);
 //        startActivity(intent);
     }
-//TODO fix sunday and wednesday
+
     private void checkUserDetails()
     {
         //This is temp code

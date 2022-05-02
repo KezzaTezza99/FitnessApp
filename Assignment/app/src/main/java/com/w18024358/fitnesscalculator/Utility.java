@@ -1,4 +1,5 @@
 package com.w18024358.fitnesscalculator;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -70,7 +71,7 @@ public class Utility
 
     String getCurrentDateNumerical()
     {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy");
         java.util.Calendar date = Calendar.getInstance();
 
         return dateFormat.format(date.getTime());

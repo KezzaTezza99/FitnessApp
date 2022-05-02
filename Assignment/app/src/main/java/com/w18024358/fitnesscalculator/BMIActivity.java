@@ -241,11 +241,6 @@ public class BMIActivity extends AppCompatActivity
         }
     }
 
-    //Current Task - FINISH
-    //So far changing from KGs crashes the app
-    //Very messy
-    //TODO make this actually use the Math Utility
-    //Or simply do everything here and not have to use different methods
     private void convertCurrentMeasurements(int metric)
     {
         if(metric == 0)

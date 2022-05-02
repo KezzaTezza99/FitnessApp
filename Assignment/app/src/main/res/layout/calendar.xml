@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--The calendar-->
     <CalendarView
         android:id="@+id/calendarCalendarView"
         android:layout_width="395dp"
@@ -16,6 +17,119 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0" />
 
+    <TextView
+        android:id="@+id/calendarDataMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NA"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarCalendarView"
+        app:layout_constraintVertical_bias="0.028" />
+
+    <!--Breakfast Header-->
+    <TextView
+        android:id="@+id/calendarBreakfastHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Breakfast Items:"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarDataMessage"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ListView
+        android:id="@+id/calendarBreakfastListView"
+        android:layout_width="379dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarBreakfastHeader"
+        app:layout_constraintVertical_bias="0" />
+
+    <!--Lunch Header-->
+    <TextView
+        android:id="@+id/calendarLunchHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lunch Items:"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarBreakfastListView"
+        app:layout_constraintVertical_bias="0.02" />
+
+    <ListView
+        android:id="@+id/calendarLunchListView"
+        android:layout_width="379dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarLunchHeader"
+        app:layout_constraintVertical_bias="0" />
+
+    <!--Dinner Header-->
+    <TextView
+        android:id="@+id/calendarDinnerHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dinner Items:"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarLunchListView"
+        app:layout_constraintVertical_bias="0.02" />
+
+    <!--Dinner List View-->
+    <ListView
+        android:id="@+id/calendarDinnerListView"
+        android:layout_width="379dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarDinnerHeader"
+        app:layout_constraintVertical_bias="0" />
+
+    <!--Snacks Header-->
+    <TextView
+        android:id="@+id/calendarSnacksHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Snack Items:"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarDinnerListView"
+        app:layout_constraintVertical_bias="0.02" />
+
+    <ListView
+        android:id="@+id/calendarSnacksListView"
+        android:layout_width="379dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarSnacksHeader"
+        app:layout_constraintVertical_bias="0" />
+
+    <!--Okay button-->
+
+    <!--Cancel button-->
+
     <Button
         android:id="@+id/calendarOkayButton"
         android:layout_width="wrap_content"
@@ -24,9 +138,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintVertical_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarCalendarView" />
+        app:layout_constraintTop_toBottomOf="@+id/calendarSnacksListView"
+        app:layout_constraintVertical_bias="0.276" />
 
     <Button
         android:id="@+id/calendarCancelButton"
@@ -36,7 +150,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.628"
-        app:layout_constraintVertical_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarCalendarView" />
+        app:layout_constraintTop_toBottomOf="@+id/calendarSnacksListView"
+        app:layout_constraintVertical_bias="0.276" />
 </androidx.constraintlayout.widget.ConstraintLayout>
