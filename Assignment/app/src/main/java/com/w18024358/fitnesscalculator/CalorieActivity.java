@@ -26,6 +26,7 @@ import java.util.Locale;
 //Save data when user leaves the page?
 //Load when user opens page
 //Save data as soon as item is added?
+//Bug in adding to either dinner or snacks on phone
 public class CalorieActivity extends AppCompatActivity implements TargetCalorieDialog.CalorieDialogListener {
     //TODO REFACTOR THIS CLASS
     //TODO Add a class that does toasts for me?? Maybe another UTIL class? Like Advanced Programming
@@ -391,7 +392,9 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         {
             //Append to the list
             String oldDates = sharedPreferences.getString("AllDatesSaved", "");
-            editor.putString("AllDatesSaved", oldDates + " - " + currentDate);
+            if(!oldDates.equals(currentDate)) {
+                editor.putString("AllDatesSaved", oldDates + " - " + currentDate);
+            }
         }
         editor.apply();
     }
@@ -404,10 +407,13 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     private void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
 
-        Log.i("Load Data", "Just Loaded");
+        //Only load data if its been saved today!
+        String dayDataSaved = sharedPreferences.getString("CurrentDate", "");
+
         int ogCal = sharedPreferences.getInt("TargetCalories", 0);
-        Log.i("Load Data:", String.valueOf(ogCal));
         caloriesLeft.setText(ogCal + "kcal");
+
+        if(!dayDataSaved.equals(getUtility().getCurrentDateNumerical())) return;
 
         //LIST STILL ONLY SHOWS ONE ITEM, ITS A STRING IT GETS OVER-RIDDEN (TRY HAVING MULTIPLE BEFORE RELOADING?)
         //NEED TO PUT IT BACK INTO LIST?
@@ -665,24 +671,182 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                 }
                 break;
             case "Lunch":
+                //
                 editor.putBoolean("Lunch List Needs Loading", Boolean.TRUE);
                 editor.putString("Lunch List Saved Items", json);
                 editor.putInt("Lunch List Size On Save", lunchFoodItems.size());
+
+                //This data being saved is used for the Calendar Activity
+                //Storing a HashMap that will hold the date and the list on the last save
+                HashMap<String, String> allLunchData = new HashMap<>();
+                //Storing the date and the data
+                allLunchData.put(getUtility().getCurrentDateNumerical(), json);
+
+                //Now creating another HashMap that again stores the date as a key but the value stored will be the size of the list, needed for when I recreate the lists in Calendar
+                HashMap<String, Integer> allLunchDataInformation = new HashMap<>();
+                //Storing the date then the size
+                allLunchDataInformation.put(getUtility().getCurrentDateNumerical(), items.size());
+
+                //Turning the HashMap(s) into a String(s) that can be stored in the SharedPreferences
+                String data1 = gson.toJson(allLunchData);
+                String info1 = gson.toJson(allLunchDataInformation);
+
+                editor.putString("Lunch List All Saved Data", data1);
+                editor.putString("Lunch List All Info", info1);
+                editor.putBoolean("Lunch Data Saved", Boolean.TRUE);
+
+                boolean lunchCheck = sharedPreferences.getBoolean("Lunch Data Saved", Boolean.FALSE);
+
+                //If the is true then the user will be saving data for a second time, this can from adding to the list for the current day or adding info for a different day
+                //need to track all the information if I want to be able to display data through the calendar, database would probably work better but this quicker and easier
+                if(lunchCheck)
+                {
+                    //Getting the string of data to append data too
+                    String oldData = sharedPreferences.getString("Lunch List All Saved Data", "");
+
+                    //Transforming back into a Map
+                    Type type = new TypeToken<HashMap<String, String>>(){}.getType();
+                    HashMap<String, String> fullLunchDataList = gson.fromJson(oldData, type);
+
+                    //Appending the new value to the map
+                    fullLunchDataList.put(getUtility().getCurrentDateNumerical(), json);
+
+                    //Getting the stored map that holds the size of the lists
+                    String oldInfo = sharedPreferences.getString("Lunch List All Info", "");
+
+                    //Transforming back into a Map
+                    Type type2 = new TypeToken<HashMap<String, Integer>>(){}.getType();
+                    HashMap<String, Integer> fullLunchInfoList = gson.fromJson(oldInfo, type2);
+
+                    //Appending the new values to the map
+                    fullLunchInfoList.put(getUtility().getCurrentDateNumerical(), items.size());
+
+                    //Turning back into a string to store in shared preferences
+                    String newData = gson.toJson(fullLunchDataList);
+                    String newInfo = gson.toJson(fullLunchInfoList);
+                    editor.putString("Lunch List All Saved Data", newData);
+                    editor.putString("Lunch List All Info", newInfo);
+                }
                 break;
             case "Dinner":
                 editor.putBoolean("Dinner List Needs Loading", true);
                 editor.putString("Dinner List Saved Items", json);
                 editor.putInt("Dinner List Size On Save", dinnerFoodItems.size());
+
+                //Saving the data for the calendar to use
+                //Storing a HashMap that will hold the date and the list
+                HashMap<String, String> allDinnerData = new HashMap<>();
+                //Storing the date and the data
+                allDinnerData.put(getUtility().getCurrentDateNumerical(), json);
+
+                //Now creating another HashMap that again stores the date as a key but the value stored will be the size of the list, needed for when I recreate the lists in Calendar
+                HashMap<String, Integer> allDinnerDataInformation = new HashMap<>();
+                //Storing the date then the size
+                allDinnerDataInformation.put(getUtility().getCurrentDateNumerical(), items.size());
+
+                //Turning the HashMap(s) into a String(s) that can be stored in the SharedPreferences
+                String data2 = gson.toJson(allDinnerData);
+                String info2 = gson.toJson(allDinnerDataInformation);
+
+                editor.putString("Dinner List All Saved Data", data2);
+                editor.putString("Dinner List All Info", info2);
+                editor.putBoolean("Dinner Data Saved", Boolean.TRUE);
+
+                boolean dinnerCheck = sharedPreferences.getBoolean("Dinner Data Saved", Boolean.FALSE);
+
+                //If the is true then the user will be saving data for a second time, this can from adding to the list for the current day or adding info for a different day
+                //need to track all the information if I want to be able to display data through the calendar, database would probably work better but this quicker and easier
+                if(dinnerCheck)
+                {
+                    //Getting the string of data to append data too
+                    String oldData = sharedPreferences.getString("Dinner List All Saved Data", "");
+
+                    //Transforming back into a Map
+                    Type type = new TypeToken<HashMap<String, String>>(){}.getType();
+                    HashMap<String, String> fullDinnerDataList = gson.fromJson(oldData, type);
+
+                    //Appending the new value to the map
+                    fullDinnerDataList.put(getUtility().getCurrentDateNumerical(), json);
+
+                    //Getting the stored map that holds the size of the lists
+                    String oldInfo = sharedPreferences.getString("Dinner List All Info", "");
+
+                    //Transforming back into a Map
+                    Type type2 = new TypeToken<HashMap<String, Integer>>(){}.getType();
+                    HashMap<String, Integer> fullDinnerInfoList = gson.fromJson(oldInfo, type2);
+
+                    //Appending the new values to the map
+                    fullDinnerInfoList.put(getUtility().getCurrentDateNumerical(), items.size());
+
+                    //Turning back into a string to store in shared preferences
+                    String newData = gson.toJson(fullDinnerDataList);
+                    String newInfo = gson.toJson(fullDinnerInfoList);
+                    editor.putString("Dinner List All Saved Data", newData);
+                    editor.putString("Dinner List All Info", newInfo);
+                }
                 break;
             case "Snacks":
                 editor.putBoolean("Snacks List Needs Loading", true);
                 editor.putString("Snacks List Saved Items", json);
-                editor.putInt("Snacks List Size On Save", snacksFoodItems.size());
+                editor.putInt("Snacks List Size On Save", items.size());
+
+                //Adding to the calendar saved data
+                //Storing a HashMap that will hold the date and the list
+                HashMap<String, String> allSnacksData = new HashMap<>();
+                //Storing the date and the data
+                allSnacksData.put(getUtility().getCurrentDateNumerical(), json);
+
+                //Now creating another HashMap that again stores the date as a key but the value stored will be the size of the list, needed for when I recreate the lists in Calendar
+                HashMap<String, Integer> allSnacksDataInformation = new HashMap<>();
+                //Storing the date then the size
+                allSnacksDataInformation.put(getUtility().getCurrentDateNumerical(), items.size());
+
+                //Turning the HashMap(s) into a String(s) that can be stored in the SharedPreferences
+                String data3 = gson.toJson(allSnacksData);
+                String info3 = gson.toJson(allSnacksDataInformation);
+
+                editor.putString("Snacks List All Saved Data", data3);
+                editor.putString("Snacks List All Info", info3);
+                editor.putBoolean("Snacks Data Saved", Boolean.TRUE);
+
+                boolean snackCheck = sharedPreferences.getBoolean("Snacks Data Saved", Boolean.FALSE);
+
+                //If the is true then the user will be saving data for a second time, this can from adding to the list for the current day or adding info for a different day
+                //need to track all the information if I want to be able to display data through the calendar, database would probably work better but this quicker and easier
+                if(snackCheck)
+                {
+                    //Getting the string of data to append data too
+                    String oldData = sharedPreferences.getString("Snacks List All Saved Data", "");
+
+                    //Transforming back into a Map
+                    Type type = new TypeToken<HashMap<String, String>>(){}.getType();
+                    HashMap<String, String> fullSnackDataList = gson.fromJson(oldData, type);
+
+                    //Appending the new value to the map
+                    fullSnackDataList.put(getUtility().getCurrentDateNumerical(), json);
+
+                    //Getting the stored map that holds the size of the lists
+                    String oldInfo = sharedPreferences.getString("Snacks List All Info", "");
+
+                    //Transforming back into a Map
+                    Type type2 = new TypeToken<HashMap<String, Integer>>(){}.getType();
+                    HashMap<String, Integer> fullSnacksInfoList = gson.fromJson(oldInfo, type2);
+
+                    //Appending the new values to the map
+                    fullSnacksInfoList.put(getUtility().getCurrentDateNumerical(), items.size());
+
+                    //Turning back into a string to store in shared preferences
+                    String newData = gson.toJson(fullSnackDataList);
+                    String newInfo = gson.toJson(fullSnacksInfoList);
+                    editor.putString("Snacks List All Saved Data", newData);
+                    editor.putString("Snacks List All Info", newInfo);
+                }
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + theList);
         }
         editor.apply();
+        saveData();
     }
 
     //When the app loads data the calories wont be be accounted for (recalculating here but need to know which lists had items in)

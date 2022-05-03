@@ -9,7 +9,7 @@
     <CalendarView
         android:id="@+id/calendarCalendarView"
         android:layout_width="395dp"
-        android:layout_height="315dp"
+        android:layout_height="295dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarCalendarView"
-        app:layout_constraintVertical_bias="0.028" />
+        app:layout_constraintVertical_bias="0" />
 
     <!--Breakfast Header-->
     <TextView
@@ -46,7 +46,7 @@
     <ListView
         android:id="@+id/calendarBreakfastListView"
         android:layout_width="379dp"
-        android:layout_height="80dp"
+        android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,12 +65,12 @@
         app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarBreakfastListView"
-        app:layout_constraintVertical_bias="0.02" />
+        app:layout_constraintVertical_bias="0.01" />
 
     <ListView
         android:id="@+id/calendarLunchListView"
         android:layout_width="379dp"
-        android:layout_height="80dp"
+        android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,13 +89,13 @@
         app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarLunchListView"
-        app:layout_constraintVertical_bias="0.02" />
+        app:layout_constraintVertical_bias="0.01" />
 
     <!--Dinner List View-->
     <ListView
         android:id="@+id/calendarDinnerListView"
         android:layout_width="379dp"
-        android:layout_height="80dp"
+        android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,12 +114,12 @@
         app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarDinnerListView"
-        app:layout_constraintVertical_bias="0.02" />
+        app:layout_constraintVertical_bias="0.01" />
 
     <ListView
         android:id="@+id/calendarSnacksListView"
         android:layout_width="379dp"
-        android:layout_height="80dp"
+        android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,5 +138,5 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarSnacksListView"
-        app:layout_constraintVertical_bias="0.184" />
+        app:layout_constraintVertical_bias="0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

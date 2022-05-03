@@ -56,23 +56,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         //sp.edit().clear().apply();
 
-//        //Testing save dates and data using HashMap
-//        Utility utility = new Utility();
-//        String numericalDate = utility.getCurrentDateNumerical();
-//        Log.i("Numerical Date:", numericalDate);
-//        String yesterday = "28/04/2022";
-//
-//        HashMap<String, String> dates = new HashMap<String, String>();
-//        dates.put(numericalDate, "10 Apples 100");
-//        Log.i("Map", String.valueOf(dates));
-//
-//        //Turning to JSON
-//        Gson gson = new Gson();
-//        String hashMapString = gson.toJson(dates);
-//
-//        sp.edit().putString("HashMap", hashMapString).apply();
-
-
 //        Intent intent = new Intent(this, UserProfileActivity.class);
 //        startActivity(intent);
     }
