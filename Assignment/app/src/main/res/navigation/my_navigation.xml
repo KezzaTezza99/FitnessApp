@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_navigation"
+    app:startDestination="@id/calorieActivityMenu">
+
+    <activity
+        android:id="@+id/calorieActivityMenu"
+        android:name="com.w18024358.fitnesscalculator.CalorieActivity"
+        android:label="activity_calorie"
+        tools:layout="@layout/activity_calorie" />
+    <activity
+        android:id="@+id/BMIActivityMenu"
+        android:name="com.w18024358.fitnesscalculator.BMIActivity"
+        android:label="activity_bmi"
+        tools:layout="@layout/activity_bmi" />
+    <activity
+        android:id="@+id/fitnessActivityMenu"
+        android:name="com.w18024358.fitnesscalculator.FitnessActivity"
+        android:label="activity_fitness"
+        tools:layout="@layout/activity_fitness" />
+</navigation>

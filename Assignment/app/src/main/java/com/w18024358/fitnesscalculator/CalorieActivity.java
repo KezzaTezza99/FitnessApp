@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,7 +26,6 @@ import java.util.Locale;
 //Save data when user leaves the page?
 //Load when user opens page
 //Save data as soon as item is added?
-//Bug in adding to either dinner or snacks on phone
 public class CalorieActivity extends AppCompatActivity implements TargetCalorieDialog.CalorieDialogListener {
     //TODO REFACTOR THIS CLASS
     //TODO Add a class that does toasts for me?? Maybe another UTIL class? Like Advanced Programming
@@ -82,11 +82,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     ArrayList<String> updatedList = new ArrayList<>();
     int theListSizeNew;
 
-    //NAV Stuff
-    ImageView bmiButton;
-    ImageView calorieButton;
-    ImageView fitnessButton;
-
     //Date
     TextView currentDate;
 
@@ -94,16 +89,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calorie);
-
-        //Temp
-        bmiButton = findViewById(R.id.calorieBMIButton);
-        calorieButton = findViewById(R.id.calorieCalorieButton);
-        fitnessButton = findViewById(R.id.calorieFitnessButton);
-
-        bmiButton.setOnClickListener(view -> openBMI());
-        calorieButton.setOnClickListener(view -> openCalorie());
-        fitnessButton.setOnClickListener(view -> openFitness());
-        //end of nav
 
         //Hardcoding a value for testing purposes
         //Breakfast
@@ -173,6 +158,31 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         currentDate.setOnLongClickListener(view -> {
             openCalendar();
             return true;
+        });
+
+        //TODO make this a util? and then pass in the item id as an argument?
+        //Navigation for the Main Activity (Calorie Activity)
+        BottomNavigationView bottomNavigationView = findViewById(R.id.mainBottomNavigationMenu);
+        bottomNavigationView.setSelectedItemId(R.id.calorieActivityMenu);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(item ->
+        {
+            Intent intent;
+            switch(item.getItemId())
+            {
+                case R.id.bmiActivityMenu:
+                    intent = new Intent(this, BMIActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.calorieActivityMenu:
+                    return true;
+                case R.id.fitnessActivityMenu:
+                    intent = new Intent(this, FitnessActivity.class);
+                    startActivity(intent);
+                    return true;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + item.getItemId());
+            }
         });
     }
 
@@ -569,24 +579,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             tempSum += Integer.parseInt(items.get(i).getItemCalories());
         }
         return tempSum;
-    }
-
-    private void openBMI()
-    {
-        Intent intent = new Intent(this, BMIActivity.class);
-        startActivity(intent);
-    }
-
-    private void openCalorie()
-    {
-        Intent intent = new Intent(this, CalorieActivity.class);
-        startActivity(intent);
-    }
-
-    private void openFitness()
-    {
-        Intent intent = new Intent(this, FitnessActivity.class);
-        startActivity(intent);
     }
 
     private void saveLists(ArrayList<FoodItem> items, String theList)

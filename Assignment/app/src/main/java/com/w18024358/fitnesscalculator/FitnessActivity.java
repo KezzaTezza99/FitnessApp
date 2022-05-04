@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,15 +48,6 @@ public class FitnessActivity extends AppCompatActivity
         setContentView(R.layout.activity_fitness);
 
         currentDay = findViewById(R.id.fitnessCurrentDayLabel);
-
-        //
-        bmiButton = findViewById(R.id.fitnessBMIButton);
-        calorieButton = findViewById(R.id.fitnessCalorieButton);
-        fitnessButton = findViewById(R.id.fitnessFitnessButton);
-
-        bmiButton.setOnClickListener(view -> openBMI());
-        calorieButton.setOnClickListener(view -> openCalorie());
-        fitnessButton.setOnClickListener(view -> openFitness());
 
         //Getting the current day -- TODO Utility
         java.util.Calendar calendar = java.util.Calendar.getInstance();
@@ -114,24 +107,30 @@ public class FitnessActivity extends AppCompatActivity
             isolationWorkoutListAdapter = new IsolationWorkoutListAdapter(this, isolationWorkout);
             isolationMovementListView.setAdapter(isolationWorkoutListAdapter);
         }
-    }
 
-    private void openBMI()
-    {
-        Intent intent = new Intent(this, BMIActivity.class);
-        startActivity(intent);
-    }
+        //Navigation
+        BottomNavigationView bottomNavigationView = findViewById(R.id.mainBottomNavigationMenu);
+        bottomNavigationView.setSelectedItemId(R.id.fitnessActivityMenu);
 
-    private void openCalorie()
-    {
-        Intent intent = new Intent(this, CalorieActivity.class);
-        startActivity(intent);
-    }
-
-    private void openFitness()
-    {
-        Intent intent = new Intent(this, FitnessActivity.class);
-        startActivity(intent);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item ->
+        {
+            Intent intent;
+            switch(item.getItemId())
+            {
+                case R.id.bmiActivityMenu:
+                    intent = new Intent(this, BMIActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.calorieActivityMenu:
+                    intent = new Intent(this, CalorieActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.fitnessActivityMenu:
+                    return true;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + item.getItemId());
+            }
+        });
     }
 
     private void openCalendar()

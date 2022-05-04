@@ -14,6 +14,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.text.DecimalFormat;
 import java.util.Locale;
 
@@ -28,10 +30,6 @@ public class BMIActivity extends AppCompatActivity
         setContentView(R.layout.activity_bmi);
 
         getResultsInfo().setVisibility(View.INVISIBLE);
-        getBmiButton().setOnClickListener(view -> openBMI());
-        getCalorieButton().setOnClickListener(view -> openCalorie());
-        getFitnessButton().setOnClickListener(view -> openFitness());
-
         boolean data = getIntent().getBooleanExtra("DataSaved", Boolean.FALSE);
 
         //Checking to see if the user entered any data previously if so displaying the information
@@ -60,26 +58,30 @@ public class BMIActivity extends AppCompatActivity
         bmiMeasurementToggle().setOnClickListener(view -> changeMetrics());
         //Getting the Button and setting an onclick listener
         bmiCalculateButton().setOnClickListener(view -> checkFieldsNotEmpty());
-    }
 
-    //Temp - Could make one method and pass name in?
-    private void openBMI()
-    {
-        //Do I want to open BMI?
-        Intent intent = new Intent(this, BMIActivity.class);
-        startActivity(intent);
-    }
+        //Navigation menu
+        BottomNavigationView bottomNavigationView = findViewById(R.id.mainBottomNavigationMenu);
+        bottomNavigationView.setSelectedItemId(R.id.bmiActivityMenu);
 
-    private void openCalorie()
-    {
-        Intent intent = new Intent(this, CalorieActivity.class);
-        startActivity(intent);
-    }
-
-    private void openFitness()
-    {
-        Intent intent = new Intent(this, FitnessActivity.class);
-        startActivity(intent);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item ->
+        {
+            Intent intent;
+            switch(item.getItemId())
+            {
+                case R.id.bmiActivityMenu:
+                    return true;
+                case R.id.calorieActivityMenu:
+                    intent = new Intent(this, CalorieActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.fitnessActivityMenu:
+                    intent = new Intent(this, FitnessActivity.class);
+                    startActivity(intent);
+                    return true;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + item.getItemId());
+            }
+        });
     }
 
     private void checkUserData()
@@ -427,9 +429,6 @@ public class BMIActivity extends AppCompatActivity
     private EditText bmiWeightLbs() { return findViewById(R.id.bmiLbsTextField); }
     private TextView bmiText() { return findViewById(R.id.bmiBMILabel); }
     private EditText bmiField() { return findViewById(R.id.bmiBMIResult); }
-    private ImageView getBmiButton() { return findViewById(R.id.bmiBMIButton); }
-    private ImageView getCalorieButton() { return findViewById(R.id.bmiCalorieButton); }
-    private ImageView getFitnessButton() { return findViewById(R.id.bmiFitnessButton); }
     private TextView getResultsInfo() { return findViewById(R.id.bmiUserResultsInfo); }
     private MathUtility getMath() { return new MathUtility(); }
 
