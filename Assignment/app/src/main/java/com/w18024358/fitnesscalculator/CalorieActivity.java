@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 //Save data when the user closes app?
 //Load when user opens app?
 //Save data when user leaves the page?
@@ -175,7 +174,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             openCalendar();
             return true;
         });
-
     }
 
     //TODO make it actually make changes to the list when going back to the CalorieActivity
@@ -273,6 +271,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                 default:
                     throw new IllegalStateException("Unexpected value: " + listToAddTo);
             }
+            saveData();
             setCalorieTotal();
             recalculateRemainingCalories();
         }
@@ -283,8 +282,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         caloriesLeft.setText(target + "kcal");
         targetCalories = Integer.parseInt(target);
 
-        //Saving the data to sharedPreferences
-        saveData();
+        saveCalorieTotal();
     }
 
     //User can set what their daily calorie goals are
@@ -355,6 +353,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }
+        setCalorieTotal();
     }
 
     private void setCalorieTotal() {
@@ -366,8 +365,11 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     private void recalculateRemainingCalories() {
         //As the string will include after the number it causes crashes. Need to only get the number
         String[] caloriesEaten = totalCalories.getText().toString().split("k");
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
 
-        int caloriesRemaining = targetCalories - Integer.parseInt(caloriesEaten[0]);
+        int calorieTarget = sharedPreferences.getInt("TargetCalories", 0);
+        int caloriesRemaining = calorieTarget - Integer.parseInt(caloriesEaten[0]);
+
         caloriesLeft.setText(caloriesRemaining + "kcal");
     }
 
@@ -377,7 +379,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         String currentDate = getUtility().getCurrentDateNumerical();
-        editor.putInt("TargetCalories", targetCalories);
         editor.putBoolean("DataSaved", Boolean.TRUE);
 
         //Saving today's data separately (as it'll be quicker to save / load just today's - all other dates only needed if user wants to go back through the calendar)
@@ -505,6 +506,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                 return false;
             });
         }
+        setCalorieTotal();
         totalCaloriesEatenNeedsRecalculating();
         Log.i("Load Data", "Finished loading");
     }
@@ -558,8 +560,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                     updatedList.get(count + 2)));
             count += 3;
         }
-        setCalorieTotal();
-        recalculateRemainingCalories();
     }
 
     private int addingAllItemCalories(ArrayList<FoodItem> items) {
@@ -844,7 +844,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                 throw new IllegalStateException("Unexpected value: " + theList);
         }
         editor.apply();
-        saveData();
+        recalculateRemainingCalories();
     }
 
     //When the app loads data the calories wont be be accounted for (recalculating here but need to know which lists had items in)
@@ -878,6 +878,15 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         }
         setCalorieTotal();
         caloriesLeftNeedRecalculating(runningTotal);
+    }
+
+    //Saving the calorie total entered by the user (saving it at saveData was causing a bug where if you go back to the page
+    // and add after saving data the calories would go minus)
+    private void saveCalorieTotal()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("TargetCalories", targetCalories).apply();
     }
 
     private void caloriesLeftNeedRecalculating(int caloriesEaten)
