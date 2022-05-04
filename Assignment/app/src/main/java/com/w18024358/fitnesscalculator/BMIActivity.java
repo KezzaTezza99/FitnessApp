@@ -19,18 +19,8 @@ import java.util.Locale;
 
 public class BMIActivity extends AppCompatActivity
 {
-    //TODO change the Imperial fields to actually use one value and then split that value to two
-    //Every value before the decimal place (to the left) will be the first edittext field and everything to the right will be the second
-    //TODO ensure that once changing metrics actually clears the field.
-    //Not a necessary task but just tidies the application up, if the user changes the metric  and then goes back to the prev metric
-    //and then clears the fields and changes back then the other metric actually still appears when it should now be blank
-    //TODO the app crashes if you change metric and have no foot inputted and only have an inch
-    //TODO If I clear the fields I can no longer calculate both weight and height if switching metrics only one at a time
-    //TODO the values still need restricting i.e., inches should not go over 12 before going to a Ft (Should be done need to test)
     //TODO If the SharedPreferences had data in it then should automatically display it
-
     //TODO fix the BMI page when you access it by logging in - if no details show nothing if details then show the weight / height
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -133,7 +123,6 @@ public class BMIActivity extends AppCompatActivity
         }
     }
 
-    //Is this bad?
     private MathUtility Util() { return new MathUtility(); }
 
     //Checking the fields are not empty before calling calculateBMI() ensures that the app doesn't crash if a field is empty
@@ -243,6 +232,7 @@ public class BMIActivity extends AppCompatActivity
 
     private void convertCurrentMeasurements(int metric)
     {
+        //Metric Measurements
         if(metric == 0)
         {
             //Height
@@ -273,13 +263,49 @@ public class BMIActivity extends AppCompatActivity
                 clearMetricWeightFields();
             }
         }
+        //Imperial Measurements
         if(metric == 1)
         {
+            int ft = -1;
+            int inches = -1;
+
+            //Stops the app crashing
+            if(bmiHeightFoot().getText().toString().isEmpty())
+            {
+                ft = 0;
+            }
+            if(bmiHeightInches().getText().toString().isEmpty())
+            {
+                inches = 0;
+            }
+
+            int st = -1;
+            int lbs = -1;
+
+            //Again to stop app crashing if one of the values is blank when the user tries to convert the measurements
+            if(bmiWeightStone().getText().toString().isEmpty())
+            {
+                st = 0;
+            }
+            if(bmiWeightLbs().getText().toString().isEmpty())
+            {
+                lbs = 0;
+            }
+
             //Height
             if (!bmiHeightFoot().getText().toString().isEmpty() || !bmiHeightInches().getText().toString().isEmpty())
             {
+                if(ft == -1)
+                {
+                    ft = Integer.parseInt(bmiHeightFoot().getText().toString());
+                }
+                if(inches == -1)
+                {
+                    inches = Integer.parseInt(bmiHeightInches().getText().toString());
+                }
+
                 //Converting FT to CM
-                String[] answer = Util().convertHeight(1, 0, Integer.parseInt(bmiHeightFoot().getText().toString()), Integer.parseInt(bmiHeightInches().getText().toString()));
+                String[] answer = Util().convertHeight(1, 0, ft, inches);
                 bmiUserHeight().setText(answer[0]);
 
                 Log.i("Answer[0] Ft -> Cm: ", answer[0]);
@@ -290,8 +316,17 @@ public class BMIActivity extends AppCompatActivity
             //Weight
             if (!bmiWeightStone().getText().toString().isEmpty() || !bmiWeightLbs().getText().toString().isEmpty())
             {
+                if(st == -1)
+                {
+                    st = Integer.parseInt(bmiWeightStone().getText().toString());
+                }
+                if(lbs == -1)
+                {
+                    lbs = Integer.parseInt(bmiWeightLbs().getText().toString());
+                }
+
                 //Stone to KG
-                String[] answer = Util().convertWeight(1, 0, Integer.parseInt(bmiWeightStone().getText().toString()), Integer.parseInt(bmiWeightLbs().getText().toString()));
+                String[] answer = Util().convertWeight(1, 0, st, lbs);
                 bmiUserWeight().setText(answer[0]);
 
                 Log.i("Answer[0] St -> KG: ", answer[0]);
@@ -302,7 +337,6 @@ public class BMIActivity extends AppCompatActivity
         }
     }
 
-    //TODO Add the code to Math Utility????
     private double calculateBMI(int unit)
     {
         //0 metric - 1 imperial
@@ -397,6 +431,7 @@ public class BMIActivity extends AppCompatActivity
     private ImageView getCalorieButton() { return findViewById(R.id.bmiCalorieButton); }
     private ImageView getFitnessButton() { return findViewById(R.id.bmiFitnessButton); }
     private TextView getResultsInfo() { return findViewById(R.id.bmiUserResultsInfo); }
+    private MathUtility getMath() { return new MathUtility(); }
 
     private int currentMetricSelected()
     {

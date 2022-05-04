@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import java.util.Objects;
+
 public class EditItemCalorieDialog extends AppCompatDialogFragment
 {
     private EditText newItemName;
@@ -23,8 +25,9 @@ public class EditItemCalorieDialog extends AppCompatDialogFragment
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity(), "EditItem Calorie Dialog needs to be not null"));
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.edit_calorie_item_dialog, null);
@@ -72,7 +75,7 @@ public class EditItemCalorieDialog extends AppCompatDialogFragment
         }
         catch (ClassCastException e)
         {
-            throw new ClassCastException(context.toString() + " does not implement EditCalorieDialogListener");
+            throw new ClassCastException(context + " does not implement EditCalorieDialogListener");
         }
     }
 

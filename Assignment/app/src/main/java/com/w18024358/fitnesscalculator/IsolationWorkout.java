@@ -11,7 +11,8 @@ public class IsolationWorkout
     private final String set4;
     private final String set5;
 
-    public IsolationWorkout(String workoutName1, String workoutName2, String workoutName3, String set1, String set2, String set3, String set4, String set5) {
+    public IsolationWorkout(String workoutName1, String workoutName2, String workoutName3, String set1, String set2, String set3, String set4, String set5)
+    {
         this.workoutName1 = workoutName1;
         this.workoutName2 = workoutName2;
         this.workoutName3 = workoutName3;
@@ -25,31 +26,24 @@ public class IsolationWorkout
     public String getWorkoutName1() {
         return workoutName1;
     }
-
     public String getWorkoutName2() {
         return workoutName2;
     }
-
     public String getWorkoutName3() {
         return workoutName3;
     }
-
     public String getSet1() {
         return set1;
     }
-
     public String getSet2() {
         return set2;
     }
-
     public String getSet3() {
         return set3;
     }
-
     public String getSet4() {
         return set4;
     }
-
     public String getSet5() {
         return set5;
     }

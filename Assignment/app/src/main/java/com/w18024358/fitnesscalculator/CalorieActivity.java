@@ -611,8 +611,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         switch (theList)
         {
             case "Breakfast":
-                Log.i("Quick Check break size item size", " \n" + breakfastFoodItems.size() + " \n" + items.size());
-
                 //Saving the current data, useful for when user comes back to the app that day
                 editor.putBoolean("Breakfast List Needs Loading", Boolean.TRUE);
                 editor.putString("Breakfast List Saved Items", json);

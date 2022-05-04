@@ -25,7 +25,6 @@ public class FirstUseLoginActivity extends AppCompatActivity
 {
     //TODO Refactor
     //TODO Save all the data and automatically get it in BMI if not null
-
     Switch metricToggle;
 
     //TODO still shows both fields

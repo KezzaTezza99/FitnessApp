@@ -1,12 +1,11 @@
 package com.w18024358.fitnesscalculator;
 import static java.lang.String.*;
 
-import android.renderscript.Sampler;
 import android.util.Log;
+import android.widget.EditText;
 
-import java.io.StringBufferInputStream;
 import java.text.DecimalFormat;
-import java.util.function.DoubleToLongFunction;
+import java.util.Arrays;
 
 //Creating a helper class that will convert all necessary measurement conversions
 public class MathUtility

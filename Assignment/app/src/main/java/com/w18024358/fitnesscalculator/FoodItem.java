@@ -17,23 +17,16 @@ public class FoodItem
     public String getItemQuantity() {
         return itemQuantity;
     }
-
     public void setItemQuantity(String itemQuantity) {
         this.itemQuantity = itemQuantity;
     }
-
     public String getItemName() {
         return itemName;
     }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
+    public void setItemName(String itemName) { this.itemName = itemName; }
     public String getItemCalories() {
         return itemCalories;
     }
-
     public void setItemCalories(String itemCalories) {
         this.itemCalories = itemCalories;
     }

@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 public class AddCaloriesActivity extends AppCompatActivity
 {
-    //Don't like this - Could come up with a better way
     String selectedList;
     boolean addedFromFullFoodList;
 
@@ -45,6 +44,7 @@ public class AddCaloriesActivity extends AppCompatActivity
 
     private void addToList()
     {
+        //If the user has entred valid information then need to add it to the list
         if(getNameOfItemField().getText().toString().length() == 0 ||
                 getQuantityOfItemField().getText().toString().length() == 0 ||
                 getTotalCaloriesOfItemField().getText().toString().length() == 0)
@@ -69,6 +69,7 @@ public class AddCaloriesActivity extends AppCompatActivity
             intent = new Intent(this, FullFoodList.class);
         }
 
+        //Passing the data between the two intents
         intent.putExtra("Item Quantity", itemQuantity);
         intent.putExtra("Item Name", itemName);
         intent.putExtra("Item Calories", itemCalories);

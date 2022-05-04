@@ -54,8 +54,8 @@ public class JsonUtility extends AppCompatActivity
     {
         int index;
         int end;
-        if(day.equals("Wednesday") || day.equals("Sunday")) {
-            Log.i("IN THIS BITCH", "----------------------------------------------------");
+        if(day.equals("Wednesday") || day.equals("Sunday"))
+        {
             workout = false;
             index = data.indexOf("NA");
             end = data.indexOf("}", index);

@@ -25,7 +25,6 @@ import java.util.Objects;
 //Was used as a Dialog but changed to be an Activity to get setOnDateChangeListener to work correctly
 public class Calendar extends AppCompatActivity
 {
-    //TODO Crashes if just change date with no data in any list
     //Don't like doing this but necessary
     String userSelectedDate = null;
     String lastSelectedDate = "";
@@ -50,14 +49,13 @@ public class Calendar extends AppCompatActivity
     ListView snacksListView;
     FoodItemListAdapter snacksAdapter;
 
-    //Works but I need to think about how does it know which list data to load
-    //How does it know what date was also stores
-    //I think instead of saving a string off all the dates, I actually need to save a HashMap (maybe one for each list) that will hold the date saved and the list
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar);
 
+        //Initialising all the necessary information
         breakfastFoodItems = new ArrayList<>();
         breakfastListView = findViewById(R.id.calendarBreakfastListView);
         breakfastAdapter = new FoodItemListAdapter(this, breakfastFoodItems);
@@ -78,27 +76,13 @@ public class Calendar extends AppCompatActivity
         snacksAdapter = new FoodItemListAdapter(this, snacksFoodItems);
         snacksListView.setAdapter(snacksAdapter);
 
+        //Setting an onclick listener to listen for what date the user selects
         getCalendarView().setOnDateChangeListener((calendarView, i, i1, i2) -> {
             String date = i2 + "/" + (i1 + 1) + "/" + i;
             Log.i("onSelectedDayChange: ", "Date: " + date);
             userSelectedDate = date;
             openSelectedDate();
         });
-
-        Intent inboundIntent = getIntent();
-
-        if(inboundIntent != null)
-        {
-            if(calorieActivity())
-            {
-                Toast.makeText(this, "Calories", Toast.LENGTH_SHORT).show();
-            }
-            if(fitnessActivity())
-            {
-                Toast.makeText(this, "Fitness", Toast.LENGTH_SHORT).show();
-            }
-        }
-
         getCancelButton().setOnClickListener(view -> goBack());
     }
 
@@ -177,8 +161,8 @@ public class Calendar extends AppCompatActivity
 
                     Log.i("Breakfast Data", breakfastData);
                     //User could have saved data i.e., set amount of calories but no lists can be stored so will crash
-                    if(breakfastData != null && !breakfastData.isEmpty()) {
-                        Log.i("Fuck", "Why are you fucking here");
+                    if(breakfastData != null && !breakfastData.isEmpty())
+                    {
                         if (breakfast.containsKey(userSelectedDate))
                         {
                             //Making sure the message is not displayed (i.e., the user selected a non valid date first then selected a valid date)
@@ -210,7 +194,7 @@ public class Calendar extends AppCompatActivity
                         }// end breakfast.contains()
                     }//end breakfastData != null
                     if(lunchData != null && !lunchData.isEmpty()) {
-                        if (lunch.containsKey(userSelectedDate) && lunchData != null) {
+                        if (lunch.containsKey(userSelectedDate)) {
                             //This should be a method  - Keep code DRY TODO (Refactor)
                             //Making sure the message is not displayed (i.e., the user selected a non valid date first then selected a valid date)
                             getMessage().setVisibility(View.INVISIBLE);
@@ -242,7 +226,7 @@ public class Calendar extends AppCompatActivity
                         }//end lunch.contains()
                     }//end lunch != null
                     if(dinnerData != null && !dinnerData.isEmpty()) {
-                        if (dinner.containsKey(userSelectedDate) && dinnerData != null) {
+                        if (dinner.containsKey(userSelectedDate)) {
                             //Making sure the message is not displayed (i.e., the user selected a non valid date first then selected a valid date)
                             getMessage().setVisibility(View.INVISIBLE);
 
@@ -273,7 +257,7 @@ public class Calendar extends AppCompatActivity
                         }//end dinner.contains()
                     }//end dinner != null
                     if(snacksData != null && !snacksData.isEmpty()) {
-                        if (snacks.containsKey(userSelectedDate) && snacksData != null) {
+                        if (snacks.containsKey(userSelectedDate)) {
                             //Making sure the message is not displayed (i.e., the user selected a non valid date first then selected a valid date)
                             getMessage().setVisibility(View.INVISIBLE);
 
@@ -304,35 +288,15 @@ public class Calendar extends AppCompatActivity
                         }//end snacks.contains()
                     }//end snacksData != null
                 }//end dataSaved.contains()
-                else {
-                    getMessage().setText("No available data on this selected date");
-                    getMessage().setVisibility(View.VISIBLE);
-
-                    //Hiding the lists
-                    getBreakfastListViewHeader().setVisibility(View.INVISIBLE);
-                    getBreakfastListView().setVisibility(View.INVISIBLE);
-                    getLunchListViewHeader().setVisibility(View.INVISIBLE);
-                    getLunchListView().setVisibility(View.INVISIBLE);
-                    getDinnerListViewHeader().setVisibility(View.INVISIBLE);
-                    getDinnerListView().setVisibility(View.INVISIBLE);
-                    getSnacksListViewHeader().setVisibility(View.INVISIBLE);
-                    getSnacksListView().setVisibility(View.INVISIBLE);
-
-                    //Removing the data if there is any
-                    if (breakfastFoodItems != null)
-                        breakfastFoodItems.clear();
-                    if (lunchFoodItems != null)
-                        lunchFoodItems.clear();
-                    if (dinnerFoodItems != null)
-                        dinnerFoodItems.clear();
-                    if (snacksFoodItems != null)
-                        snacksFoodItems.clear();
+                else
+                {
+                    noData();
                 }//end else
             }//end calorieActivity()
         }//end !lastSelectedDate
-        else if(fitnessActivity())
+        if(fitnessActivity())
         {
-
+            Log.i("Calendar", "Came from fitness page");
         }//end fitnessActivity()
     }
 
@@ -348,7 +312,31 @@ public class Calendar extends AppCompatActivity
         return intent.equals("Fitness");
     }
 
-    private Utility getUtility() { return new Utility(); }
+    private void noData()
+    {
+        getMessage().setText("No available data on this selected date");
+        getMessage().setVisibility(View.VISIBLE);
+
+        //Hiding the lists
+        getBreakfastListViewHeader().setVisibility(View.INVISIBLE);
+        getBreakfastListView().setVisibility(View.INVISIBLE);
+        getLunchListViewHeader().setVisibility(View.INVISIBLE);
+        getLunchListView().setVisibility(View.INVISIBLE);
+        getDinnerListViewHeader().setVisibility(View.INVISIBLE);
+        getDinnerListView().setVisibility(View.INVISIBLE);
+        getSnacksListViewHeader().setVisibility(View.INVISIBLE);
+        getSnacksListView().setVisibility(View.INVISIBLE);
+
+        //Removing the data if there is any
+        if (breakfastFoodItems != null)
+            breakfastFoodItems.clear();
+        if (lunchFoodItems != null)
+            lunchFoodItems.clear();
+        if (dinnerFoodItems != null)
+            dinnerFoodItems.clear();
+        if (snacksFoodItems != null)
+            snacksFoodItems.clear();
+    }
     private CalendarView getCalendarView() { return findViewById(R.id.calendarCalendarView); }
     private TextView getMessage() { return findViewById(R.id.calendarDataMessage); }
     private TextView getBreakfastListViewHeader() { return findViewById(R.id.calendarBreakfastHeader); }
