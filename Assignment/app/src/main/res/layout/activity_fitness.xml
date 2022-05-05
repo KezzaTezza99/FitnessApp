@@ -171,7 +171,7 @@
     <!--Side Navigation that slides outwards-->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/sideNavMenu"
-        android:layout_width="175dp"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
         app:headerLayout="@layout/side_nav_layout"
         app:menu="@menu/side_navigation_menu"
