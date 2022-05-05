@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This allows me to have a square left out where I could put stuff like a profile picture-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="125dp"
+    android:background="@color/purple_200" >
+
+    <!--If the app was to be published maybe you could add a picture here-->
+    <ImageView
+        android:id="@+id/sideNavUserProfilePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:src="@drawable/profile_icon" />
+
+    <!--Displaying the username -->
+    <TextView
+        android:id="@+id/sideNavMenuUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sideNavUserProfilePicture" />
+</androidx.constraintlayout.widget.ConstraintLayout>

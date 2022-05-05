@@ -1,5 +1,7 @@
 package com.w18024358.fitnesscalculator;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -77,6 +80,29 @@ public class BMIActivity extends AppCompatActivity
                 case R.id.fitnessActivityMenu:
                     intent = new Intent(this, FitnessActivity.class);
                     startActivity(intent);
+                    return true;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + item.getItemId());
+            }
+        });
+
+        //Drawer Navigation
+        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+        //The strings that I didn't pass to constructor provide accessibility for blind people should implement (reads the string values out)
+        ActionBarDrawerToggle sideNavigationMenu = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
+
+        //Can now use the menu
+        sideNavigationMenu.syncState();
+
+        ///Setting on click listener which will allow me to respond to nav selections
+        //Responding to the navigation buttons
+        NavigationView sideNavView = findViewById(R.id.sideNavMenu);
+        sideNavView.setNavigationItemSelectedListener(item ->
+        {
+            switch (item.getItemId())
+            {
+                case R.id.profilePage:
+                    startActivity(new Intent(this, UserProfileActivity.class));
                     return true;
                 default:
                     throw new IllegalStateException("Unexpected value: " + item.getItemId());
@@ -430,7 +456,6 @@ public class BMIActivity extends AppCompatActivity
     private TextView bmiText() { return findViewById(R.id.bmiBMILabel); }
     private EditText bmiField() { return findViewById(R.id.bmiBMIResult); }
     private TextView getResultsInfo() { return findViewById(R.id.bmiUserResultsInfo); }
-    private MathUtility getMath() { return new MathUtility(); }
 
     private int currentMetricSelected()
     {

@@ -1,165 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FitnessActivity">
 
-    <TextView
-        android:id="@+id/fitnessCaloriesBurnLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Calories Burnt: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.053"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.006" />
-
-    <TextView
-        android:id="@+id/fitnessCaloriesBurnt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="100kcal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/fitnessCaloriesBurnLabel"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.006" />
-
-    <TextView
-        android:id="@+id/fitnessTargetLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Target: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.81"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.006" />
-
-    <TextView
-        android:id="@+id/fitnessTargetValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="900kcal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/fitnessTargetLabel"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.006" />
-
-    <TextView
-        android:id="@+id/fitnessCurrentDayLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Monday"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.047"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fitnessCaloriesBurnLabel"
-        app:layout_constraintVertical_bias="0.011" />
-
-    <TextView
-        android:id="@+id/fitnessCompoundMovementLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Compound Movement:"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.063"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fitnessCurrentDayLabel"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ListView
-        android:id="@+id/fitnessCompoundMovementListView1"
-        android:layout_width="378dp"
-        android:layout_height="106dp"
-        android:background="@drawable/border"
-        android:divider="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fitnessCompoundMovementLabel"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ListView
-        android:id="@+id/fitnessCompoundMovementListView2"
-        android:layout_width="378dp"
-        android:layout_height="106dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/border"
-        android:divider="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fitnessCompoundMovementListView1"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <!--Isolation Stuff -->
-    <TextView
-        android:id="@+id/fitnessIsolationMovementLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Isolation Movement:"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.063"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fitnessCompoundMovementListView2"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ListView
-        android:id="@+id/fitnessIsolationMovementListView1"
-        android:layout_width="378dp"
-        android:layout_height="116dp"
-        android:background="@drawable/border"
-        android:divider="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fitnessIsolationMovementLabel"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <!--If no workout display this brief message-->
-    <TextView
-        android:id="@+id/fitnessRestDayMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Today is a rest day"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/fitnessCompoundMovementListView1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.061"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fitnessCurrentDayLabel"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <!--Navigation-->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/mainBottomNavigationMenu"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/purple_200"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:itemTextColor="@drawable/selector"
-        app:itemIconTint="@drawable/selector"
-        app:menu="@menu/bottom_navigation_menu" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/fitnessCaloriesBurnLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calories Burnt: "
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.053"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.006" />
+
+        <TextView
+            android:id="@+id/fitnessCaloriesBurnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100kcal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/fitnessCaloriesBurnLabel"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.006" />
+
+        <TextView
+            android:id="@+id/fitnessTargetLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Target: "
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.81"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.006" />
+
+        <TextView
+            android:id="@+id/fitnessTargetValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="900kcal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/fitnessTargetLabel"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.006" />
+
+        <TextView
+            android:id="@+id/fitnessCurrentDayLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monday"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.047"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fitnessCaloriesBurnLabel"
+            app:layout_constraintVertical_bias="0.011" />
+
+        <TextView
+            android:id="@+id/fitnessCompoundMovementLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Compound Movement:"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.063"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fitnessCurrentDayLabel"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ListView
+            android:id="@+id/fitnessCompoundMovementListView1"
+            android:layout_width="378dp"
+            android:layout_height="106dp"
+            android:background="@drawable/border"
+            android:divider="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.515"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fitnessCompoundMovementLabel"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ListView
+            android:id="@+id/fitnessCompoundMovementListView2"
+            android:layout_width="378dp"
+            android:layout_height="106dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/border"
+            android:divider="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.515"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fitnessCompoundMovementListView1"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <!--Isolation Stuff -->
+        <TextView
+            android:id="@+id/fitnessIsolationMovementLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Isolation Movement:"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.063"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fitnessCompoundMovementListView2"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ListView
+            android:id="@+id/fitnessIsolationMovementListView1"
+            android:layout_width="378dp"
+            android:layout_height="116dp"
+            android:background="@drawable/border"
+            android:divider="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.515"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fitnessIsolationMovementLabel"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <!--If no workout display this brief message-->
+        <TextView
+            android:id="@+id/fitnessRestDayMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Today is a rest day"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/fitnessCompoundMovementListView1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.061"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fitnessCurrentDayLabel"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <!--Bottom Navigation-->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/mainBottomNavigationMenu"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/purple_200"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:itemTextColor="@drawable/selector"
+            app:itemIconTint="@drawable/selector"
+            app:menu="@menu/bottom_navigation_menu" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--Side Navigation that slides outwards-->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/sideNavMenu"
+        android:layout_width="175dp"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/side_nav_layout"
+        app:menu="@menu/side_navigation_menu"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true" />
+</androidx.drawerlayout.widget.DrawerLayout>
