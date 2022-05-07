@@ -3,7 +3,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,16 +11,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 //Save data when the user closes app?
 //Load when user opens app?
@@ -37,9 +33,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     static final int EDITED_VALUE = 2;
     static final int DELETED_VALUE = 3;
     static final int ADDED_VALUE = 4;
-
-    //TODO save data on app close and leaving activity only
-    //need to fix calories doubling on reload
 
     //TODO if come back to the app when not wiping SP then the calories is wrong (calories eaten are double)
     //Breakfast
@@ -96,7 +89,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
 
         //Hardcoding a value for testing purposes
         //Breakfast
-        breakfastFoodItems = new ArrayList<FoodItem>();
+        breakfastFoodItems = new ArrayList<>();
         breakfastListView = findViewById(R.id.calorieBreakfastListView);
         breakfastAdapter = new FoodItemListAdapter(this, breakfastFoodItems);
         breakfastListView.setAdapter(breakfastAdapter);
@@ -105,7 +98,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         breakfastAddButton.setOnClickListener(view -> openAddCaloriesActivity("Breakfast"));
 
         //Lunch
-        lunchFoodItems = new ArrayList<FoodItem>();
+        lunchFoodItems = new ArrayList<>();
         lunchListView = findViewById(R.id.calorieLunchListView);
         lunchAdapter = new FoodItemListAdapter(this, lunchFoodItems);
         lunchListView.setAdapter(lunchAdapter);
@@ -114,7 +107,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         lunchAddButton.setOnClickListener(view -> openAddCaloriesActivity("Lunch"));
 
         //Dinner
-        dinnerFoodItems = new ArrayList<FoodItem>();
+        dinnerFoodItems = new ArrayList<>();
         dinnerListView = findViewById(R.id.calorieDinnerListView);
         dinnerAdapter = new FoodItemListAdapter(this, dinnerFoodItems);
         dinnerListView.setAdapter(dinnerAdapter);
@@ -123,7 +116,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         dinnerAddButton.setOnClickListener(view -> openAddCaloriesActivity("Dinner"));
 
         //Snacks
-        snacksFoodItems = new ArrayList<FoodItem>();
+        snacksFoodItems = new ArrayList<>();
         snacksListView = findViewById(R.id.calorieSnackListView);
         snacksAdapter = new FoodItemListAdapter(this, snacksFoodItems);
         snacksListView.setAdapter(snacksAdapter);
@@ -149,7 +142,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         //Maybe add a bundles bit here like other activity to stop null data being passed?
         //Load all data previously entered (so far this is only the total calories the user would like to eat a day)
         //Add a flag
-        //TODO calories doesnt work as intended if loaded from intent
+        //TODO calories doesn't work as intended if loaded from intent
         //It should be modified to only work on new days???
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         boolean loaded = sharedPreferences.getBoolean("DataSaved", Boolean.FALSE);
@@ -346,22 +339,12 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         int size = theList.size();
         System.out.println("Size: " + size);
 
-        for (int i = 0; i < theList.size(); i++) {
+        for (int i = 0; i < theList.size(); i++)
+        {
             convertedArray.add(theList.get(i).getItemQuantity());
             convertedArray.add(theList.get(i).getItemName());
             convertedArray.add(theList.get(i).getItemCalories());
-
-            System.out.println("The list: " + theList.get(i).getItemQuantity());
-            System.out.println("The list: " + theList.get(i).getItemName());
-            System.out.println("The list: " + theList.get(i).getItemCalories());
         }
-
-        for (int j = 0; j < convertedArray.size(); j++) {
-            System.out.println("Converted Array " + j + ": " + convertedArray.get(j));
-        }
-
-        System.out.println("Checking array: " + convertedArray);
-
 
         Intent intent = new Intent(this, FullFoodList.class);
         //Need to tell the intent which list to the user is adding too
@@ -461,6 +444,8 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
 
         Log.i("Load Data:", String.valueOf(breakfast));
 
+        Gson gson = new Gson();
+
         if (breakfast)
         {
             //MAKE THIS UTIL?
@@ -469,7 +454,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             int breakfastSize = sharedPreferences.getInt("Breakfast List Size On Save", 0);
             Log.i("JSON:", json);
             Utility utility = new Utility();
-            ArrayList<String> strings = new Gson().fromJson(json, ArrayList.class);
+            ArrayList<String> strings = gson.fromJson(json, ArrayList.class);
             Log.i("JSON ArrayList", strings.toString());
 
             breakfastFoodItems.clear();
@@ -489,7 +474,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             int lunchSize = sharedPreferences.getInt("Lunch List Size On Save", 0);
             Log.i("JSON:", json1);
             Utility utility = new Utility();
-            ArrayList<String> strings = new Gson().fromJson(json1, ArrayList.class);
+            ArrayList<String> strings = gson.fromJson(json1, ArrayList.class);
             Log.i("JSON ArrayList", strings.toString());
 
             lunchFoodItems.clear();
@@ -509,7 +494,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             int dinnerSize = sharedPreferences.getInt("Dinner List Size On Save", 0);
             Log.i("JSON:", json);
             Utility utility = new Utility();
-            ArrayList<String> strings = new Gson().fromJson(json, ArrayList.class);
+            ArrayList<String> strings = gson.fromJson(json, ArrayList.class);
             Log.i("JSON ArrayList", strings.toString());
 
             dinnerFoodItems.clear();
@@ -529,7 +514,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             int snacksSize = sharedPreferences.getInt("Snacks List Size On Save", 0);
             Log.i("JSON:", json);
             Utility utility = new Utility();
-            ArrayList<String> strings = new Gson().fromJson(json, ArrayList.class);
+            ArrayList<String> strings = gson.fromJson(json, ArrayList.class);
             Log.i("JSON ArrayList", strings.toString());
 
             snacksFoodItems.clear();
@@ -618,7 +603,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         //Turning the FoodItem ArrayList to a String ArrayList (Easier to get back from the JSON object)
-        ArrayList<String> stringArrayList = new ArrayList<>();
+        ArrayList<String> stringArrayList;
         stringArrayList = utility.itemListToStringList(items);
 
         Gson gson = new Gson();

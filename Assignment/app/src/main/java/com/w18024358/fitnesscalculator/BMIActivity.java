@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.text.DecimalFormat;
 import java.util.Locale;
 
+//Activity is responsible for calculating the BMI of the user
 public class BMIActivity extends AppCompatActivity
 {
     //TODO If the SharedPreferences had data in it then should automatically display it
@@ -32,37 +33,21 @@ public class BMIActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bmi);
 
+        hideImperialFields();
+        hideBMIFields();
+
+        //Need to hide the information as it can only be displayed once BMI is calculated
         getResultsInfo().setVisibility(View.INVISIBLE);
-        boolean data = getIntent().getBooleanExtra("DataSaved", Boolean.FALSE);
-
-        //Checking to see if the user entered any data previously if so displaying the information
-        if(data)
-        {
-            Log.i("Data Loaded: ", "True");
-            checkUserData();
-        }
-        else
-        {
-            Log.i("Data Loaded: ", "False");
-
-            //Make this a method as repeating code
-            //Hiding the Imperial Measurements by default
-            bmiHeightFoot().setVisibility(View.GONE);
-            bmiHeightInches().setVisibility(View.GONE);
-            bmiWeightStone().setVisibility(View.GONE);
-            bmiWeightLbs().setVisibility(View.GONE);
-        }
-
-        //Hiding BMI result fields until the user presses the calculate button
-        bmiText().setVisibility(View.GONE);
-        bmiField().setVisibility(View.GONE);
+        //Checking to see if any information is saved, if so should display it
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        boolean data = sharedPreferences.getBoolean("User Info Saved", Boolean.FALSE);
 
         //Getting the Toggle and setting an onclick listener
         bmiMeasurementToggle().setOnClickListener(view -> changeMetrics());
         //Getting the Button and setting an onclick listener
         bmiCalculateButton().setOnClickListener(view -> checkFieldsNotEmpty());
 
-        //Navigation menu
+        //Bottom Navigation menu (main navigation)
         BottomNavigationView bottomNavigationView = findViewById(R.id.mainBottomNavigationMenu);
         bottomNavigationView.setSelectedItemId(R.id.bmiActivityMenu);
 
@@ -86,12 +71,11 @@ public class BMIActivity extends AppCompatActivity
             }
         });
 
-        //Drawer Navigation
+        //Drawer Navigation (secondary navigation) would be used for settings and logging out etc if the app was to be extended
+        //Getting the layout that allows the draw to move from "off screen" to on screen
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
-        //The strings that I didn't pass to constructor provide accessibility for blind people should implement (reads the string values out)
+        //The strings that I didn't pass to constructor provide accessibility for blind people should implement these for more accessibility need TODO
         ActionBarDrawerToggle sideNavigationMenu = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
-
-        //Can now use the menu
         sideNavigationMenu.syncState();
 
         ///Setting on click listener which will allow me to respond to nav selections
@@ -99,6 +83,7 @@ public class BMIActivity extends AppCompatActivity
         NavigationView sideNavView = findViewById(R.id.sideNavMenu);
         sideNavView.setNavigationItemSelectedListener(item ->
         {
+            //Leaving this as a switch for when more functionality is added
             switch (item.getItemId())
             {
                 case R.id.profilePage:
@@ -108,49 +93,12 @@ public class BMIActivity extends AppCompatActivity
                     throw new IllegalStateException("Unexpected value: " + item.getItemId());
             }
         });
+
+        //Checking to see if the user entered any data previously if so displaying the information
+        if(data) { loadData(); }
     }
 
-    private void checkUserData()
-    {
-        boolean metric = getIntent().getBooleanExtra("Metric", Boolean.FALSE);
-        boolean imperial = getIntent().getBooleanExtra("Imperial", Boolean.FALSE);
-
-        //The user has entered metric measurements
-        if(getIntent().getBooleanExtra("Metric", Boolean.TRUE) == metric)
-        {
-            //Hiding imperial fields first
-            bmiHeightFoot().setVisibility(View.GONE);
-            bmiHeightInches().setVisibility(View.GONE);
-            bmiWeightStone().setVisibility(View.GONE);
-            bmiWeightLbs().setVisibility(View.GONE);
-
-            //Now putting the data entered into the fields
-            bmiUserHeight().setText(getIntent().getStringExtra("HeightCM"));
-            bmiUserWeight().setText((getIntent().getStringExtra("WeightKG")));
-        }
-        //User has entered imperial measurements
-        else if(getIntent().getBooleanExtra("Imperial", Boolean.TRUE) == imperial)
-        {
-            //Hiding metric fields and showing the imperial --- TODO Make these methods as well
-            bmiUserHeight().setVisibility(View.GONE);
-            bmiUserWeight().setVisibility(View.GONE);
-
-            bmiHeightFoot().setVisibility(View.VISIBLE);
-            bmiHeightInches().setVisibility(View.VISIBLE);
-            bmiWeightStone().setVisibility(View.VISIBLE);
-            bmiWeightLbs().setVisibility(View.VISIBLE);
-
-            //Setting the fields
-            bmiHeightFoot().setText(getIntent().getStringExtra("HeightFT"));
-            bmiHeightInches().setText(getIntent().getStringExtra("HeightInch"));
-            bmiWeightStone().setText(getIntent().getStringExtra("WeightST"));
-            bmiWeightLbs().setText(getIntent().getStringExtra("WeightLBS"));
-
-            bmiMeasurementToggle().setText("Imperial");
-            bmiMeasurementToggle().setChecked(true);
-        }
-    }
-
+    //Got a few utility files that provide me with useful methods
     private MathUtility Util() { return new MathUtility(); }
 
     //Checking the fields are not empty before calling calculateBMI() ensures that the app doesn't crash if a field is empty
@@ -187,9 +135,7 @@ public class BMIActivity extends AppCompatActivity
     //Called if the BMI Button is pressed
     private void calculateBMIPressed()
     {
-        //Setting the visibility again
-        bmiText().setVisibility(View.VISIBLE);
-        bmiField().setVisibility(View.VISIBLE);
+        showBMIFields();
 
         //Creating a variable that will hold the answer
         double answer;
@@ -228,13 +174,11 @@ public class BMIActivity extends AppCompatActivity
         if(bmiUserHeight().getVisibility() == View.VISIBLE)
         {
             //Hiding the Metric Field
-            bmiUserHeight().setVisibility(View.GONE);
-            bmiUserWeight().setVisibility(View.GONE);
+            hideMetricFields();
+
             //Showing the Imperial Field
-            bmiHeightFoot().setVisibility(View.VISIBLE);
-            bmiHeightInches().setVisibility(View.VISIBLE);
-            bmiWeightStone().setVisibility(View.VISIBLE);
-            bmiWeightLbs().setVisibility(View.VISIBLE);
+            showImperialFields();
+
             //Changing the Switch Text
             bmiMeasurementToggle().setText("Imperial");
 
@@ -244,13 +188,11 @@ public class BMIActivity extends AppCompatActivity
         else
         {
             //Hiding the Imperial Field
-            bmiHeightFoot().setVisibility(View.GONE);
-            bmiHeightInches().setVisibility(View.GONE);
-            bmiWeightStone().setVisibility(View.GONE);
-            bmiWeightLbs().setVisibility(View.GONE);
+            hideImperialFields();
+
             //Showing the Metric Field
-            bmiUserHeight().setVisibility(View.VISIBLE);
-            bmiUserWeight().setVisibility(View.VISIBLE);
+            showMetricFields();
+
             //Changing the Switch Text
             bmiMeasurementToggle().setText("Metric");
 
@@ -365,6 +307,7 @@ public class BMIActivity extends AppCompatActivity
         }
     }
 
+    //Calculating the users BMI
     private double calculateBMI(int unit)
     {
         //0 metric - 1 imperial
@@ -404,6 +347,7 @@ public class BMIActivity extends AppCompatActivity
         }
     }
 
+    //Setting the results
     private void setResultsInfo(double usersBMI)
     {
         //Underweight (< 18.5)
@@ -470,12 +414,72 @@ public class BMIActivity extends AppCompatActivity
         }
     }
 
-    //Looking to builder pattern so I can use one method to clear fields based on input??
-    //Add a param here and maybe have 0 clear all fields, 1 metric fields and then 2 imperial fields?
+    //Hiding all the fields
+    private void hideAllFields()
+    {
+        //Hiding the Metric Fields
+        bmiUserHeight().setVisibility(View.INVISIBLE);
+        bmiUserWeight().setVisibility(View.INVISIBLE);
+
+        //Hiding the Imperial Fields
+        bmiHeightFoot().setVisibility(View.INVISIBLE);
+        bmiHeightInches().setVisibility(View.INVISIBLE);
+        bmiWeightStone().setVisibility(View.INVISIBLE);
+        bmiWeightLbs().setVisibility(View.INVISIBLE);
+
+        //Hiding BMI result fields
+        bmiText().setVisibility(View.INVISIBLE);
+        bmiField().setVisibility(View.INVISIBLE);
+    }
+
+    //Hiding just the metric input fields
+    private void hideMetricFields()
+    {
+        bmiUserHeight().setVisibility(View.INVISIBLE);
+        bmiUserWeight().setVisibility(View.INVISIBLE);
+    }
+
+    //Hiding the imperial input fields
+    private void hideImperialFields()
+    {
+        bmiHeightFoot().setVisibility(View.INVISIBLE);
+        bmiHeightInches().setVisibility(View.INVISIBLE);
+        bmiWeightStone().setVisibility(View.INVISIBLE);
+        bmiWeightLbs().setVisibility(View.INVISIBLE);
+    }
+
+    //Showing the metric input fields
+    private void showMetricFields()
+    {
+        bmiUserHeight().setVisibility(View.VISIBLE);
+        bmiUserWeight().setVisibility(View.VISIBLE);
+    }
+
+    //Showing the imperial fields
+    private void showImperialFields()
+    {
+        bmiHeightFoot().setVisibility(View.VISIBLE);
+        bmiHeightInches().setVisibility(View.VISIBLE);
+        bmiWeightStone().setVisibility(View.VISIBLE);
+        bmiWeightLbs().setVisibility(View.VISIBLE);
+    }
+
+    //Hiding the BMI fields
+    private void hideBMIFields()
+    {
+        bmiText().setVisibility(View.INVISIBLE);
+        bmiField().setVisibility(View.INVISIBLE);
+    }
+
+    private void showBMIFields()
+    {
+        bmiText().setVisibility(View.VISIBLE);
+        bmiField().setVisibility(View.VISIBLE);
+    }
+
     //Clearing the fields of user input
     private void clearFields()
     {
-        //Clear all fields
         //Metric
         bmiUserHeight().setText("");
         bmiUserWeight().setText("");
@@ -503,14 +507,16 @@ public class BMIActivity extends AppCompatActivity
 
     private void loadData()
     {
-        //TEMP
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
 
-        if (sharedPreferences.getBoolean("MetricToggle", Boolean.FALSE)) {
+        boolean metricToggle = sharedPreferences.getBoolean("MetricToggle", Boolean.FALSE);
+
+        if (metricToggle)
+        {
             bmiMeasurementToggle().setChecked(Boolean.FALSE);
-            String height = sharedPreferences.getString("HeightCm", "");
+            String height = sharedPreferences.getString("Height CM", "");
             bmiUserHeight().setText(height);
-            String weight = sharedPreferences.getString("WeightKg", "");
+            String weight = sharedPreferences.getString("Weight KG", "");
             bmiUserWeight().setText(weight);
 
             //Need to ensure metric fields visible and imperial invisible
@@ -523,18 +529,17 @@ public class BMIActivity extends AppCompatActivity
             bmiWeightLbs().setVisibility(View.INVISIBLE);
 
             Log.i("Metric Measurements: ", height + weight);
-        } else if (sharedPreferences.getBoolean("MetricToggle", Boolean.TRUE)) {
-            //Doesn't reach here yet???? WHY
+        }
+        else
+        {
+            Log.i("FUCKING HERE", "------------------------------------------------------------------------------");
             //Changing the text to Imperial and turning the toggle on
             bmiMeasurementToggle().setText("Imperial");
             bmiMeasurementToggle().setChecked(Boolean.TRUE);
-            bmiHeightFoot().setText(sharedPreferences.getString("HeightFt", ""));
-            bmiHeightInches().setText(sharedPreferences.getString("HeightInch", ""));
-            bmiWeightStone().setText(sharedPreferences.getString("WeightSt", ""));
-            bmiWeightLbs().setText(sharedPreferences.getString("WeightLbs", ""));
-
-            Log.i("Imperial Measurements: ", sharedPreferences.getString("HeightFt", "") + sharedPreferences.getString("HeightInch", ""));
-            Log.i("Imperial Measurements: ", sharedPreferences.getString("WeightSt", "") + sharedPreferences.getString("WeightLbs", ""));
+            bmiHeightFoot().setText(sharedPreferences.getString("Height FT", ""));
+            bmiHeightInches().setText(sharedPreferences.getString("Height INCH", ""));
+            bmiWeightStone().setText(sharedPreferences.getString("Weight ST", ""));
+            bmiWeightLbs().setText(sharedPreferences.getString("Weight LBS", ""));
 
             //Need to ensure metric fields invisible and imperial visible
             bmiUserHeight().setVisibility(View.INVISIBLE);

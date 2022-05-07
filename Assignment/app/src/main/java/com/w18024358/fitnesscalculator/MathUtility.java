@@ -146,7 +146,7 @@ public class MathUtility
             return valueToRound;
         }
 
-        Log.i("MathUtility -> RoundToNearestDecimalPoint", "Value to round " + String.valueOf(valueToRound));
+        Log.i("MathUtility -> RoundToNearestDecimalPoint", "Value to round " + valueToRound);
 
         //Splitting the number to round
         String splitValue = String.valueOf(valueToRound);
@@ -165,6 +165,7 @@ public class MathUtility
         return Double.parseDouble(newHeight);
     }
 
+    //Splits a value that contains a decimal point into two, i.e., 12.0 will become 12 and 0
     String[] BeforeAfterDecimalPoint(double valueToSplit)
     {
         System.out.println("Value of unit before split: " + valueToSplit);
@@ -178,7 +179,6 @@ public class MathUtility
 
         return new String[] {valueBeforeDecimalPoint, valueAfterDecimalPoint};
     }
-
 
     String[] convertHeight(int currentMetric, int currentCM, int currentFt, int currentInch)
     {

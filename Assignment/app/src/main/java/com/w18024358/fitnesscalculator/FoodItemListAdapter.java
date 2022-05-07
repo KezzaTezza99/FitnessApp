@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
+//Used to take the ArrayList<FoodItem> and adapt it to be displayed in a custom view
 public class FoodItemListAdapter extends ArrayAdapter<FoodItem>
 {
     ArrayList<FoodItem> foodItems;

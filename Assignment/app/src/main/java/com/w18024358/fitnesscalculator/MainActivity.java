@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         FitnessButton.setOnClickListener(view -> openFitnessActivity());
 
         SharedPreferences sp = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        //sp.edit().clear().apply();
+        sp.edit().clear().apply();
 
 //        Intent intent = new Intent(this, UserProfileActivity.class);
 //        startActivity(intent);
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         String msg = MainEmail().getText().toString();
-        editor.putString("EmailTest", msg);
+        editor.putString("Username", msg);
         editor.commit();
         Log.i("KYLE COMMITTING TO SHAREDPREFERENCES: ", msg);
 
@@ -123,20 +123,11 @@ public class MainActivity extends AppCompatActivity {
     //Returns Username
     private EditText MainEmail() { return findViewById(R.id.mainEmailField); }
     //Returns Password
-    private EditText Password()
-    {
-        return findViewById(R.id.mainPasswordField);
-    }
+    private EditText Password() { return findViewById(R.id.mainPasswordField); }
     //Returns Sign-in Button
-    private Button SignIn()
-    {
-        return findViewById(R.id.mainSignInButton);
-    }
+    private Button SignIn() { return findViewById(R.id.mainSignInButton); }
     //Returns Login Button
-    private Button LogIn()
-    {
-        return findViewById(R.id.mainLoginButton);
-    }
+    private Button LogIn() { return findViewById(R.id.mainLoginButton); }
 
     //TEMP
     private void openCalorieActivity()

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
-//TODO finish this
+//ArrayAdapter that is used for displaying the CompoundWorkout ArrayList in the ListViews in FitnessActivity
 public class CompoundWorkoutListAdapter extends ArrayAdapter<CompoundWorkout>
 {
     //Stops the lists having both workouts in them
@@ -18,7 +18,6 @@ public class CompoundWorkoutListAdapter extends ArrayAdapter<CompoundWorkout>
     ArrayList<CompoundWorkout> secondaryWorkout;
 
     Context myContext;
-
     TextView workoutName;
     TextView warmupSet;
     TextView workingSet1;
@@ -33,6 +32,7 @@ public class CompoundWorkoutListAdapter extends ArrayAdapter<CompoundWorkout>
         myContext = context;
         this.primary = primary;
 
+        //Should be two work outs, one primary movement and one secondary (for now but plan on expanding the JSON file to have multiple profiles?)
         if(primary)
         {
             primaryWorkout = objects;
@@ -56,13 +56,16 @@ public class CompoundWorkoutListAdapter extends ArrayAdapter<CompoundWorkout>
         workingSet2 = view.findViewById(R.id.customWorkoutWorkingSet2Amount);
         workingSet3 = view.findViewById(R.id.customWorkoutWorkingSet3Amount);
 
-        if(primary) {
+        //Adding the primary workout to the primary workout array
+        if(primary)
+        {
             workoutName.setText(primaryWorkout.get(position).getWorkoutName());
             warmupSet.setText(primaryWorkout.get(position).getWarmupSet());
             workingSet1.setText(primaryWorkout.get(position).getWorkingSet1());
             workingSet2.setText(primaryWorkout.get(position).getWorkingSet2());
             workingSet3.setText(primaryWorkout.get(position).getWorkingSet3());
         }
+        //Its a secondary workout
         else
         {
             workoutName.setText(secondaryWorkout.get(position).getWorkoutName());

@@ -13,7 +13,6 @@ public class WorkoutUtil
     String isolationExercise1, isolationExercise2, isolationExercise3;
     String isolationWorkingSet1, isolationWorkingSet2, isolationWorkingSet3, isolationWorkingSet4, isolationWorkingSet5;
 
-    //TODO make these variables global? Call it from FitnessActivity and store into list?
     public WorkoutUtil(String[] workoutInfo, boolean isWorkout)
     {
         //Basically cleaning the data, removing all the unnecessary information such as punctuation
@@ -68,77 +67,62 @@ public class WorkoutUtil
         }
         else
         {
-            //There is no workout today, will need to disable the lists? Display a message instead?
+            //There is no workout today
             primaryCompoundExerciseName = workoutInfo[0];
             Log.i("Exercise Name", primaryCompoundExerciseName);
         }
     }
 
+    //Getter methods
     public String getPrimaryCompoundExerciseName() {
         return primaryCompoundExerciseName;
     }
-
     public String getSecondaryCompoundExerciseName() {
         return secondaryCompoundExerciseName;
     }
-
     //TODO do this differently based on if the user has entered weights or not?????
     public String getWarmup() {
         return warmup + " at ";
     }
-
     public String getPrimaryWorkingSet1() {
         return primaryWorkingSet1 + " reps at ";
     }
-
     public String getPrimaryWorkingSet2() {
         return primaryWorkingSet2 + " reps at ";
     }
-
     public String getPrimaryWorkingSet3() {
         return primaryWorkingSet3 + " reps at ";
     }
-
     public String getSecondaryWorkingSet1() {
         return secondaryWorkingSet1 + " reps at ";
     }
-
     public String getSecondaryWorkingSet2() {
         return secondaryWorkingSet2 + " reps at ";
     }
-
     public String getSecondaryWorkingSet3() {
         return secondaryWorkingSet3 + " reps at ";
     }
-
     public String getIsolationExercise1() {
         return isolationExercise1;
     }
-
     public String getIsolationExercise2() {
         return isolationExercise2;
     }
-
     public String getIsolationExercise3() {
         return isolationExercise3;
     }
-
     public String getIsolationWorkingSet1() {
         return isolationWorkingSet1;
     }
-
     public String getIsolationWorkingSet2() {
         return isolationWorkingSet2;
     }
-
     public String getIsolationWorkingSet3() {
         return isolationWorkingSet3;
     }
-
     public String getIsolationWorkingSet4() {
         return isolationWorkingSet4;
     }
-
     public String getIsolationWorkingSet5() {
         return isolationWorkingSet5;
     }

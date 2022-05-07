@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+//Used to take the data and display it in the custom view
 public class IsolationWorkoutListAdapter extends ArrayAdapter<IsolationWorkout>
 {
     ArrayList<IsolationWorkout> isolationWorkout;

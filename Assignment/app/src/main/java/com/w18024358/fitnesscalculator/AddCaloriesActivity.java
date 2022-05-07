@@ -10,9 +10,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//Activity is used to add calories to the calorie activity (when the add icon in the ListViews is pressed)
 public class AddCaloriesActivity extends AppCompatActivity
 {
+    //Need to know what list to add too, i.e., breakfast list
     String selectedList;
+    //Need to know if the item was added from the full list view or calorie activity to respond accordingly
     boolean addedFromFullFoodList;
 
     @Override
@@ -21,9 +24,11 @@ public class AddCaloriesActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_calorie_list);
 
+        //Setting on click listeners for the buttons
         getBackButton().setOnClickListener(view -> returnToCalorieActivity());
         getAddButton().setOnClickListener(view -> addToList());
 
+        //Ensuring the info is not null that was passed to the Activity
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
@@ -36,15 +41,14 @@ public class AddCaloriesActivity extends AppCompatActivity
     //User wants to return to the CalorieActivity (back button)
     private void returnToCalorieActivity()
     {
-        if(!addedFromFullFoodList) {
-            setResult(Activity.RESULT_CANCELED, getIntent());
-        }
+        if(!addedFromFullFoodList) { setResult(Activity.RESULT_CANCELED, getIntent()); }
         finish();
     }
 
+    //Adding the information to the list(s)
     private void addToList()
     {
-        //If the user has entred valid information then need to add it to the list
+        //If the user has entered valid information then need to add it to the list
         if(getNameOfItemField().getText().toString().length() == 0 ||
                 getQuantityOfItemField().getText().toString().length() == 0 ||
                 getTotalCaloriesOfItemField().getText().toString().length() == 0)
@@ -53,6 +57,7 @@ public class AddCaloriesActivity extends AppCompatActivity
             return;
         }
 
+        //Need to get the info added by the user to add it to the list
         String itemName = getNameOfItemField().getText().toString();
         String itemQuantity = getQuantityOfItemField().getText().toString();
         String itemCalories = getTotalCaloriesOfItemField().getText().toString();

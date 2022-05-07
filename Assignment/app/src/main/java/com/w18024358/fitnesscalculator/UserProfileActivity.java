@@ -1,9 +1,7 @@
 package com.w18024358.fitnesscalculator;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -20,23 +18,25 @@ public class UserProfileActivity extends AppCompatActivity
 
         getMetricToggle().setOnClickListener(view -> convertMetrics());
         getSaveDetails().setOnClickListener(view -> saveUserDetails());
+
+        //Getting the username
+        String user = getSharedPreferences().getString("Username", "");
+        getUser().setText(user);
     }
 
     private void convertMetrics()
     {
-        Utility utility = new Utility();
-
         //Hiding the Metric Fields and showing Imperial Fields
         if(getMetricToggle().getText().equals("Metric"))
         {
-            utility.hideMetricFields(getUserHeightCM(), getUserWeightKG());
-            utility.showImperialFields(getUserHeightFT(), getUserHeightInch(), getUserWeightST(), getUserWeightLBS());
+            getUtility().hideMetricFields(getUserHeightCM(), getUserWeightKG());
+            getUtility().showImperialFields(getUserHeightFT(), getUserHeightInch(), getUserWeightST(), getUserWeightLBS());
             getMetricToggle().setText("Imperial");
         }
         else
         {
-            utility.hideImperialFields(getUserHeightFT(), getUserHeightInch(), getUserWeightST(), getUserWeightLBS());
-            utility.showMetricFields(getUserHeightCM(), getUserWeightKG());
+            getUtility().hideImperialFields(getUserHeightFT(), getUserHeightInch(), getUserWeightST(), getUserWeightLBS());
+            getUtility().showMetricFields(getUserHeightCM(), getUserWeightKG());
             getMetricToggle().setText("Metric");
         }
     }
@@ -73,6 +73,7 @@ public class UserProfileActivity extends AppCompatActivity
             || !getDeadlift1RM().getText().toString().isEmpty() && !getDeadlift3RM().getText().toString().isEmpty() && !getDeadlift5RM().toString().isEmpty())
         {
             Toast.makeText(this, "Subbed Fitness", Toast.LENGTH_SHORT).show();
+            //TODO - Do something here
         }
         else
         {
@@ -80,23 +81,7 @@ public class UserProfileActivity extends AppCompatActivity
         }
     }
 
-    private void loadUserDetails()
-    {
-        //Getting the username
-        //String username
-        //getUser().setText("Message" + username);
-    }
-
-    private SharedPreferences getSharedPreferences()
-    {
-        return getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-    }
-
-    private SharedPreferences.Editor getSharedPreferencesEditor()
-    {
-        return getSharedPreferences().edit();
-    }
-
+    //Helper Methods
     private TextView getUser() { return findViewById(R.id.userProfileUsernameMessage); }
     private Switch getMetricToggle() { return findViewById(R.id.userProfileMetricToggle); }
     private EditText getUserHeightFT() { return findViewById(R.id.userProfileHeightFT); }
@@ -118,4 +103,7 @@ public class UserProfileActivity extends AppCompatActivity
     private EditText getDeadlift3RM() { return findViewById(R.id.userProfileDeadlift3RM); }
     private EditText getDeadlift5RM() { return findViewById(R.id.userProfileDeadlift5RM); }
     private Button getSaveDetails() { return findViewById(R.id.userProfileSaveDetailsButton); }
+    private Utility getUtility() { return new Utility(); }
+    private SharedPreferences getSharedPreferences() { return getSharedPreferences("sharedPrefs", MODE_PRIVATE); }
+    private SharedPreferences.Editor getSharedPreferencesEditor() { return getSharedPreferences().edit(); }
 }

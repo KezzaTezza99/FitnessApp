@@ -1,5 +1,6 @@
 package com.w18024358.fitnesscalculator;
 
+//Used to store data in the Calorie Activity ListView(s)
 public class FoodItem
 {
     private String itemQuantity;

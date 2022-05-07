@@ -1,5 +1,6 @@
 package com.w18024358.fitnesscalculator;
 
+//Used to hold information about the Isolation Movements from the JSON file to display in the ListViews in FitnessActivity
 public class IsolationWorkout
 {
     private final String workoutName1;

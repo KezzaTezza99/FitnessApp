@@ -22,32 +22,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-//Was used as a Dialog but changed to be an Activity to get setOnDateChangeListener to work correctly
+//TODO - BUG FOUND! If the user opens a date with saved data and then loads another day with saved data both are displayed
+//- should just need to clear the lists before loading them?
+
+//The purpose of the calendar activity is to allow the user to go back through previous dates to see information previously inputted
+//as of now calendar only works with the CalorieActivity (only if data is saved)
+//The code is structured to allow the calendar to expand with the FitnessActivity just not implemented yet
 public class Calendar extends AppCompatActivity
 {
-    //Don't like doing this but necessary
+    //User selected Date stores the date the user chooses in the calendar
     String userSelectedDate = null;
+    //Last selected date is used to stop the user being able to repeatedly choose one day which would cause the list of items to duplicate N times
     String lastSelectedDate = "";
 
-    //Breakfast
-    ArrayList<FoodItem> breakfastFoodItems;
-    ListView breakfastListView;
-    FoodItemListAdapter breakfastAdapter;
-
-    //Lunch
-    ArrayList<FoodItem> lunchFoodItems;
-    ListView lunchListView;
-    FoodItemListAdapter lunchAdapter;
-
-    //Dinner
-    ArrayList<FoodItem> dinnerFoodItems;
-    ListView dinnerListView;
-    FoodItemListAdapter dinnerAdapter;
-
-    //Snacks
-    ArrayList<FoodItem> snacksFoodItems;
-    ListView snacksListView;
-    FoodItemListAdapter snacksAdapter;
+    //Need to recreate the lists so this is the same as CalorieActivity
+    //The list of Food Items
+    ArrayList<FoodItem> breakfastFoodItems, lunchFoodItems, dinnerFoodItems, snacksFoodItems;
+    //The ListViews
+    ListView breakfastListView, lunchListView, dinnerListView, snacksListView;
+    //The FoodList Array Adapters
+    FoodItemListAdapter breakfastAdapter, lunchAdapter, dinnerAdapter, snacksAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,29 +49,33 @@ public class Calendar extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar);
 
-        //Initialising all the necessary information
+        //Initialising all the necessary information (Breakfast)
         breakfastFoodItems = new ArrayList<>();
         breakfastListView = findViewById(R.id.calendarBreakfastListView);
         breakfastAdapter = new FoodItemListAdapter(this, breakfastFoodItems);
         breakfastListView.setAdapter(breakfastAdapter);
 
+        //Lunch
         lunchFoodItems = new ArrayList<>();
         lunchListView = findViewById(R.id.calendarLunchListView);
         lunchAdapter = new FoodItemListAdapter(this, lunchFoodItems);
         lunchListView.setAdapter(lunchAdapter);
 
+        //Dinner
         dinnerFoodItems = new ArrayList<>();
         dinnerListView = findViewById(R.id.calendarDinnerListView);
         dinnerAdapter = new FoodItemListAdapter(this, dinnerFoodItems);
         dinnerListView.setAdapter(dinnerAdapter);
 
+        //Snacks
         snacksFoodItems = new ArrayList<>();
         snacksListView = findViewById(R.id.calendarSnacksListView);
         snacksAdapter = new FoodItemListAdapter(this, snacksFoodItems);
         snacksListView.setAdapter(snacksAdapter);
 
         //Setting an onclick listener to listen for what date the user selects
-        getCalendarView().setOnDateChangeListener((calendarView, i, i1, i2) -> {
+        getCalendarView().setOnDateChangeListener((calendarView, i, i1, i2) ->
+        {
             String date = i2 + "/" + (i1 + 1) + "/" + i;
             Log.i("onSelectedDayChange: ", "Date: " + date);
             userSelectedDate = date;
@@ -86,6 +84,7 @@ public class Calendar extends AppCompatActivity
         getCancelButton().setOnClickListener(view -> goBack());
     }
 
+    //User wants to go back to the previous activity
     private void goBack()
     {
         Intent intent;
@@ -103,10 +102,15 @@ public class Calendar extends AppCompatActivity
         finish();
     }
 
+    //Open the selected date chosen by the user
     private void openSelectedDate()
     {
+        //On the first click this will always be true so the statement is entered, which I want, when the user changes the date then the statement will then still be true
+        //only false if the user selects one date i.e., 6/5/22 and then chooses the 6/5/22 again. Stops the list being shown for N amount of times the date is selected
+        //which was a bug found during testing
         if(!lastSelectedDate.equals(userSelectedDate))
         {
+            //Setting the last selected date to be the selected date
             lastSelectedDate = userSelectedDate;
 
             SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
@@ -115,10 +119,44 @@ public class Calendar extends AppCompatActivity
             if (calorieActivity())
             {
                 String dateSaved = sharedPreferences.getString("AllDatesSaved", "");
-                //No data saved yet but doesn't catch all errors
+                //No data saved yet should return now before I crash the application!
                 if (dateSaved == null) return;
 
-                if (dateSaved.contains(userSelectedDate)) {
+                //Found a bug where if you go from one selected date with data and select another valid date then both sets of items will be displayed
+                //Ensuring that the lists are defiantly empty and ensuring they are hidden until needed - doing it here just to be safe that when lists are added to they are empty
+                if(!breakfastFoodItems.isEmpty())
+                {
+                    breakfastFoodItems.clear();
+                    breakfastAdapter.notifyDataSetChanged();
+                    getBreakfastListView().setVisibility(View.INVISIBLE);
+                    getBreakfastListViewHeader().setVisibility(View.INVISIBLE);
+                }
+                if(!lunchFoodItems.isEmpty())
+                {
+                    lunchFoodItems.clear();
+                    lunchAdapter.notifyDataSetChanged();
+                    getLunchListView().setVisibility(View.INVISIBLE);
+                    getLunchListViewHeader().setVisibility(View.INVISIBLE);
+                }
+                if(!dinnerFoodItems.isEmpty())
+                {
+                    dinnerFoodItems.clear();
+                    dinnerAdapter.notifyDataSetChanged();
+                    getDinnerListView().setVisibility(View.INVISIBLE);
+                    getDinnerListViewHeader().setVisibility(View.INVISIBLE);
+                }
+                if(!snacksFoodItems.isEmpty())
+                {
+                    snacksFoodItems.clear();
+                    snacksAdapter.notifyDataSetChanged();
+                    getSnacksListView().setVisibility(View.INVISIBLE);
+                    getSnacksListViewHeader().setVisibility(View.INVISIBLE);
+                }
+
+                //SharedPreferences contains saved data now need to check if the date chosen has data stored for it
+                if (dateSaved.contains(userSelectedDate))
+                {
+                    //The date has data!
                     Gson gson = new Gson();
                     //Getting the HashMap that contains all dates with data saved then getting HashMap that stored the size of lists
                     //Breakfast - could make this all be one method, would make it cleaner - TODO Refactor
@@ -159,24 +197,27 @@ public class Calendar extends AppCompatActivity
                     HashMap<String, String> snacks = gson.fromJson(snacksData, type);
                     HashMap<String, Integer> snacksInfoMap = gson.fromJson(snacksInfo, type2);
 
-                    Log.i("Breakfast Data", breakfastData);
-                    //User could have saved data i.e., set amount of calories but no lists can be stored so will crash
+                    //User could have saved data i.e., set amount of calories but no lists can be stored so will crash or only breakfast items or only snacks etc,.
+                    //Only continue if the list has data
                     if(breakfastData != null && !breakfastData.isEmpty())
                     {
+                        //The HashMap has data but not necessarily on this date (need to check again) i.e., today may only store snacks etc
                         if (breakfast.containsKey(userSelectedDate))
                         {
+                            Log.i("The map", String.valueOf(breakfast));
+
                             //Making sure the message is not displayed (i.e., the user selected a non valid date first then selected a valid date)
                             getMessage().setVisibility(View.INVISIBLE);
 
-                            Log.i("The map", String.valueOf(breakfast));
-
+                            //Replacing all of the punctuation in the map to easily get the correct items to store back into FoodItems Array
                             String item = Objects.requireNonNull(breakfast.get(userSelectedDate), "breakfast must not be null")
                                     .replaceAll("\"", "")
                                     .replaceAll("\\[", "")
                                     .replaceAll("]", "");
+                            //The Data that is now cleaned from the map
                             Log.i("Data", item);
 
-                            //This would split up all the data
+                            //This would split up all the data into single words i.e, quantity, item name, item calories
                             String[] foodItem = item.split(",");
 
                             int count = 0;
@@ -186,28 +227,40 @@ public class Calendar extends AppCompatActivity
                             getBreakfastListViewHeader().setVisibility(View.VISIBLE);
                             getBreakfastListView().setVisibility(View.VISIBLE);
 
+                            if (breakfastFoodItems != null)
+                                breakfastFoodItems.clear();
+
+                            //Looping through the size of the list
                             for (int j = 0; j < size; j++) {
+                                //Adding the items back into the Breakfast<FoodItems> ArrayList
                                 breakfastFoodItems.add(new FoodItem(foodItem[count], foodItem[count + 1], foodItem[count + 2]));
                                 count += 3;
                             }
+                            //Notifying the adapter to update the list view
                             breakfastAdapter.notifyDataSetChanged();
                         }// end breakfast.contains()
                     }//end breakfastData != null
-                    if(lunchData != null && !lunchData.isEmpty()) {
-                        if (lunch.containsKey(userSelectedDate)) {
-                            //This should be a method  - Keep code DRY TODO (Refactor)
+                    //Checking that the LunchData String has data
+                    if(lunchData != null && !lunchData.isEmpty())
+                    {
+                        //It has data but now need to check it has data containing to the selected date
+                        if (lunch.containsKey(userSelectedDate))
+                        {
+                            //Todo - Make this whole thing a method or something repeating a lot of code here and I don't like
+                            Log.i("Lunch map", String.valueOf(lunch));
+
                             //Making sure the message is not displayed (i.e., the user selected a non valid date first then selected a valid date)
                             getMessage().setVisibility(View.INVISIBLE);
 
-                            Log.i("The map", String.valueOf(lunch));
-
+                            //Again cleaning the data stored in the map to only include commas, which can then be used to index the correct words that need to be
+                            //split to put back into the arraylist
                             String item = Objects.requireNonNull(lunch.get(userSelectedDate), "lunch must not be null")
                                     .replaceAll("\"", "")
                                     .replaceAll("\\[", "")
                                     .replaceAll("]", "");
-                            Log.i("Data", item);
+                            Log.i("Lunch data", item);
 
-                            //This would split up all the data
+                            //This would split up all the data into three words (item quantity, item name, item calories)
                             String[] foodItem = item.split(",");
 
                             int count = 0;
@@ -217,7 +270,7 @@ public class Calendar extends AppCompatActivity
                             getLunchListViewHeader().setVisibility(View.VISIBLE);
                             getLunchListView().setVisibility(View.VISIBLE);
 
-                            //This could be a method too
+                            //Adding the items into the LunchFoodItems Array
                             for (int j = 0; j < size; j++) {
                                 lunchFoodItems.add(new FoodItem(foodItem[count], foodItem[count + 1], foodItem[count + 2]));
                                 count += 3;
@@ -225,18 +278,22 @@ public class Calendar extends AppCompatActivity
                             lunchAdapter.notifyDataSetChanged();
                         }//end lunch.contains()
                     }//end lunch != null
-                    if(dinnerData != null && !dinnerData.isEmpty()) {
-                        if (dinner.containsKey(userSelectedDate)) {
+                    //Checking to make sure that the dinner data string is not null or empty
+                    if(dinnerData != null && !dinnerData.isEmpty())
+                    {
+                        //It contains data but does it contain data for the selected date?
+                        if (dinner.containsKey(userSelectedDate))
+                        {
+                            Log.i("Dinner map", String.valueOf(dinner));
+
                             //Making sure the message is not displayed (i.e., the user selected a non valid date first then selected a valid date)
                             getMessage().setVisibility(View.INVISIBLE);
-
-                            Log.i("The map", String.valueOf(lunch));
 
                             String item = Objects.requireNonNull(dinner.get(userSelectedDate), "dinner must not be null")
                                     .replaceAll("\"", "")
                                     .replaceAll("\\[", "")
                                     .replaceAll("]", "");
-                            Log.i("Data", item);
+                            Log.i("Dinner Data", item);
 
                             //This would split up all the data
                             String[] foodItem = item.split(",");
@@ -256,18 +313,20 @@ public class Calendar extends AppCompatActivity
                             dinnerAdapter.notifyDataSetChanged();
                         }//end dinner.contains()
                     }//end dinner != null
-                    if(snacksData != null && !snacksData.isEmpty()) {
-                        if (snacks.containsKey(userSelectedDate)) {
+                    if(snacksData != null && !snacksData.isEmpty())
+                    {
+                        if (snacks.containsKey(userSelectedDate))
+                        {
+                            Log.i("Snacks map", String.valueOf(snacks));
+
                             //Making sure the message is not displayed (i.e., the user selected a non valid date first then selected a valid date)
                             getMessage().setVisibility(View.INVISIBLE);
-
-                            Log.i("The map", String.valueOf(lunch));
 
                             String item = Objects.requireNonNull(snacks.get(userSelectedDate), "snacks must not be null")
                                     .replaceAll("\"", "")
                                     .replaceAll("\\[", "")
                                     .replaceAll("]", "");
-                            Log.i("Data", item);
+                            Log.i("Snacks Data", item);
 
                             //This would split up all the data
                             String[] foodItem = item.split(",");
@@ -296,22 +355,26 @@ public class Calendar extends AppCompatActivity
         }//end !lastSelectedDate
         if(fitnessActivity())
         {
+            //If I was to publish this app or keep working on it then I would add functionallity to utilize the calendar in FitnessActivity. I.e., show completed workouts etc?
             Log.i("Calendar", "Came from fitness page");
         }//end fitnessActivity()
-    }
+    }//end openSelectedDate()
 
+    //Checking if the user came from the Calorie Activity
     private boolean calorieActivity()
     {
         String intent = getIntent().getStringExtra("ActivityID");
         return intent.equals("Calorie");
     }
 
+    //Checking if the user came from the Fitness Activity
     private boolean fitnessActivity()
     {
         String intent = getIntent().getStringExtra("ActivityID");
         return intent.equals("Fitness");
     }
 
+    //The was no data for selected date
     private void noData()
     {
         getMessage().setText("No available data on this selected date");
@@ -327,7 +390,7 @@ public class Calendar extends AppCompatActivity
         getSnacksListViewHeader().setVisibility(View.INVISIBLE);
         getSnacksListView().setVisibility(View.INVISIBLE);
 
-        //Removing the data if there is any
+        //Removing the data if there is any (just making sure if user came from a valid date to invalid that the lists are emptied)
         if (breakfastFoodItems != null)
             breakfastFoodItems.clear();
         if (lunchFoodItems != null)
@@ -337,6 +400,8 @@ public class Calendar extends AppCompatActivity
         if (snacksFoodItems != null)
             snacksFoodItems.clear();
     }
+
+    //Helper Methods
     private CalendarView getCalendarView() { return findViewById(R.id.calendarCalendarView); }
     private TextView getMessage() { return findViewById(R.id.calendarDataMessage); }
     private TextView getBreakfastListViewHeader() { return findViewById(R.id.calendarBreakfastHeader); }

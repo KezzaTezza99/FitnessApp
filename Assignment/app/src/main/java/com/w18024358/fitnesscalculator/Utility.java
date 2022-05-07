@@ -1,9 +1,7 @@
 package com.w18024358.fitnesscalculator;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,8 +12,6 @@ import java.util.Locale;
 //Class that will hold some common functionality to stop repeating code
 public class Utility
 {
-    ArrayList<String> allDates = new ArrayList<>();
-
     //Transforming a ArrayList<FoodItem> to ArrayList<String>
     ArrayList<String> itemListToStringList(ArrayList<FoodItem> items)
     {
@@ -63,29 +59,17 @@ public class Utility
     {
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         Date date = calendar.getTime();
-        String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime());
 
-        return today;
+        return new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime());
     }
 
     String getCurrentDateNumerical()
     {
+        //Need this format to work correctly with the Calendar Activity (i.e., 1/1/2022 and not 01/01/2022 ect)
         DateFormat dateFormat = new SimpleDateFormat("d/M/yyyy");
         java.util.Calendar date = Calendar.getInstance();
 
         return dateFormat.format(date.getTime());
-    }
-
-    ArrayList<String> getAllDates()
-    {
-        Log.i("Utility: getAllDates()", allDates.toString());
-        return allDates;
-    }
-
-    void addDateToList(String date)
-    {
-        Log.i("Utility: addDateToList()", date);
-        allDates.add(date);
     }
 
     //Hiding input fields
@@ -95,6 +79,7 @@ public class Utility
         userKG.setVisibility(View.INVISIBLE);
     }
 
+    //Hiding imperial fields
     void hideImperialFields(EditText userFT, EditText userInch, EditText weightST, EditText weightLBS)
     {
         userFT.setVisibility(View.INVISIBLE);
@@ -103,13 +88,14 @@ public class Utility
         weightLBS.setVisibility(View.INVISIBLE);
     }
 
-    //Showing input fields
+    //Showing metric input fields
     void showMetricFields(EditText userCM, EditText userKG)
     {
         userCM.setVisibility(View.VISIBLE);
         userKG.setVisibility(View.VISIBLE);
     }
 
+    //Showing imperial Fields
     void showImperialFields(EditText userFT, EditText userInch, EditText weightST, EditText weightLBS)
     {
         userFT.setVisibility(View.VISIBLE);

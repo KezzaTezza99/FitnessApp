@@ -7,16 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
-
 import java.util.Objects;
 
+//Used when the user wants to edit an item in the list
 public class EditItemCalorieDialog extends AppCompatDialogFragment
 {
+    //Need to get the new information that the user wants to edit the FoodItem too
     private EditText newItemName;
     private EditText newItemQuantity;
     private EditText newItemCalories;
@@ -33,30 +33,25 @@ public class EditItemCalorieDialog extends AppCompatDialogFragment
         View view = inflater.inflate(R.layout.edit_calorie_item_dialog, null);
 
         builder.setView(view)
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                .setNegativeButton("cancel", (dialogInterface, i) -> {
 
-                    }
                 })
-                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //Not valid data
-                        if(newItemName.getText().toString().length() == 0 ||
-                                newItemQuantity.getText().toString().length() == 0 ||
-                                newItemCalories.getText().toString().length() == 0)
-                        {
-                            Toast.makeText(getContext(), "You need to enter valid data", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        //Assigning new variables
-                        String itemName = newItemName.getText().toString();
-                        int itemQuantity = Integer.parseInt(newItemQuantity.getText().toString());
-                        int itemCalories = Integer.parseInt(newItemCalories.getText().toString());
-
-                        listener.applyNewCalorieItem(itemName, String.valueOf(itemQuantity), String.valueOf(itemCalories));
+                .setPositiveButton("Okay", (dialogInterface, i) -> {
+                    //Not valid data
+                    if(newItemName.getText().toString().length() == 0 ||
+                            newItemQuantity.getText().toString().length() == 0 ||
+                            newItemCalories.getText().toString().length() == 0)
+                    {
+                        Toast.makeText(getContext(), "You need to enter valid data", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+
+                    //Assigning new variables
+                    String itemName = newItemName.getText().toString();
+                    int itemQuantity = Integer.parseInt(newItemQuantity.getText().toString());
+                    int itemCalories = Integer.parseInt(newItemCalories.getText().toString());
+
+                    listener.applyNewCalorieItem(itemName, String.valueOf(itemQuantity), String.valueOf(itemCalories));
                 });
         newItemName = view.findViewById(R.id.editCaloriesItemName);
         newItemQuantity = view.findViewById(R.id.editCaloriesItemQuantity);
@@ -68,7 +63,6 @@ public class EditItemCalorieDialog extends AppCompatDialogFragment
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
         try
         {
             listener = (EditItemCalorieDialog.EditCalorieDialogListener) context;

@@ -5,14 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 import java.io.InputStream;
 
-//TODO Needs completing and refactoring already!
-
+//A class that provides me with Utility Functions for reading and parsing JSON files
 public class JsonUtility extends AppCompatActivity
 {
     Context myContext;
     String json;                                        //Entire JSON File
     String selectedData;                                //Holds the workout data for selected day only
-    String currentDay;                                  //Holds the current day
     boolean workout;
 
     public JsonUtility(Context myContext)
@@ -72,6 +70,7 @@ public class JsonUtility extends AppCompatActivity
         return selectedData;
     }
 
+    //Gets the next day which basically just stops reading the file once it reaches the return value
     String GetTheNextDay(String currentDate)
     {
         switch(currentDate)
@@ -106,8 +105,6 @@ public class JsonUtility extends AppCompatActivity
             String workoutName = data.substring(compoundIndex + 15, compoundEnd - 1);
             usefulData[0] = workoutName;
             Log.i("Workout name no workout", workoutName);
-
-            return usefulData;
         }
         else
         {
@@ -155,8 +152,8 @@ public class JsonUtility extends AppCompatActivity
             usefulData[5] = isolationSetInfo;
             Log.i("Isolation Set", isolationSetInfo);
 
-            return usefulData;
         }
+        return usefulData;
     }
 
     boolean getWorkout()

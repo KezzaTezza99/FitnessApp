@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
+//This class is used to store Compound Workout Information from the JSON File
 public class CompoundWorkout
 {
     private final String workoutName;
@@ -30,7 +31,6 @@ public class CompoundWorkout
         this.workingSet2 = workingSet2;
         this.workingSet3 = workingSet3;
     }
-
     public String getWorkoutName() {
         return workoutName;
     }
