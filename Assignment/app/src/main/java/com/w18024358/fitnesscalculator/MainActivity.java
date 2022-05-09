@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         FitnessButton.setOnClickListener(view -> openFitnessActivity());
 
         SharedPreferences sp = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        sp.edit().clear().apply();
+       // sp.edit().clear().apply();
 
 //        Intent intent = new Intent(this, UserProfileActivity.class);
 //        startActivity(intent);

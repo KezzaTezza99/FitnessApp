@@ -122,37 +122,6 @@ public class Calendar extends AppCompatActivity
                 //No data saved yet should return now before I crash the application!
                 if (dateSaved == null) return;
 
-                //Found a bug where if you go from one selected date with data and select another valid date then both sets of items will be displayed
-                //Ensuring that the lists are defiantly empty and ensuring they are hidden until needed - doing it here just to be safe that when lists are added to they are empty
-                if(!breakfastFoodItems.isEmpty())
-                {
-                    breakfastFoodItems.clear();
-                    breakfastAdapter.notifyDataSetChanged();
-                    getBreakfastListView().setVisibility(View.INVISIBLE);
-                    getBreakfastListViewHeader().setVisibility(View.INVISIBLE);
-                }
-                if(!lunchFoodItems.isEmpty())
-                {
-                    lunchFoodItems.clear();
-                    lunchAdapter.notifyDataSetChanged();
-                    getLunchListView().setVisibility(View.INVISIBLE);
-                    getLunchListViewHeader().setVisibility(View.INVISIBLE);
-                }
-                if(!dinnerFoodItems.isEmpty())
-                {
-                    dinnerFoodItems.clear();
-                    dinnerAdapter.notifyDataSetChanged();
-                    getDinnerListView().setVisibility(View.INVISIBLE);
-                    getDinnerListViewHeader().setVisibility(View.INVISIBLE);
-                }
-                if(!snacksFoodItems.isEmpty())
-                {
-                    snacksFoodItems.clear();
-                    snacksAdapter.notifyDataSetChanged();
-                    getSnacksListView().setVisibility(View.INVISIBLE);
-                    getSnacksListViewHeader().setVisibility(View.INVISIBLE);
-                }
-
                 //SharedPreferences contains saved data now need to check if the date chosen has data stored for it
                 if (dateSaved.contains(userSelectedDate))
                 {
@@ -201,6 +170,15 @@ public class Calendar extends AppCompatActivity
                     //Only continue if the list has data
                     if(breakfastData != null && !breakfastData.isEmpty())
                     {
+                        //Found a bug where if you go from one selected date with data and select another valid date then both sets of items will be displayed
+                        //This is a fix to the problem as I am ensuring the lists are empty
+                        if(!breakfastFoodItems.isEmpty())
+                        {
+                            breakfastFoodItems.clear();
+                            breakfastAdapter.notifyDataSetChanged();
+                            getBreakfastListView().setVisibility(View.INVISIBLE);
+                            getBreakfastListViewHeader().setVisibility(View.INVISIBLE);
+                        }
                         //The HashMap has data but not necessarily on this date (need to check again) i.e., today may only store snacks etc
                         if (breakfast.containsKey(userSelectedDate))
                         {
@@ -243,6 +221,14 @@ public class Calendar extends AppCompatActivity
                     //Checking that the LunchData String has data
                     if(lunchData != null && !lunchData.isEmpty())
                     {
+                        if(!lunchFoodItems.isEmpty())
+                        {
+                            lunchFoodItems.clear();
+                            lunchAdapter.notifyDataSetChanged();
+                            getLunchListView().setVisibility(View.INVISIBLE);
+                            getLunchListViewHeader().setVisibility(View.INVISIBLE);
+                        }
+
                         //It has data but now need to check it has data containing to the selected date
                         if (lunch.containsKey(userSelectedDate))
                         {
@@ -281,6 +267,13 @@ public class Calendar extends AppCompatActivity
                     //Checking to make sure that the dinner data string is not null or empty
                     if(dinnerData != null && !dinnerData.isEmpty())
                     {
+                        if(!dinnerFoodItems.isEmpty())
+                        {
+                            dinnerFoodItems.clear();
+                            dinnerAdapter.notifyDataSetChanged();
+                            getDinnerListView().setVisibility(View.INVISIBLE);
+                            getDinnerListViewHeader().setVisibility(View.INVISIBLE);
+                        }
                         //It contains data but does it contain data for the selected date?
                         if (dinner.containsKey(userSelectedDate))
                         {
@@ -315,6 +308,13 @@ public class Calendar extends AppCompatActivity
                     }//end dinner != null
                     if(snacksData != null && !snacksData.isEmpty())
                     {
+                        if(!snacksFoodItems.isEmpty())
+                        {
+                            snacksFoodItems.clear();
+                            snacksAdapter.notifyDataSetChanged();
+                            getSnacksListView().setVisibility(View.INVISIBLE);
+                            getSnacksListViewHeader().setVisibility(View.INVISIBLE);
+                        }
                         if (snacks.containsKey(userSelectedDate))
                         {
                             Log.i("Snacks map", String.valueOf(snacks));
