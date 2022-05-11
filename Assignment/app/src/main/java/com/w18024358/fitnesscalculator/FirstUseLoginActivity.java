@@ -1,24 +1,17 @@
 package com.w18024358.fitnesscalculator;
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Locale;
 
 //Activity's purpose is to capture some important user details once they have logged in
 //will save the details to the SharedPreferences and will be used for the Calorie Total and Fitness Page
@@ -26,7 +19,6 @@ import java.util.Locale;
 //add these from the profile page when the user deems more appropriate (accessible through swiping right on three main activities)
 public class FirstUseLoginActivity extends AppCompatActivity
 {
-    //TODO still shows both fields
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -76,7 +68,7 @@ public class FirstUseLoginActivity extends AppCompatActivity
             if(!getHeightCm().getText().toString().isEmpty())
             {
                 //Converting CMs into Feet
-                String[] answer = getMathUtility().convertHeight(currentMetric, Integer.parseInt(getHeightCm().getText().toString()), 0, 0);
+                String[] answer = getMathUtility().convertheight(currentMetric, Integer.parseInt(getHeightCm().getText().toString()), 0, 0);
                 getHeightFt().setText(answer[0]);
                 getHeightInch().setText(answer[1]);
 
@@ -110,13 +102,12 @@ public class FirstUseLoginActivity extends AppCompatActivity
             if(!getHeightFt().getText().toString().isEmpty() || !getHeightInch().getText().toString().isEmpty())
             {
                 //Converting Feet into CM
-                String[] answer = getMathUtility().convertHeight(currentMetric, 0, Integer.parseInt(getHeightFt().getText().toString()), Integer.parseInt(getHeightInch().getText().toString()));
+                String[] answer = getMathUtility().convertheight(currentMetric, 0, Integer.parseInt(getHeightFt().getText().toString()), Integer.parseInt(getHeightInch().getText().toString()));
                 getHeightCm().setText(answer[0]);
 
                 Log.i("First Login - Answer[0] Ft -> Cm: ", answer[0]);
                 Log.i("First Login - Answer[1]: Ft -> Cm: ", answer[1]);
 
-                //Clearing fields TODO Make these a method
                 getHeightFt().setText("");
                 getHeightInch().setText("");
             }
@@ -144,7 +135,6 @@ public class FirstUseLoginActivity extends AppCompatActivity
                                                     || !getWeightKg().getText().toString().isEmpty())
         {
             //Saving the data and this data will then be used to automatically fill in fields in BMI
-            //TODO Pass in a variable to the method?
             saveData();
         }
         else if(getMetricToggle().getText().equals("Imperial") && !getHeightFt().getText().toString().isEmpty()
@@ -165,7 +155,6 @@ public class FirstUseLoginActivity extends AppCompatActivity
         }
     }
 
-    //TODO Refactor from here as this is nasty
     private void openBMIActivity()
     {
         Intent intent = new Intent(this, BMIActivity.class);

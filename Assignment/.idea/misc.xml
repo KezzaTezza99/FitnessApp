@@ -13,15 +13,17 @@
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/drawable/nav_bar_background.xml" value="0.286" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/drawable/profile_icon.xml" value="0.1525" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/drawable/selector.xml" value="0.3115" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_add_to_calorie_list.xml" value="0.2650767543859649" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_bmi.xml" value="0.25" />
-        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_calorie.xml" value="0.1" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_calorie.xml" value="0.18" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_first_use_login.xml" value="0.264" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_fitness.xml" value="0.22" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_login.xml" value="0.2650767543859649" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_main.xml" value="0.23822463768115942" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/activity_user_profile.xml" value="0.264" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/calendar.xml" value="0.25" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/custom_calorie_list_view.xml" value="0.3009833262077811" />
-        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/custom_compound_workout_list_view.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/custom_compound_workout_list_view.xml" value="0.67" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/custom_isolation_workout_list_view.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/custom_workout_list_view.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/thorn/Documents/MobileDev/Assignment/app/src/main/res/layout/edit_calorie_item_dialog.xml" value="0.1" />

@@ -22,9 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-//TODO - BUG FOUND! If the user opens a date with saved data and then loads another day with saved data both are displayed
-//- should just need to clear the lists before loading them?
-
 //The purpose of the calendar activity is to allow the user to go back through previous dates to see information previously inputted
 //as of now calendar only works with the CalorieActivity (only if data is saved)
 //The code is structured to allow the calendar to expand with the FitnessActivity just not implemented yet

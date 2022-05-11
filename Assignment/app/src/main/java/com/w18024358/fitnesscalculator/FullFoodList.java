@@ -114,7 +114,6 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
 
             DialogInterface.OnClickListener dcl = ((dialogInterface, j) ->
             {
-                //TODO Item deletes from FullList but crashes when returning to the CalorieActivity
                 if (j == DialogInterface.BUTTON_POSITIVE) {
                     //Telling Calorie Activity that there has been an item deleted
                     itemDeleted = true;
@@ -151,8 +150,7 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //TODO Find out what 10 us again
-        if (requestCode == RETURNED_VALUES || requestCode == RESULT_OK || requestCode == 10 || resultCode == 10)
+        if (requestCode == RETURNED_VALUES || requestCode == RESULT_OK)
         {
             if(data == null) { return; }
 

@@ -5,13 +5,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,14 +17,10 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.text.DecimalFormat;
-import java.util.Locale;
-
 //Activity is responsible for calculating the BMI of the user
 public class BMIActivity extends AppCompatActivity
 {
-    //TODO If the SharedPreferences had data in it then should automatically display it
-    //TODO fix the BMI page when you access it by logging in - if no details show nothing if details then show the weight / height
+    //TODO If BMI has been calculated could save that value and keep it displayed
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -74,7 +68,8 @@ public class BMIActivity extends AppCompatActivity
         //Drawer Navigation (secondary navigation) would be used for settings and logging out etc if the app was to be extended
         //Getting the layout that allows the draw to move from "off screen" to on screen
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
-        //The strings that I didn't pass to constructor provide accessibility for blind people should implement these for more accessibility need TODO
+        //The strings that I didn't pass to constructor provide accessibility for blind people should implement these for more accessibility!!!!
+        //TODO - Come back to this and see what needs to be implemented
         ActionBarDrawerToggle sideNavigationMenu = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
         sideNavigationMenu.syncState();
 
@@ -209,7 +204,7 @@ public class BMIActivity extends AppCompatActivity
             if (!bmiUserHeight().getText().toString().isEmpty())
             {
                 //Converting cm to ft
-                String[] answer = Util().convertHeight(0, Integer.parseInt(bmiUserHeight().getText().toString()), 0, 0);
+                String[] answer = Util().convertheight(0, Integer.parseInt(bmiUserHeight().getText().toString()), 0, 0);
 
                 bmiHeightFoot().setText(answer[0]);
                 bmiHeightInches().setText(answer[1]);
@@ -275,7 +270,7 @@ public class BMIActivity extends AppCompatActivity
                 }
 
                 //Converting FT to CM
-                String[] answer = Util().convertHeight(1, 0, ft, inches);
+                String[] answer = Util().convertheight(1, 0, ft, inches);
                 bmiUserHeight().setText(answer[0]);
 
                 Log.i("Answer[0] Ft -> Cm: ", answer[0]);

@@ -5,23 +5,21 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class FitnessActivity extends AppCompatActivity {
     //Todo sort calories out on here - predict how much each activity would burn?
     //add the ability to open the lists - then mark complete? (this could then update calories burnt?
     //maybe start the workout by having a timer that takes up the space at the bottom???
+    //TODO Change the weights used for exercises if the user has inputted values from UserProfile, if not just show the workout instead?
 
     //Used to tell the intent that
     static final int RETURNED_VALUES = 1;
@@ -49,8 +47,8 @@ public class FitnessActivity extends AppCompatActivity {
         });
 
         //Doing JSON stuff - Basically reading the file into data then splitting the data on selected date (current day) i.e., get Thursday's workout
-        String data = getJSONUtility().SplitWorkoutBasedOnDays(getJSONUtility().json, getUtility().getCurrentDate());
-        String[] str = getJSONUtility().SplitTheData(data);
+        String data = getJSONUtility().splitWorkoutBasedOnDays(getJSONUtility().json, getUtility().getCurrentDate());
+        String[] str = getJSONUtility().splitTheData(data);
         //Sending the data of today's workout to WorkoutUtil which is responsible for reading the JSON and transforming it into ArrayList<T> (T being Compound or Isolation Workout)
         WorkoutUtil workoutUtil = new WorkoutUtil(str, getJSONUtility().getWorkout());
 

@@ -16,12 +16,11 @@ public class JsonUtility extends AppCompatActivity
     public JsonUtility(Context myContext)
     {
         this.myContext = myContext;
-        workout = true;
-        ParseJSONFile();
+        parseJSONFile();
     }
 
     //Parse a JSON File
-    String ParseJSONFile()
+    String parseJSONFile()
     {
         json = null;
 
@@ -48,13 +47,13 @@ public class JsonUtility extends AppCompatActivity
     }
 
     //Read the JSON String to get the info for each day
-    String SplitWorkoutBasedOnDays(String data, String day)
+    String splitWorkoutBasedOnDays(String data, String day)
     {
         int index;
         int end;
         if(day.equals("Wednesday") || day.equals("Sunday"))
         {
-            workout = false;
+            setWorkout(false);
             index = data.indexOf("NA");
             end = data.indexOf("}", index);
             selectedData = data.substring(index, end);
@@ -62,8 +61,9 @@ public class JsonUtility extends AppCompatActivity
         }
         else
         {
+            setWorkout(true);
             index = data.indexOf(day);
-            end = data.indexOf(GetTheNextDay(day));
+            end = data.indexOf(getTheNextDay(day));
             selectedData = data.substring(index, end);
             Log.i("Selected Day", selectedData);
         }
@@ -71,7 +71,7 @@ public class JsonUtility extends AppCompatActivity
     }
 
     //Gets the next day which basically just stops reading the file once it reaches the return value
-    String GetTheNextDay(String currentDate)
+    String getTheNextDay(String currentDate)
     {
         switch(currentDate)
         {
@@ -91,12 +91,14 @@ public class JsonUtility extends AppCompatActivity
     }
 
     //Break the data into 5 sections (Exercise name, warmup set etc.,)
-    String[] SplitTheData(String data)
+    String[] splitTheData(String data)
     {
-        //String[] usefulData = new String[data.length()];
+        Log.i("Split the Data", "Inside the method");
+
         String[] usefulData;
         int compoundIndex;
-        if(!workout)
+
+        if(!getWorkout())
         {
             usefulData = new String[1];
             //Compound Workout name (Rest Day)
@@ -108,6 +110,7 @@ public class JsonUtility extends AppCompatActivity
         }
         else
         {
+
             usefulData = new String[6];
 
             //Compound Workout name
@@ -156,6 +159,7 @@ public class JsonUtility extends AppCompatActivity
         return usefulData;
     }
 
+    void setWorkout(boolean value) { workout = value; }
     boolean getWorkout()
     {
         return workout;

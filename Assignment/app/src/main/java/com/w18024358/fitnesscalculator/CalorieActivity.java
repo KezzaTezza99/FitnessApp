@@ -3,6 +3,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,16 +27,11 @@ import java.util.HashMap;
 //Load when user opens page
 //Save data as soon as item is added?
 public class CalorieActivity extends AppCompatActivity implements TargetCalorieDialog.CalorieDialogListener {
-    //TODO REFACTOR THIS CLASS
-    //TODO Add a class that does toasts for me?? Maybe another UTIL class? Like Advanced Programming
-    //TODO make sure all of the boxes and headers are the same size and in the same positions
-    //TODO --- The lists all need to be saved :/ keep data persistence
     static final int RETURNED_VALUES = 1;
     static final int EDITED_VALUE = 2;
     static final int DELETED_VALUE = 3;
     static final int ADDED_VALUE = 4;
 
-    //TODO if come back to the app when not wiping SP then the calories is wrong (calories eaten are double)
     //Breakfast
     ArrayList<FoodItem> breakfastFoodItems;
     ListView breakfastListView;
@@ -127,11 +124,10 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         totalCalories = findViewById(R.id.calorieTotalCalories);
         caloriesLeft = findViewById(R.id.calorieRemainingCalories);
 
-        //TODO Add this back in for final build
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("Hold down on calories to set your intended target")
-//                .setPositiveButton("Okay", (dialogInterface, i) -> {});
-//        builder.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Hold down on calories to set your intended target")
+                .setPositiveButton("Okay", (dialogInterface, i) -> {});
+        builder.show();
 
         caloriesLeft.setOnLongClickListener(view ->
         {
@@ -139,11 +135,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
             return true;
         });
 
-        //Maybe add a bundles bit here like other activity to stop null data being passed?
-        //Load all data previously entered (so far this is only the total calories the user would like to eat a day)
-        //Add a flag
-        //TODO calories doesn't work as intended if loaded from intent
-        //It should be modified to only work on new days???
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         boolean loaded = sharedPreferences.getBoolean("DataSaved", Boolean.FALSE);
         if(loaded) loadData();
@@ -205,7 +196,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         });
     }
 
-    //TODO make it actually make changes to the list when going back to the CalorieActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -379,7 +369,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         totalCalories.setText(totalCaloriesOverall + "kcal");
     }
 
-    //TODO make this work
     private void recalculateRemainingCalories() {
         //As the string will include after the number it causes crashes. Need to only get the number
         String[] caloriesEaten = totalCalories.getText().toString().split("k");
@@ -392,7 +381,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
     }
 
     private void saveData() {
-        //TODO maybe only save data if no data saved?
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -418,11 +406,6 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
         editor.apply();
     }
 
-    //TODO make sharedPrefs a method and return it like in BMI keep good DRY
-    //Need to save individual lists, maybe pass the list name and then save that to preferences and save potentially 4 lists?
-    //Load all 4 if not null?
-    //Redisplay the values??
-    //Save the date it was so can use a calendar
     private void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
 

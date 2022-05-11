@@ -2,16 +2,14 @@ package com.w18024358.fitnesscalculator;
 import static java.lang.String.*;
 
 import android.util.Log;
-import android.widget.EditText;
 
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 //Creating a helper class that will convert all necessary measurement conversions
 public class MathUtility
 {
     //Metric to Imperial (Height) -> Centimeters to inches
-    double CmToInch(double cm)
+    double cmToInch(double cm)
     {
         //Formatting the final value
         DecimalFormat decimalFormat = new DecimalFormat("##");
@@ -20,33 +18,33 @@ public class MathUtility
 
     //Converting Imperial Inches into Feet (was more accurate to do this than to go CM->FT, when testing)
     //Made code messier so need to clean it up but now values are accurately displayed (i.e., 5ft 8 and not 5ft 88 etc.)
-    double InchToFoot(double inches)
+    double inchToFoot(double inches)
     {
         Log.i("InchToFoot", "Inches: " + inches);
 
         //Formatting the amount after a decimal point
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         double height = Double.parseDouble(decimalFormat.format( inches / 12));
-        String[] heightRounded = BeforeAfterDecimalPoint(height);
+        String[] heightRounded = beforeAfterDecimalPoint(height);
 
         int ft = Integer.parseInt(heightRounded[0]);
         int temp = Integer.parseInt(heightRounded[1]);
-        int temp2 = (int) RoundToNearestDecimalPoint(temp);
+        int temp2 = (int) roundToNearestDecimalPoint(temp);
 
         String finalHeight = ft + "." + temp2;
 
         Log.i("Final Height", finalHeight);
 
         Log.i("Before CheckFtAndInchesNeedsRounding -> InchToFoot()", finalHeight);
-        if(CheckFtAndInchesNeedRounding(Double.parseDouble(finalHeight)))
+        if(checkFtAndInchesNeedRounding(Double.parseDouble(finalHeight)))
         {
-            return RoundFtAndInches(Double.parseDouble(finalHeight));
+            return roundFtAndInches(Double.parseDouble(finalHeight));
         }
         return Double.parseDouble(finalHeight);
     }
 
     //Metric to Imperial (Weight) -> Kilograms to pounds -- Approx evaluation = kg * 2.205
-    double KgToLbs(double kg)
+    double kgToLbs(double kg)
     {
         //Creating a formatter that will ensure the final value is rounded to 1 decimal place
         DecimalFormat decimalFormat = new DecimalFormat("##.#");
@@ -55,7 +53,7 @@ public class MathUtility
     }
 
     //Now need to convert the lbs into stone
-    double LbsToStone(double lbs)
+    double lbsToStone(double lbs)
     {
         Log.i("LbsToStone", "Lbs " + lbs);
 
@@ -63,25 +61,25 @@ public class MathUtility
         DecimalFormat decimalFormat = new DecimalFormat("##.##");
         double weight = Double.parseDouble(decimalFormat.format(lbs / 14));
 
-        String[] weightRounded = BeforeAfterDecimalPoint(weight);
+        String[] weightRounded = beforeAfterDecimalPoint(weight);
 
         int st = Integer.parseInt(weightRounded[0]);
         int temp = Integer.parseInt(weightRounded[1]);
-        int temp2 = (int) RoundToNearestDecimalPoint(temp);
+        int temp2 = (int) roundToNearestDecimalPoint(temp);
 
         String finalWeight = st + "." + temp2;
 
         Log.i("Final Weight", finalWeight);
 
-        if(CheckStAndLbsNeedsRounding(Double.parseDouble(finalWeight)))
+        if(checkStAndLbsNeedsRounding(Double.parseDouble(finalWeight)))
         {
-            return RoundStAndLbs(Double.parseDouble(finalWeight));
+            return roundStAndLbs(Double.parseDouble(finalWeight));
         }
         return Double.parseDouble(finalWeight);
     }
 
     //Imperial to Metric (Height) -> Foot to Cm
-    double FootToCm(double foot)
+    double footToCm(double foot)
     {
         //Formatting the value to a whole number
         DecimalFormat decimalFormat = new DecimalFormat("###");
@@ -89,31 +87,31 @@ public class MathUtility
     }
 
     //Imperial to Metric (Weight) -> Stone to Kg
-    double StoneToKg(double stone)
+    double stoneToKg(double stone)
     {
         DecimalFormat decimalFormat = new DecimalFormat("###.#");
         return Double.parseDouble(decimalFormat.format(stone * 6.35));
     }
 
     //Checking to see if ft / inches needs rounding (i.e, 5ft 12 inches should be 6ft)
-    boolean CheckFtAndInchesNeedRounding(double height)
+    boolean checkFtAndInchesNeedRounding(double height)
     {
-        String[] splitHeight = BeforeAfterDecimalPoint(height);
+        String[] splitHeight = beforeAfterDecimalPoint(height);
         return Integer.parseInt(splitHeight[1]) > 11;
     }
 
     //Checking to see if st / lbs needs rounding (i.e, 5st 14 lbs should be 6st)
-    boolean CheckStAndLbsNeedsRounding(double weight)
+    boolean checkStAndLbsNeedsRounding(double weight)
     {
-        String[] splitWeight = BeforeAfterDecimalPoint(weight);
+        String[] splitWeight = beforeAfterDecimalPoint(weight);
         return Integer.parseInt(splitWeight[1]) > 13;
     }
 
     //Ft and inches needs rounding
-    double RoundFtAndInches(double heightNeedsRounding)
+    double roundFtAndInches(double heightNeedsRounding)
     {
         Log.i("MathUtility -> RoundFtAndInches()", String.valueOf(heightNeedsRounding));
-        String[] height = BeforeAfterDecimalPoint(heightNeedsRounding);
+        String[] height = beforeAfterDecimalPoint(heightNeedsRounding);
         int ft = Integer.parseInt(height[0]);
         int inches = Integer.parseInt(height[1]);
         Log.i("RoundFtAndInches -> FT / Inches", ft + " " + inches);
@@ -125,9 +123,9 @@ public class MathUtility
     }
 
     //St and lbs needs rounding
-    double RoundStAndLbs(double weightNeedsRounding)
+    double roundStAndLbs(double weightNeedsRounding)
     {
-        String[] weight = BeforeAfterDecimalPoint(weightNeedsRounding);
+        String[] weight = beforeAfterDecimalPoint(weightNeedsRounding);
         int st = Integer.parseInt(weight[0]);
         int lbs = Integer.parseInt(weight[1]);
 
@@ -139,7 +137,7 @@ public class MathUtility
 
     //TODO Round to two decimal places??? more accuracy
     //Rounding a value to the nearest decimal point
-    double RoundToNearestDecimalPoint(int valueToRound)
+    double roundToNearestDecimalPoint(int valueToRound)
     {
         if(String.valueOf(valueToRound).length() == 1 || String.valueOf(valueToRound).length() == 0)
         {
@@ -166,7 +164,7 @@ public class MathUtility
     }
 
     //Splits a value that contains a decimal point into two, i.e., 12.0 will become 12 and 0
-    String[] BeforeAfterDecimalPoint(double valueToSplit)
+    String[] beforeAfterDecimalPoint(double valueToSplit)
     {
         System.out.println("Value of unit before split: " + valueToSplit);
 
@@ -180,18 +178,18 @@ public class MathUtility
         return new String[] {valueBeforeDecimalPoint, valueAfterDecimalPoint};
     }
 
-    String[] convertHeight(int currentMetric, int currentCM, int currentFt, int currentInch)
+    String[] convertheight(int currentMetric, int currentCM, int currentFt, int currentInch)
     {
         //Metric Measurements
         if(currentMetric == 0)
         {
             //Getting the currently inputted cm and converting it to inches
-            double inches = CmToInch(currentCM);
+            double inches = cmToInch(currentCM);
             //Now changing the inches into feet
-            double foot = InchToFoot(inches);
+            double foot = inchToFoot(inches);
 
             //Storing the result in a string that will be split into feet and inches
-            String[] results = BeforeAfterDecimalPoint(foot);
+            String[] results = beforeAfterDecimalPoint(foot);
 
             Log.i("MathUtility -> convertHeight()", results[0] + " " + results[1]);
 
@@ -221,7 +219,7 @@ public class MathUtility
             ft = Double.parseDouble(decimalFormat.format(foot + inches));
 
             Log.i("MathUtility -> Metric", "Ft: " + ft); //should be 2.9 but is actually 2.09
-            int finalCm = (int)FootToCm(ft);
+            int finalCm = (int) footToCm(ft);
             Log.i("Final CM", String.valueOf(finalCm));
             return new String[] {String.valueOf(finalCm), ""};
         }
@@ -233,10 +231,10 @@ public class MathUtility
     {
         if(metric == 0)
         {
-            double lbs = KgToLbs(currentKg);
-            double stone = LbsToStone(lbs);
+            double lbs = kgToLbs(currentKg);
+            double stone = lbsToStone(lbs);
 
-            String[] results = BeforeAfterDecimalPoint(stone);
+            String[] results = beforeAfterDecimalPoint(stone);
 
             return new String[] {results[0], results[1]};
         }
@@ -258,7 +256,7 @@ public class MathUtility
             DecimalFormat decimalFormat = new DecimalFormat("##.##");
             st = Double.parseDouble(decimalFormat.format(stone + lbs));
 
-            int finalKg = (int)StoneToKg(st);
+            int finalKg = (int) stoneToKg(st);
             return new String[] {String.valueOf(finalKg), ""};
         }
         return null;

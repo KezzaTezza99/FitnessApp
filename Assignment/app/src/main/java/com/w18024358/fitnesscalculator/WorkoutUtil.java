@@ -80,7 +80,7 @@ public class WorkoutUtil
     public String getSecondaryCompoundExerciseName() {
         return secondaryCompoundExerciseName;
     }
-    //TODO do this differently based on if the user has entered weights or not?????
+    //TODO do this differently based on if the user has entered weights or not - from user Profile - i.e., the string will be appended to with the exact weight values to use
     public String getWarmup() {
         return warmup + " at ";
     }
