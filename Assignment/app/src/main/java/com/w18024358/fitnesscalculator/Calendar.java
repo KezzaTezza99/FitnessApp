@@ -7,11 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
@@ -25,8 +24,16 @@ import java.util.Objects;
 //The purpose of the calendar activity is to allow the user to go back through previous dates to see information previously inputted
 //as of now calendar only works with the CalorieActivity (only if data is saved)
 //The code is structured to allow the calendar to expand with the FitnessActivity just not implemented yet
+//TODO Tell calorie activity that we have modified the data thorough the calendar so it can display the info if the current date is the date
+//otherwise save the data and make sure the list inside the full list view updates itself
 public class Calendar extends AppCompatActivity
 {
+    //Return codes
+    static final int RETURNED_VALUES = 1;
+    static final int EDITED_VALUE = 2;
+    static final int DELETED_VALUE = 3;
+    static final int ADDED_VALUE = 4;
+
     //User selected Date stores the date the user chooses in the calendar
     String userSelectedDate = null;
     //Last selected date is used to stop the user being able to repeatedly choose one day which would cause the list of items to duplicate N times
@@ -39,6 +46,11 @@ public class Calendar extends AppCompatActivity
     ListView breakfastListView, lunchListView, dinnerListView, snacksListView;
     //The FoodList Array Adapters
     FoodItemListAdapter breakfastAdapter, lunchAdapter, dinnerAdapter, snacksAdapter;
+
+
+    //Full List Experimenting
+    ArrayList<String> newList = new ArrayList<>();
+    int theNewListSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -81,6 +93,51 @@ public class Calendar extends AppCompatActivity
         getCancelButton().setOnClickListener(view -> goBack());
     }
 
+    //User comes back to this activity from another
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        //Returning from FullListView (using the back button)
+
+        if (requestCode == RESULT_CANCELED || resultCode == RESULT_CANCELED)
+        {
+            Log.i("Calendar: onActivityResult()", "Canceled");
+        }
+        //Returning from FullListView and have edited an item
+        else if (requestCode == EDITED_VALUE || resultCode == EDITED_VALUE) {
+            Log.i("Calendar: onActivityResult():", "Item in list Edited");
+
+            assert data != null;
+            newList = data.getStringArrayListExtra("The New Item List");
+            theNewListSize = data.getIntExtra("SIZE", 0);
+            String currentLst = data.getStringExtra("Current List");
+            listNeedsUpdating(currentLst);
+        }
+        //Returning from FullListView and have deleted an item
+        else if (requestCode == DELETED_VALUE || resultCode == DELETED_VALUE) {
+            Log.i("CalorieActivity:", "Deleted from List");
+
+            assert data != null;
+            newList = data.getStringArrayListExtra("The New Item List");
+            theNewListSize = data.getIntExtra("SIZE", 0);
+            String currentLst = data.getStringExtra("Current List");
+            listNeedsUpdating(currentLst);
+        } else if (requestCode == ADDED_VALUE || resultCode == ADDED_VALUE) {
+            Log.i("CalorieActivity:", "Added to list from FullListView");
+
+            assert data != null;
+            newList = data.getStringArrayListExtra("The New Item List");
+            theNewListSize = data.getIntExtra("SIZE", 0);
+            String currentLst = data.getStringExtra("Current List");
+            listNeedsUpdating(currentLst);
+        }
+        else if(requestCode == RETURNED_VALUES || resultCode == RETURNED_VALUES)
+        {
+            Log.i("Calendar: onActivityResult", "Just returning");
+        }
+    }
+
     //User wants to go back to the previous activity
     private void goBack()
     {
@@ -88,6 +145,8 @@ public class Calendar extends AppCompatActivity
 
         if(calorieActivity())
         {
+            //Need to tell calorie Activity that it needs to update its list
+            //do different things based on the modification used? just pass the list back using the intent and not the shared prefs? or maybe just call some method inside calorie if it needs to and do shit there?
             intent = new Intent(this, CalorieActivity.class);
         }
         else
@@ -123,7 +182,6 @@ public class Calendar extends AppCompatActivity
                 if (dateSaved.contains(userSelectedDate))
                 {
                     //The date has data!
-                    Gson gson = new Gson();
                     //Getting the HashMap that contains all dates with data saved then getting HashMap that stored the size of lists
                     //Breakfast - could make this all be one method, would make it cleaner - TODO Refactor
                     String breakfastData = sharedPreferences.getString("Breakfast List All Saved Data", "");
@@ -141,27 +199,21 @@ public class Calendar extends AppCompatActivity
                     String snacksData = sharedPreferences.getString("Snacks List All Saved Data", "");
                     String snacksInfo = sharedPreferences.getString("Snacks List All Info", "");
 
-                    //Used to transform the two strings into the two different HashMaps needed
-                    Type type = new TypeToken<HashMap<String, String>>() {
-                    }.getType();
-                    Type type2 = new TypeToken<HashMap<String, Integer>>() {
-                    }.getType();
-
                     //Turning back into HashMap to check the keys contain the selected date (Breakfast)
-                    HashMap<String, String> breakfast = gson.fromJson(breakfastData, type);
-                    HashMap<String, Integer> breakfastInfoMap = gson.fromJson(breakfastInfo, type2);
+                    HashMap<String, String> breakfast = getSharedPrefsUtility().transformJSONBackToMapData(breakfastData);
+                    HashMap<String, Integer> breakfastInfoMap = getSharedPrefsUtility().transformJSONBackToMapSize(breakfastInfo);
 
                     //Turning back into HashMap to check the keys contain the selected date (Lunch)
-                    HashMap<String, String> lunch = gson.fromJson(lunchData, type);
-                    HashMap<String, Integer> lunchInfoMap = gson.fromJson(lunchInfo, type2);
+                    HashMap<String, String> lunch = getSharedPrefsUtility().transformJSONBackToMapData(lunchData);
+                    HashMap<String, Integer> lunchInfoMap = getSharedPrefsUtility().transformJSONBackToMapSize(lunchInfo);
 
                     //Turning back into HashMap to check the keys contain the selected date (Dinner)
-                    HashMap<String, String> dinner = gson.fromJson(dinnerData, type);
-                    HashMap<String, Integer> dinnerInfoMap = gson.fromJson(dinnerInfo, type2);
+                    HashMap<String, String> dinner = getSharedPrefsUtility().transformJSONBackToMapData(dinnerData);
+                    HashMap<String, Integer> dinnerInfoMap = getSharedPrefsUtility().transformJSONBackToMapSize(dinnerInfo);
 
                     //Turning back into HashMap to check the keys contain the selected date (Snacks)
-                    HashMap<String, String> snacks = gson.fromJson(snacksData, type);
-                    HashMap<String, Integer> snacksInfoMap = gson.fromJson(snacksInfo, type2);
+                    HashMap<String, String> snacks = getSharedPrefsUtility().transformJSONBackToMapData(snacksData);
+                    HashMap<String, Integer> snacksInfoMap = getSharedPrefsUtility().transformJSONBackToMapSize(snacksInfo);
 
                     //User could have saved data i.e., set amount of calories but no lists can be stored so will crash or only breakfast items or only snacks etc,.
                     //Only continue if the list has data
@@ -213,6 +265,12 @@ public class Calendar extends AppCompatActivity
                             }
                             //Notifying the adapter to update the list view
                             breakfastAdapter.notifyDataSetChanged();
+
+                            //Setting on click listener to allow users to open the full list
+                            breakfastListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                                openFullItemList("Breakfast", breakfastFoodItems);
+                                return true;
+                            });//end listener
                         }// end breakfast.contains()
                     }//end breakfastData != null
                     //Checking that the LunchData String has data
@@ -259,6 +317,12 @@ public class Calendar extends AppCompatActivity
                                 count += 3;
                             }
                             lunchAdapter.notifyDataSetChanged();
+
+                            //Setting on click listener to allow users to open the full list
+                            lunchListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                                openFullItemList("Lunch", lunchFoodItems);
+                                return true;
+                            });//end listener
                         }//end lunch.contains()
                     }//end lunch != null
                     //Checking to make sure that the dinner data string is not null or empty
@@ -301,6 +365,12 @@ public class Calendar extends AppCompatActivity
                                 count += 3;
                             }
                             dinnerAdapter.notifyDataSetChanged();
+
+                            //Setting on click listener to allow users to open the full list
+                            dinnerListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                                openFullItemList("Dinner", dinnerFoodItems);
+                                return true;
+                            });//end listener
                         }//end dinner.contains()
                     }//end dinner != null
                     if(snacksData != null && !snacksData.isEmpty())
@@ -341,6 +411,12 @@ public class Calendar extends AppCompatActivity
                                 count += 3;
                             }
                             snacksAdapter.notifyDataSetChanged();
+
+                            //Setting on click listener to allow users to open the full list
+                            snacksListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                                openFullItemList("Snacks", snacksFoodItems);
+                                return true;
+                            });//end listener
                         }//end snacks.contains()
                     }//end snacksData != null
                 }//end dataSaved.contains()
@@ -352,7 +428,7 @@ public class Calendar extends AppCompatActivity
         }//end !lastSelectedDate
         if(fitnessActivity())
         {
-            //If I was to publish this app or keep working on it then I would add functionallity to utilize the calendar in FitnessActivity. I.e., show completed workouts etc?
+            //If I was to publish this app or keep working on it then I would add functionality to utilize the calendar in FitnessActivity. I.e., show completed workouts etc?
             Log.i("Calendar", "Came from fitness page");
         }//end fitnessActivity()
     }//end openSelectedDate()
@@ -398,6 +474,153 @@ public class Calendar extends AppCompatActivity
             snacksFoodItems.clear();
     }
 
+    //Used when the user long clicks on a item list - Opens a single bigger list
+    private void openFullItemList(String selectedList, ArrayList<FoodItem> list)
+    {
+        //As this method will pass the list to a activity need to store the list as a string
+        ArrayList<String> convertedList = getUtility().itemListToStringList(list);
+
+        //Opening the new intent
+        Intent intent = new Intent(this, FullFoodList.class);
+        intent.putExtra("Current List Name", selectedList);
+        intent.putStringArrayListExtra("Item List", convertedList);
+        intent.putExtra("Item List Size", list.size());
+        intent.putExtra("Calendar", true);
+        intent.putExtra("Calendar Selected Date", userSelectedDate);
+        intent.putExtra("ActivityID", "Calendar");
+        startActivityForResult(intent, RETURNED_VALUES);
+    }
+
+    //The user has modified the list in the FullList View
+    private void listNeedsUpdating(String theListToUpdate)
+    {
+        //Need to update the list in the SharedPreferences as the user has made some kind of modifications
+        switch(theListToUpdate)
+        {
+            case "Breakfast":
+                //Clearing the currently displayed list
+                breakfastFoodItems.clear();
+                //Updating the list to display the correctly modified list
+                updatingList(breakfastFoodItems);
+                //Updating the list view to display the data
+                breakfastAdapter.notifyDataSetChanged();
+
+                //Clearing the data stored in SharedPreferences and replacing it with modified saved data
+                resaveData(theListToUpdate);
+                break;
+
+            case "Lunch":
+                //Clearing the currently displayed list
+                lunchFoodItems.clear();
+                //Updating the list to display the correctly modified list
+                updatingList(lunchFoodItems);
+                //Updating the list view to display the data
+                lunchAdapter.notifyDataSetChanged();
+
+                //Clearing the data stored in SharedPreferences and replacing it with modified saved data
+                resaveData(theListToUpdate);
+                break;
+
+            case "Dinner":
+                //Clearing the currently displayed list
+                dinnerFoodItems.clear();
+                //Updating the list to display the correctly modified list
+                updatingList(dinnerFoodItems);
+                //Updating the list view to display the data
+                dinnerAdapter.notifyDataSetChanged();
+
+                //Clearing the data stored in SharedPreferences and replacing it with modified saved data
+                resaveData(theListToUpdate);
+                break;
+
+            case "Snacks":
+                //Clearing the currently displayed list
+                snacksFoodItems.clear();
+                //Updating the list to display the correctly modified list
+                updatingList(snacksFoodItems);
+                //Updating the list view to display the data
+                snacksAdapter.notifyDataSetChanged();
+
+                //Clearing the data stored in SharedPreferences and replacing it with modified saved data
+                resaveData(theListToUpdate);
+                break;
+        }
+    }
+
+    private void updatingList(ArrayList<FoodItem> listToUpdate)
+    {
+        listToUpdate = getUtility().stringListToItemList(newList, listToUpdate, theNewListSize);
+    }
+
+    private void resaveData(String whichList)
+    {
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+
+        //Temporarily storing the old data in these maps
+        HashMap<String, String> oldDataMap;
+        HashMap<String, Integer> oldInfoMap;
+
+        switch (whichList)
+        {
+            case "Breakfast":
+                String tempData = sharedPreferences.getString("Breakfast List All Saved Data", "");
+                oldDataMap = getSharedPrefsUtility().transformJSONBackToMapData(tempData);
+                Log.i("Old Map Data", String.valueOf(oldDataMap));
+
+                String tempInfo = sharedPreferences.getString("Breakfast List All Info", "");
+                oldInfoMap = getSharedPrefsUtility().transformJSONBackToMapSize(tempInfo);
+                Log.i("Old Map Info", String.valueOf(oldInfoMap));
+
+                //Getting the new list that has been passed back to the Calendar and transforming it into a string
+                String data = gson.toJson(newList, ArrayList.class);
+                oldDataMap.put(userSelectedDate, data);
+                oldInfoMap.put(userSelectedDate, theNewListSize);
+
+                Log.i("New Map Data", " \n" + oldDataMap + " \n" + oldInfoMap);
+
+                //Transforming the Maps back into Strings
+                String newData = gson.toJson(oldDataMap);
+                String newInfo = gson.toJson(oldInfoMap);
+
+                //Putting back into Shared Preferences
+                sharedPreferences.edit().putString("Breakfast List All Saved Data", newData).apply();
+                sharedPreferences.edit().putString("Breakfast List All Info", newInfo).apply();
+
+                //If the user edits today's data need todo something different - check dates resave then in calorie?
+                sharedPreferences.edit().putBoolean("Modified From Calendar", true);
+
+                break;
+            case "Lunch":
+                break;
+            case "Dinner":
+                tempData = sharedPreferences.getString("Dinner List All Saved Data", "");
+                oldDataMap = getSharedPrefsUtility().transformJSONBackToMapData(tempData);
+                Log.i("Old Map Data", String.valueOf(oldDataMap));
+
+                tempInfo = sharedPreferences.getString("Dinner List All Info", "");
+                oldInfoMap = getSharedPrefsUtility().transformJSONBackToMapSize(tempInfo);
+                Log.i("Old Map Info", String.valueOf(oldInfoMap));
+
+                //Getting the new list that has been passed back to the Calendar and transforming it into a string
+                data = gson.toJson(newList, ArrayList.class);
+                oldDataMap.put(userSelectedDate, data);
+                oldInfoMap.put(userSelectedDate, theNewListSize);
+
+                Log.i("New Map Data", " \n" + oldDataMap + " \n" + oldInfoMap);
+
+                //Transforming the Maps back into Strings
+                newData = gson.toJson(oldDataMap);
+                newInfo = gson.toJson(oldInfoMap);
+
+                //Putting back into Shared Preferences
+                sharedPreferences.edit().putString("Dinner List All Saved Data", newData).apply();
+                sharedPreferences.edit().putString("Dinner List All Info", newInfo).apply();
+                break;
+        }
+        sharedPreferences.edit().apply();
+    }
+
     //Helper Methods
     private CalendarView getCalendarView() { return findViewById(R.id.calendarCalendarView); }
     private TextView getMessage() { return findViewById(R.id.calendarDataMessage); }
@@ -410,4 +633,6 @@ public class Calendar extends AppCompatActivity
     private TextView getSnacksListViewHeader() { return findViewById(R.id.calendarSnacksHeader); }
     private ListView getSnacksListView() { return findViewById(R.id.calendarSnacksListView); }
     private Button getCancelButton() { return findViewById(R.id.calendarCancelButton); }
+    private Utility getUtility() { return new Utility(); }
+    private SharedPreferencesUtility getSharedPrefsUtility() { return new SharedPreferencesUtility(); }
 }

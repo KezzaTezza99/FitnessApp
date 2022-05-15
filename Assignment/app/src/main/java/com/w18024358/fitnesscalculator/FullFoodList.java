@@ -25,6 +25,7 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
     static final int EDITED_VALUE = 2;
     static final int DELETED_VALUE = 3;
     static final int ADDED_VALUE = 4;
+    static final int RETURN_CALENDAR = 5;
 
     //Need to know what list the user wants to be fully displayed (what ListView did they long hold on)
     String selectedList;
@@ -49,6 +50,9 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
     //Need to know what return code to return to previous intent with
     boolean itemEdited, itemDeleted, itemAdded;
 
+    boolean fromCalendar;
+    String dateFromCalendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -57,9 +61,9 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
 
         //Setting on click listeners for the buttons
         getAddButton().setOnClickListener(view -> openAddToCalorieList());
-        getDoneButton().setOnClickListener(view -> goBackToCaloriePage());
+        getDoneButton().setOnClickListener(view -> processBackButtonPressed());
 
-        //Initialising the arrays
+        //Initialising the arrayse
         stringItemList = new ArrayList<String>();
         theList = new ArrayList<FoodItem>();
 
@@ -70,6 +74,8 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
             selectedList = extras.getString("Current List Name");
             stringItemList = extras.getStringArrayList("Item List");
             listSize = extras.getInt("Item List Size");
+            fromCalendar = extras.getBoolean("Calendar");
+            dateFromCalendar = extras.getString("Calendar Selected Date");
         }
 
         //Displaying to the user above the ListView which list they selected
@@ -168,6 +174,24 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
         }
     }
 
+    //Need to check if from the calorie or  calendar activity
+    void processBackButtonPressed()
+    {
+        //Need to see which Activity the user has came from
+        String intent = getIntent().getStringExtra("ActivityID");
+
+        //user came from the calorie activity
+        if(intent.equals("Calorie"))
+        {
+            goBackToCaloriePage();
+        }
+        //For now this means has to be from calendar view
+        else
+        {
+            goBackToCalendar();
+        }
+    }
+
     //The user wants to add to the list
     private void openAddToCalorieList()
     {
@@ -180,19 +204,19 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
     //Method to go back to CalorieActivity once the user has clicked done
     private void goBackToCaloriePage()
     {
-        if(itemEdited)
+        if (itemEdited)
         {
             getIntent().putExtra("Item Edited", true);
             finishActivity(EDITED_VALUE);
             setResult(EDITED_VALUE, getIntent());
         }
-        else if(itemDeleted)
+        else if (itemDeleted)
         {
             getIntent().putExtra("Item Deleted", true);
             finishActivity(DELETED_VALUE);
             setResult(DELETED_VALUE, getIntent());
         }
-        else if(itemAdded)
+        else if (itemAdded)
         {
             getIntent().putExtra("Item Added", true);
             finishActivity(ADDED_VALUE);
@@ -203,7 +227,6 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
             finishActivity(RESULT_CANCELED);
             setResult(RESULT_CANCELED, getIntent());
         }
-
         //Putting the entire list into a ArrayList<String> that can be given to the intent
         ArrayList<String> listForStorage = getUtility().itemListToStringList(theList);
 
@@ -213,6 +236,46 @@ public class FullFoodList extends AppCompatActivity implements EditItemCalorieDi
         getIntent().putExtra("Current List", selectedList);
         getIntent().putExtra("SIZE", theList.size());
         getIntent().putStringArrayListExtra("The New Item List", listForStorage);
+
+        finish();
+    }
+
+    //Method to go back to Calendar once the user has clicked done
+    private void goBackToCalendar()
+    {
+        if (itemEdited)
+        {
+            getIntent().putExtra("Item Edited", true);
+            finishActivity(EDITED_VALUE);
+            setResult(EDITED_VALUE, getIntent());
+        }
+        else if (itemDeleted)
+        {
+            getIntent().putExtra("Item Deleted", true);
+            finishActivity(DELETED_VALUE);
+            setResult(DELETED_VALUE, getIntent());
+        }
+        else if (itemAdded)
+        {
+            getIntent().putExtra("Item Added", true);
+            finishActivity(ADDED_VALUE);
+            setResult(ADDED_VALUE, getIntent());
+        }
+        else
+        {
+            finishActivity(RESULT_CANCELED);
+            setResult(RESULT_CANCELED, getIntent());
+        }
+        //Putting the entire list into a ArrayList<String> that can be given to the intent
+        ArrayList<String> listForStorage = getUtility().itemListToStringList(theList);
+
+        Log.i("The list in FullFoodList:", String.valueOf(listForStorage));
+
+        //Storing the current list to transfer the contents to the CalorieActivity
+        getIntent().putExtra("Current List", selectedList);
+        getIntent().putExtra("SIZE", theList.size());
+        getIntent().putStringArrayListExtra("The New Item List", listForStorage);
+
         finish();
     }
 

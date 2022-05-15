@@ -15,6 +15,8 @@ public class WorkoutUtil
 
     public WorkoutUtil(String[] workoutInfo, boolean isWorkout)
     {
+        Log.i("WorkoutUtil", "Workout boolean " + isWorkout);
+
         //Basically cleaning the data, removing all the unnecessary information such as punctuation
         if(isWorkout)
         {

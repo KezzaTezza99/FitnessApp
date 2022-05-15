@@ -20,7 +20,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,6 +38,9 @@ public class MainActivity extends AppCompatActivity
 
         SignIn().setOnClickListener(view -> checkUserDetails());
         LogIn().setOnClickListener(view -> openLoginActivity());
+
+        //Temp
+        startActivity(new Intent(this, CalorieActivity.class));
     }
 
     private void checkUserDetails()

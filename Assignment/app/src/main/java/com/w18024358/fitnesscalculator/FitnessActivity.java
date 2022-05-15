@@ -21,6 +21,7 @@ public class FitnessActivity extends AppCompatActivity {
     //maybe start the workout by having a timer that takes up the space at the bottom???
     //TODO Change the weights used for exercises if the user has inputted values from UserProfile, if not just show the workout instead?
 
+    //TODO -- New bug always says there is no workout info even if there is
     //Used to tell the intent that
     static final int RETURNED_VALUES = 1;
 
@@ -37,6 +38,9 @@ public class FitnessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fitness);
 
+        //Creating this here otherwise doesn't work as intended
+        JsonUtility jsonUtility = new JsonUtility(this);
+
         //Setting the current day
         getCurrentDay().setText(getUtility().getCurrentDate());
 
@@ -46,14 +50,18 @@ public class FitnessActivity extends AppCompatActivity {
             return true;
         });
 
+
         //Doing JSON stuff - Basically reading the file into data then splitting the data on selected date (current day) i.e., get Thursday's workout
-        String data = getJSONUtility().splitWorkoutBasedOnDays(getJSONUtility().json, getUtility().getCurrentDate());
-        String[] str = getJSONUtility().splitTheData(data);
+        String data = jsonUtility.splitWorkoutBasedOnDays(jsonUtility.getJSON(), getUtility().getCurrentDate());
+        String[] str = jsonUtility.splitTheData(data);
         //Sending the data of today's workout to WorkoutUtil which is responsible for reading the JSON and transforming it into ArrayList<T> (T being Compound or Isolation Workout)
-        WorkoutUtil workoutUtil = new WorkoutUtil(str, getJSONUtility().getWorkout());
+        WorkoutUtil workoutUtil = new WorkoutUtil(str, jsonUtility.getWorkout());
+
+        //Seeing if theres is a workout
+        boolean isWorkout = jsonUtility.getWorkout();
 
         //There wasn't a workout for today so need to hide the ListView(s)
-        if (getJSONUtility().getWorkout() == Boolean.FALSE) {
+        if (!isWorkout) {
             //Show the message but hide the Lists
             getRestDayMessage().setVisibility(View.VISIBLE);
             getCompoundMovementLabel().setVisibility(View.INVISIBLE);
@@ -155,9 +163,5 @@ public class FitnessActivity extends AppCompatActivity {
     private Utility getUtility()
     {
         return new Utility();
-    }
-    private JsonUtility getJSONUtility()
-    {
-        return new JsonUtility(this);
     }
 }

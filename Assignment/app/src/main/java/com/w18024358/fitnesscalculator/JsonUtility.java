@@ -2,6 +2,7 @@ package com.w18024358.fitnesscalculator;
 import android.content.Context;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -20,7 +21,7 @@ public class JsonUtility extends AppCompatActivity
     }
 
     //Parse a JSON File
-    String parseJSONFile()
+    void parseJSONFile()
     {
         json = null;
 
@@ -40,15 +41,25 @@ public class JsonUtility extends AppCompatActivity
         catch (IOException e)
         {
             e.printStackTrace();
-            return null;
+            return;
         }
         Log.i("JSON", json);
+        setJSON(json);
+    }
+
+    void setJSON(String JSON)
+    {
+        this.json = JSON;
+    }
+    String getJSON()
+    {
         return json;
     }
 
     //Read the JSON String to get the info for each day
     String splitWorkoutBasedOnDays(String data, String day)
     {
+        //TODO could refactor this
         int index;
         int end;
         if(day.equals("Wednesday") || day.equals("Sunday"))
@@ -59,13 +70,21 @@ public class JsonUtility extends AppCompatActivity
             selectedData = data.substring(index, end);
             Log.i("Selected Day with No Workout", selectedData);
         }
-        else
+        else if(day.equals("Monday") || day.equals("Tuesday") || day.equals("Thursday") || day.equals("Friday"))
         {
             setWorkout(true);
             index = data.indexOf(day);
             end = data.indexOf(getTheNextDay(day));
             selectedData = data.substring(index, end);
             Log.i("Selected Day", selectedData);
+        }
+        else
+        {
+            //Incorrect shouldn't reach here, error handling
+            setWorkout(false);
+            index = data.indexOf("NA");
+            end = data.indexOf("}", index);
+            selectedData = data.substring(index, end);
         }
         return selectedData;
     }
@@ -86,7 +105,9 @@ public class JsonUtility extends AppCompatActivity
             case "Saturday":
                 return "NA";
             default:
-                throw new IllegalStateException("Unexpected value: " + currentDate);
+                //There is a mistake in the code somewhere as this shouldn't be reached (i.e., calling this method without using the getCurrentCate() method)
+                //Don't want to crash the application instead just return no workout
+                return "NA";
         }
     }
 
@@ -159,6 +180,7 @@ public class JsonUtility extends AppCompatActivity
         return usefulData;
     }
 
+    //Helper methods
     void setWorkout(boolean value) { workout = value; }
     boolean getWorkout()
     {

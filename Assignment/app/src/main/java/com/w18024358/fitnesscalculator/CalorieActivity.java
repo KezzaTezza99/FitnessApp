@@ -26,7 +26,8 @@ import java.util.HashMap;
 //Save data when user leaves the page?
 //Load when user opens page
 //Save data as soon as item is added?
-public class CalorieActivity extends AppCompatActivity implements TargetCalorieDialog.CalorieDialogListener {
+public class CalorieActivity extends AppCompatActivity implements TargetCalorieDialog.CalorieDialogListener
+{
     static final int RETURNED_VALUES = 1;
     static final int EDITED_VALUE = 2;
     static final int DELETED_VALUE = 3;
@@ -626,6 +627,7 @@ public class CalorieActivity extends AppCompatActivity implements TargetCalorieD
                 //need to track all the information if I want to be able to display data through the calendar, database would probably work better but this quicker and easier
                 if(breakfastCheck)
                 {
+                    //TODO can modify this to used the SP Utility
                     //Getting the string of data to append data too
                     String oldData = sharedPreferences.getString("Breakfast List All Saved Data", "");
 
